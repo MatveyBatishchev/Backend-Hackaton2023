@@ -1,9 +1,9 @@
-package ru.hackaton.backend;
+package application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "ru.hackaton.backend")
 public class BackendApplication {
 
     public static void main(String[] args) {

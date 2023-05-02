@@ -12,3 +12,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    doc-expansion: none
+  api-docs:
+    path: /swagger.json
