@@ -1,1 +1,14 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8080
 
+spring:
+  application:
+    name: hackathon-ldt-backend
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: false

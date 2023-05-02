@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hackathon_ldt_db
+    username: postgres
+    password: secret
+    hikari:
+      schema: main
