@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-news_category
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице посреднике news_category"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: news_category
+            baseColumnNames: news_id
+            constraintName: fk_news_category_news_id
+            onDelete: CASCADE
+            referencedTableName: news
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: news_category
+            baseColumnNames: category_id
+            constraintName: fk_news_category_category_id
+            onDelete: CASCADE
+            referencedTableName: category
+            referencedColumnNames: id

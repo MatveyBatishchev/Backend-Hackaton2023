@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-news-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о метаданных новостей"
+      changes:
+        - tagDatabase:
+            tag: create-news-table
+        - createTable:
+            tableName: news
+            remarks: "Таблица с записями о метаданных новостей"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(200)
+                  remarks: "Полное название новости"
+              - column:
+                  name: description
+                  type: varchar(600)
+                  remarks: "Описание новости"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: image
+                  type: varchar(300)
+                  remarks: "Ссылка на изображение - превью новости"
+              - column:
+                  name: content
+                  type: text
+                  remarks: "Форматированный текст статьи в формате json"
+              - column:
+                  name: published
+                  type: boolean
+                  remarks: "Маркер - была ли новость опубликована"
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: updated_at
+                  type: datetime

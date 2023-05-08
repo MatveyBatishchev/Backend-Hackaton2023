@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-news_category-table
+      author: MYBatishchev
+      comment: "Создание таблицы посредника между новостью и её категориями"
+      changes:
+        - createTable:
+            tableName: news_category
+            remarks: "Таблица посредник между новостью и её категориями"
+            columns:
+              - column:
+                  name: news_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true

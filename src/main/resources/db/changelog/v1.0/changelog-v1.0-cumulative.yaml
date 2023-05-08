@@ -1,4 +1,13 @@
 databaseChangeLog:
   - include:
       relativeToChangelogFile: true
-      file:
+      file: create-news-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-category-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-news_category-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-news_category.yaml

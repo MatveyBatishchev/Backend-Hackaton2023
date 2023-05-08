@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-category-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о категориях новостей/статьей"
+      changes:
+        - createTable:
+            tableName: category
+            remarks: "Таблица с записями о категориях новостей/статьей"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(36)
+                  remarks: "Полное название категории"
+                  constraints:
+                    unique: true
