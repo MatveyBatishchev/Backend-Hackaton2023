@@ -2,6 +2,7 @@ package ru.hackaton.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.NewsDto;
 import ru.hackaton.backend.mappers.NewsMapper;
@@ -35,9 +36,13 @@ public class NewsService {
     }
 
     public void deleteNewsById(long id) {
+        newsRepository.deleteById(id);
     }
 
-    public List<News> findAllNews(Integer pageNum, Integer perPage) {
-        return null;
+    public List<NewsDto> findAllNews(Integer pageNum, Integer perPage) {
+        if (perPage > 100) perPage = 100;
+        List<News> news = newsRepository.findAllCompressed(pageNum, perPage);
+        return newsMapper.map(news);
     }
+
 }

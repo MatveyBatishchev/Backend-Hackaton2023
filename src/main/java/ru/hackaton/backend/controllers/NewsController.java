@@ -32,7 +32,7 @@ public interface NewsController {
 
     @GetMapping(value = "/list", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    List<News> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
+    List<NewsDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                        @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
 
 

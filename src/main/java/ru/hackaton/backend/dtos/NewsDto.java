@@ -1,6 +1,7 @@
 package ru.hackaton.backend.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class NewsDto {
 
     private boolean published;
 
+    @Transient
     @Schema(example = "{\"json\": true}")
     private String content;
 
@@ -29,6 +31,7 @@ public class NewsDto {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime updatedAt;
 
+    @Transient
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<CategoryDto> categoryDtos;
 
