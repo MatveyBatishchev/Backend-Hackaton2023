@@ -12,6 +12,15 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
+#  jpa:
+#    show-sql: true
+#    generate-ddl: false
+#    properties:
+#      jadira:
+#        usertype:
+#          autoRegisterUserTypes: true
+#      hibernate:
+#        format_sql: true
 
 springdoc:
   swagger-ui:

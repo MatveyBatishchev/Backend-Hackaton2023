@@ -31,7 +31,7 @@ databaseChangeLog:
                   remarks: "Ссылка на изображение - превью новости"
               - column:
                   name: content
-                  type: text
+                  type: jsonb
                   remarks: "Форматированный текст статьи в формате json"
               - column:
                   name: published
