@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
@@ -16,41 +15,42 @@ import java.util.Set;
 
 @Data
 @Entity
+@DynamicUpdate
 @NoArgsConstructor
-@Table(name="news")
+@Table(name = "news")
 public class News {
 
     @Id
-    @SequenceGenerator(name="news_sequence", sequenceName = "news_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="news_sequence")
-    @Column(name="id")
+    @SequenceGenerator(name = "news_sequence", sequenceName = "news_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_sequence")
+    @Column(name = "id")
     private long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="image")
+    @Column(name = "image")
     private String image;
 
-    @Column(name="published")
-    private boolean published;
+    @Column(name = "published")
+    private Boolean published;
 
     @Type(JsonType.class)
-    @Column(name="content", columnDefinition = "jsonb")
+    @Column(name = "content", columnDefinition = "jsonb")
     private String content;
 
-    @Column(name="created_At")
+    @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_At")
+    @Column(name = "updated_At")
     private LocalDateTime updatedAt;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy="news")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "news")
     private Set<Category> categories = new HashSet<>();
 
 }

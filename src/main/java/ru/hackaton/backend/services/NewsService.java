@@ -3,17 +3,21 @@ package ru.hackaton.backend.services;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.NewsDto;
 import ru.hackaton.backend.mappers.NewsMapper;
 import ru.hackaton.backend.models.domain.News;
 import ru.hackaton.backend.repositories.NewsRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NewsService {
+
+    private final static String DEFAULT_SORT_OPTION = "updatedAt";
 
     private final NewsRepository newsRepository;
 
@@ -25,6 +29,8 @@ public class NewsService {
     }
 
     public void createNews(NewsDto newsDto) {
+        newsDto.setCreatedAt(LocalDateTime.now());
+        newsDto.setUpdatedAt(LocalDateTime.now());
         newsRepository.save(newsMapper.toNews(newsDto));
     }
 
@@ -33,6 +39,10 @@ public class NewsService {
     }
 
     public void updateNews(long id, NewsDto newsDto) {
+        News dbNews = getNewsById(id);
+        newsDto.setId(id);
+        newsMapper.updateNewsFromDto(newsDto, dbNews);
+        newsRepository.save(dbNews);
     }
 
     public void deleteNewsById(long id) {
@@ -41,8 +51,9 @@ public class NewsService {
 
     public List<NewsDto> findAllNews(Integer pageNum, Integer perPage) {
         if (perPage > 100) perPage = 100;
-        List<News> news = newsRepository.findAllCompressed(pageNum, perPage);
-        return newsMapper.map(news);
+        return newsRepository.findAllCompressed(
+                PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION))
+        ).getContent();
     }
 
 }

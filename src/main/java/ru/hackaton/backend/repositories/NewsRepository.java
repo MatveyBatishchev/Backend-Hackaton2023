@@ -1,31 +1,30 @@
 package ru.hackaton.backend.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.hackaton.backend.dtos.NewsDto;
 import ru.hackaton.backend.models.domain.News;
-
-import java.util.List;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    // FIXME: doesnt work as hibernate still wants 'content' field while mapping ResultSet to News.class
-    // Probably projection can be a solution
     @Query(value = """
             SELECT
+            new ru.hackaton.backend.dtos.NewsDto(
                 n.id,
-                n.created_at,
+                n.name,
                 n.description,
                 n.image,
-                n.name,
                 n.published,
-                n.updated_at
+                n.createdAt,
+                n.updatedAt
+            )
             FROM
-                main.news n
-            ORDER BY updated_at DESC
-            LIMIT :perPage OFFSET :perPage * :pageNum""", nativeQuery = true)
-    List<News> findAllCompressed(@Param(value = "pageNum") int pageNum, @Param(value = "perPage") int perPage);
+                News n
+            ORDER BY n.updatedAt DESC""")
+    Page<NewsDto> findAllCompressed(Pageable pageable);
 
 }

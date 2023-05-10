@@ -3,7 +3,6 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.NewsDto;
-import ru.hackaton.backend.models.domain.News;
 import ru.hackaton.backend.services.NewsService;
 
 import java.util.List;

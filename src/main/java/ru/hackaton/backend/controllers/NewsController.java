@@ -4,13 +4,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.NewsDto;
-import ru.hackaton.backend.models.domain.News;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Tag(name="News")
+@Tag(name = "News")
 @RequestMapping("/news")
 public interface NewsController {
 
@@ -33,7 +32,7 @@ public interface NewsController {
     @GetMapping(value = "/list", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     List<NewsDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
-                       @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+                          @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
 
 
 }
