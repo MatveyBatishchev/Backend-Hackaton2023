@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@DynamicUpdate
 @NoArgsConstructor
 @Table(name = "news")
 public class News {

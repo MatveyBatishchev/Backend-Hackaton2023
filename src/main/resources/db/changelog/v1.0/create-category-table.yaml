@@ -19,3 +19,4 @@ databaseChangeLog:
                   remarks: "Полное название категории"
                   constraints:
                     unique: true
+                    nullable: false

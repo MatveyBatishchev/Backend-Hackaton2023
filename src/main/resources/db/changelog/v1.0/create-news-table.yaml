@@ -19,6 +19,8 @@ databaseChangeLog:
                   name: name
                   type: varchar(200)
                   remarks: "Полное название новости"
+                  constraints:
+                    nullable: false
               - column:
                   name: description
                   type: varchar(600)
@@ -29,17 +31,27 @@ databaseChangeLog:
                   name: image
                   type: varchar(300)
                   remarks: "Ссылка на изображение - превью новости"
+                  constraints:
+                    nullable: false
               - column:
                   name: content
                   type: jsonb
                   remarks: "Форматированный текст статьи в формате json"
+                  constraints:
+                    nullable: false
               - column:
                   name: published
                   type: boolean
                   remarks: "Маркер - была ли новость опубликована"
+                  constraints:
+                    nullable: false
               - column:
                   name: created_at
                   type: datetime
+                  constraints:
+                    nullable: false
               - column:
                   name: updated_at
                   type: datetime
+                  constraints:
+                    nullable: false
