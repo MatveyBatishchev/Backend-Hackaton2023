@@ -38,4 +38,14 @@ public class NewsControllerImpl implements NewsController {
         return newsService.findAllNews(pageNum, perPage);
     }
 
+    @Override
+    public void attachCategories(long id, long[] categoryIds) {
+        newsService.attachCategoriesToNews(id, categoryIds);
+    }
+
+    @Override
+    public void detachCategories(long id, long[] categoryIds) {
+        newsService.detachCategoriesToNews(id, categoryIds);
+    }
+
 }

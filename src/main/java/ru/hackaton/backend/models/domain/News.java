@@ -48,7 +48,10 @@ public class News {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "news")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "news_category",
+            joinColumns = {@JoinColumn(name = "news_id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
     private Set<Category> categories = new HashSet<>();
 
 }

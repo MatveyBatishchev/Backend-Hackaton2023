@@ -56,4 +56,12 @@ public class NewsService {
         ).getContent();
     }
 
+    public void attachCategoriesToNews(long id, long[] categoryIds) {
+        newsRepository.saveNewsCategories(id, categoryIds);
+    }
+
+    public void detachCategoriesToNews(long id, long[] categoryIds) {
+        newsRepository.deleteNewsCategories(id, categoryIds);
+    }
+
 }

@@ -21,10 +21,8 @@ public class Category {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "news_category",
-            joinColumns = {@JoinColumn(name = "category_id")},
-            inverseJoinColumns = {@JoinColumn(name = "news_id")})
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private Set<News> news = new HashSet<>();
 
     @Column(name = "name")
