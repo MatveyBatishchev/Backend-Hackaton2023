@@ -12,14 +12,16 @@ import java.time.LocalDateTime;
         imports = {LocalDateTime.class})
 public interface NewsMapper {
 
-    @Mapping(target = "categoryDtos", source = "categories")
     NewsDto toDto(News news);
 
-    @Mapping(target = "id", ignore = true) // id will generate automatically
+    // id will be generated automatically
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "categories", ignore = true)
     News toNews(NewsDto newsDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "updatedAt", expression = "java(LocalDateTime.now())")
+    @Mapping(target = "categories", ignore = true)
     void updateNewsFromDto(NewsDto newsDto, @MappingTarget News entity);
 
 }

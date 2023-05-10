@@ -51,7 +51,7 @@ public class NewsService {
 
     public List<NewsDto> findAllNews(Integer pageNum, Integer perPage) {
         if (perPage > 100) perPage = 100;
-        return newsRepository.findAllCompressed(
+        return newsRepository.findAllButContent(
                 PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION))
         ).getContent();
     }

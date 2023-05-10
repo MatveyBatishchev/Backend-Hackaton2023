@@ -25,6 +25,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             FROM
                 News n
             ORDER BY n.updatedAt DESC""")
-    Page<NewsDto> findAllCompressed(Pageable pageable);
+    Page<NewsDto> findAllButContent(Pageable pageable);
 
 }

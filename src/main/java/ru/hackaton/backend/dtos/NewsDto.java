@@ -31,7 +31,7 @@ public class NewsDto {
     private LocalDateTime updatedAt;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Set<CategoryDto> categoryDtos;
+    private Set<CategoryDto> categories;
 
     // Compressed constructor - will be used automatically for spring projection in derived queries
     public NewsDto(long id, String name, String description, String image, boolean published, LocalDateTime createdAt, LocalDateTime updatedAt) {
