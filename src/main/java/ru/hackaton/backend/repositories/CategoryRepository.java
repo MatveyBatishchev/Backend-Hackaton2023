@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 import ru.hackaton.backend.models.domain.Category;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
-}
+public interface CategoryRepository extends JpaRepository<Category, Long> {}
