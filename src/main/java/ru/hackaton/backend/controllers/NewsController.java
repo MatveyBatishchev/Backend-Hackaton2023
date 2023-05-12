@@ -33,7 +33,8 @@ public interface NewsController {
     @GetMapping(value = "/list", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     List<NewsDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
-                          @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+                          @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
+                          @RequestParam(value = "include_categories", defaultValue = "false", required = false) Boolean includeCategories);
 
     @Operation(summary = "Привязывает к новости с указанным id соответствующие категории")
     @PostMapping("/{id}/categories")

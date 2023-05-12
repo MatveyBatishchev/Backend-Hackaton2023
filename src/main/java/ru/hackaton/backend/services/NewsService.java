@@ -10,7 +10,6 @@ import ru.hackaton.backend.mappers.NewsMapper;
 import ru.hackaton.backend.models.domain.News;
 import ru.hackaton.backend.repositories.NewsRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,8 +28,6 @@ public class NewsService {
     }
 
     public void createNews(NewsDto newsDto) {
-        newsDto.setCreatedAt(LocalDateTime.now());
-        newsDto.setUpdatedAt(LocalDateTime.now());
         newsRepository.save(newsMapper.toNews(newsDto));
     }
 
@@ -42,6 +39,8 @@ public class NewsService {
         News dbNews = getNewsById(id);
         newsDto.setId(id);
         newsMapper.updateNewsFromDto(newsDto, dbNews);
+        // update content if it was sent
+        if (newsDto.getContent() != null) dbNews.getNewsContent().setContent(newsDto.getContent());
         newsRepository.save(dbNews);
     }
 
@@ -49,11 +48,13 @@ public class NewsService {
         newsRepository.deleteById(id);
     }
 
-    public List<NewsDto> findAllNews(Integer pageNum, Integer perPage) {
+    public List<NewsDto> findAllNews(Integer pageNum, Integer perPage, Boolean includeCategories) {
         if (perPage > 100) perPage = 100;
-        return newsRepository.findAllButContent(
-                PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION))
-        ).getContent();
+        List<News> news = newsRepository.findAll(
+                PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION))).getContent();
+
+        if (includeCategories) return newsMapper.mapToList(news);
+        return newsMapper.mapToListIgnoringCategories(news);
     }
 
     public void attachCategoriesToNews(long id, long[] categoryIds) {
