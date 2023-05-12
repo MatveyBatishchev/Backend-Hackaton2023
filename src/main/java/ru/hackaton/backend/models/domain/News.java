@@ -36,15 +36,14 @@ public class News {
     @Column(name = "published")
     private Boolean published;
 
-    @Type(JsonType.class)
-    @Column(name = "content", columnDefinition = "jsonb")
-    private String content;
-
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    NewsContent newsContent;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-news_content
+      author: MYBatishchev
+      comment: "Задаём внешний ключ в таблице news_content"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: news_content
+            baseColumnNames: news_id
+            constraintName: fk_news_content_news_id
+            onDelete: CASCADE
+            referencedTableName: news
+            referencedColumnNames: id
