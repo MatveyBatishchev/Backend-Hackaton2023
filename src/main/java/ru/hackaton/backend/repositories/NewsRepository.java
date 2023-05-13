@@ -1,6 +1,9 @@
 package ru.hackaton.backend.repositories;
 
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +13,10 @@ import ru.hackaton.backend.models.domain.News;
 
 @Repository
 public interface NewsRepository extends EntityGraphJpaRepository<News, Long> {
+
+    Page<News> findAllByCategoriesId(long categoryId, Pageable pageable);
+
+    Page<News> findAllByCategoriesId(long categoryId, Pageable pageable, EntityGraph entityGraph);
 
     @Modifying
     @Transactional

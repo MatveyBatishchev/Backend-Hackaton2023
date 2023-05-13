@@ -34,6 +34,7 @@ public interface NewsController {
     @ResponseStatus(HttpStatus.OK)
     List<NewsDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
+                          @RequestParam(value = "categoryId", required = false) Integer categoryId,
                           @RequestParam(value = "include_categories", defaultValue = "false", required = false) Boolean includeCategories);
 
     @Operation(summary = "Привязывает к новости с указанным id соответствующие категории")

@@ -15,12 +15,21 @@ import ru.hackaton.backend.models.domain.News;
 import ru.hackaton.backend.repositories.NewsRepository;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 @Service
 @RequiredArgsConstructor
 public class NewsService {
 
     private final static String DEFAULT_SORT_OPTION = "updatedAt";
+
+    private static final Map<String, EntityGraph> FETCH_OPTIONS = Map.ofEntries(
+            entry("all", DynamicEntityGraph.fetching(List.of("categories", "newsContent"))),
+            entry("categories", DynamicEntityGraph.fetching(List.of("categories"))),
+            entry("content", DynamicEntityGraph.fetching(List.of("newsContent")))
+    );
 
     private final NewsRepository newsRepository;
 
@@ -36,11 +45,11 @@ public class NewsService {
     }
 
     public NewsDto findNewsById(long id) {
-        return newsMapper.toDto(getNewsById(id, DynamicEntityGraph.fetching(List.of("categories", "newsContent"))));
+        return newsMapper.toDto(getNewsById(id, FETCH_OPTIONS.get("all")));
     }
 
     public void updateNews(long id, NewsDto newsDto) {
-        News dbNews = getNewsById(id, DynamicEntityGraph.fetching(List.of("newsContent")));
+        News dbNews = getNewsById(id, FETCH_OPTIONS.get("content"));
         newsDto.setId(id);
         newsMapper.updateNewsFromDto(newsDto, dbNews);
 
@@ -53,18 +62,24 @@ public class NewsService {
         newsRepository.deleteById(id);
     }
 
-    public List<NewsDto> findAllNews(Integer pageNum, Integer perPage, Boolean includeCategories) {
-        if (perPage > 100) perPage = 100;
+    public List<NewsDto> findAllNews(Integer pageNum, Integer perPage, Integer categoryId, Boolean includeCategories) {
+        perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
         Page<News> news;
-        if (includeCategories) {
-            news = newsRepository.findAll(pageable, DynamicEntityGraph.fetching(List.of("categories")));
-            return newsMapper.mapToList(news.getContent());
+        if (categoryId != null) {
+            news = includeCategories
+                    ? newsRepository.findAllByCategoriesId(categoryId, pageable, FETCH_OPTIONS.get("categories"))
+                    : newsRepository.findAllByCategoriesId(categoryId, pageable);
         } else {
-            news = newsRepository.findAll(pageable);
-            return newsMapper.mapToListIgnoringCategories(news.getContent());
+            news = includeCategories
+                    ? newsRepository.findAll(pageable, FETCH_OPTIONS.get("categories"))
+                    : newsRepository.findAll(pageable);
         }
+
+        return includeCategories
+                ? newsMapper.mapToList(news.getContent())
+                : newsMapper.mapToListIgnoringCategories(news.getContent());
     }
 
     public void attachCategoriesToNews(long id, long[] categoryIds) {
