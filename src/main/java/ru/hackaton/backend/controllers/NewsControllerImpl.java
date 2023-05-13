@@ -34,8 +34,8 @@ public class NewsControllerImpl implements NewsController {
     }
 
     @Override
-    public List<NewsDto> readAll(Integer pageNum, Integer perPage) {
-        return newsService.findAllNews(pageNum, perPage);
+    public List<NewsDto> readAll(Integer pageNum, Integer perPage, Boolean includeCategories) {
+        return newsService.findAllNews(pageNum, perPage, includeCategories);
     }
 
     @Override

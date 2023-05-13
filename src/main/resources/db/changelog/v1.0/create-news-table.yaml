@@ -34,12 +34,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: content
-                  type: jsonb
-                  remarks: "Форматированный текст статьи в формате json"
-                  constraints:
-                    nullable: false
-              - column:
                   name: published
                   type: boolean
                   remarks: "Маркер - была ли новость опубликована"

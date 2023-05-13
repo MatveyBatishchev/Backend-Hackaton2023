@@ -17,7 +17,6 @@ public interface CategoryMapper {
     @Named("toCategoryDto")
     CategoryDto toDto(Category category);
 
-    // id will be generated automatically
     @Mapping(target = "id", ignore = true)
     Category toCategory(CategoryDto categoryDto);
 

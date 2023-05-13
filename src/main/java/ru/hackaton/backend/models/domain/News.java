@@ -1,12 +1,9 @@
 package ru.hackaton.backend.models.domain;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -14,7 +11,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "news")
 public class News {
 
@@ -34,17 +30,16 @@ public class News {
     private String image;
 
     @Column(name = "published")
-    private Boolean published;
-
-    @Type(JsonType.class)
-    @Column(name = "content", columnDefinition = "jsonb")
-    private String content;
+    private boolean published;
 
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    NewsContent newsContent;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

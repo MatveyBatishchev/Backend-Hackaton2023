@@ -19,7 +19,7 @@ public class NewsDto {
     private String image;
 
     @Schema(example = "false")
-    private boolean published;
+    private Boolean published;
 
     @Schema(example = "{\"json\": true}")
     private String content;
@@ -32,16 +32,5 @@ public class NewsDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<CategoryDto> categories;
-
-    // Compressed constructor - will be used automatically for spring projection in derived queries
-    public NewsDto(long id, String name, String description, String image, boolean published, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.image = image;
-        this.published = published;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
 }

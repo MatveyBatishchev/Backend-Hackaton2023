@@ -21,7 +21,6 @@ public class Category {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private Set<News> news = new HashSet<>();
 

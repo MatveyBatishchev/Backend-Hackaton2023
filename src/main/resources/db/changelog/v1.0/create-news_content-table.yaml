@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-news_content-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о контенте новостей"
+      changes:
+        - createTable:
+            tableName: news_content
+            remarks: "Таблица с записями о контенте новостей"
+            columns:
+              - column:
+                  name: news_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: content
+                  type: jsonb
+                  remarks: "Форматированный текст статьи в формате json"
+                  constraints:
+                    nullable: false
