@@ -2,17 +2,22 @@ package ru.hackaton.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.ArticleDto;
 import ru.hackaton.backend.mappers.ArticleMapper;
 import ru.hackaton.backend.models.domain.Article;
 import ru.hackaton.backend.repositories.ArticleRepository;
+import ru.hackaton.backend.util.PageWrapper;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
+import static ru.hackaton.backend.repositories.ArticleRepository.Specs.articleTypeEquals;
+import static ru.hackaton.backend.repositories.ArticleRepository.Specs.nameLike;
 
 @Service
 @RequiredArgsConstructor
@@ -49,10 +54,16 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public List<ArticleDto> getAllArticles(Integer pageNum, Integer perPage) {
+    public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String name_search, Long articleTypeId) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
-        return articleMapper.mapToList(articleRepository.findAll(pageable).getContent());
+
+        Specification<Article> spec = Specification.where(null);
+        if (name_search != null) spec = spec.and(nameLike(name_search));
+        if (articleTypeId != null) spec = spec.and(articleTypeEquals(articleTypeId));
+
+        Page<Article> page = articleRepository.findAll(spec, pageable);
+        return new PageWrapper<>(page.getTotalElements(), articleMapper.mapToList(page.getContent()));
     }
 
 }

@@ -30,14 +30,14 @@ public class Article {
     @Column(name = "published")
     private boolean published;
 
-    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    ArticleContent articleContent;
-
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    ArticleContent articleContent;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

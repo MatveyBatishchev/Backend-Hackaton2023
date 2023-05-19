@@ -1,11 +1,11 @@
 package ru.hackaton.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.ArticleTypeDto;
-
-import java.util.List;
+import ru.hackaton.backend.util.PageWrapper;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -14,6 +14,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin
 public interface ArticleTypeController {
 
+    @Operation(description = "Id при создании игнорируется, его можно не передавать")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ArticleTypeDto create(@RequestBody ArticleTypeDto articleTypeDto);
@@ -32,6 +33,6 @@ public interface ArticleTypeController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    List<ArticleTypeDto> readAll();
+    PageWrapper<ArticleTypeDto> readAll();
 
 }

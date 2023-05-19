@@ -2,13 +2,14 @@ package ru.hackaton.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.ArticleTypeDto;
 import ru.hackaton.backend.mappers.ArticleTypeMapper;
 import ru.hackaton.backend.models.domain.ArticleType;
 import ru.hackaton.backend.repositories.ArticleTypeRepository;
-
-import java.util.List;
+import ru.hackaton.backend.util.PageWrapper;
 
 
 @Service
@@ -43,8 +44,9 @@ public class ArticleTypeService {
         articleTypeRepository.deleteById(id);
     }
 
-    public List<ArticleTypeDto> getAllArticleTypes() {
-        return articleTypeMapper.mapToList(articleTypeRepository.findAll());
+    public PageWrapper<ArticleTypeDto> getAllArticleTypes() {
+        Page<ArticleType> page = articleTypeRepository.findAll(PageRequest.of(0, Integer.MAX_VALUE));
+        return new PageWrapper<>(page.getTotalElements(), articleTypeMapper.mapToList(page.getContent()));
     }
 
 }

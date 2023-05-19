@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.ArticleTypeDto;
 import ru.hackaton.backend.services.ArticleTypeService;
-
-import java.util.List;
+import ru.hackaton.backend.util.PageWrapper;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class ArticleTypeControllerImpl implements ArticleTypeController {
     }
 
     @Override
-    public List<ArticleTypeDto> readAll() {
+    public PageWrapper<ArticleTypeDto> readAll() {
         return articleTypeService.getAllArticleTypes();
     }
 
