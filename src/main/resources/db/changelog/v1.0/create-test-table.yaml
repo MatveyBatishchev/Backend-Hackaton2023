@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-test-table
+      author: Damir
+      comment: "Создание таблицы, хранящей тесты"
+      changes:
+        - createTable:
+            tableName: test
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_score
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: difficulty
+                  type: difficulty
+                  constraints:
+                    nullable: false

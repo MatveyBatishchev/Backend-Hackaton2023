@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-difficulty-enum
+      author: Damir
+      changes:
+        - sql:
+            CREATE TYPE difficulty AS ENUM ('LITE', 'INTERMEDIATE', 'HARD');
+      rollback:
+        - sql:
+            DROP TYPE difficulty;

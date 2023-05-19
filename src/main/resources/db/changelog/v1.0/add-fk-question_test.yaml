@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-question_test
+      author: Damir
+      comment: "Задаём внешний ключи в таблице question к таблице test"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: question
+            baseColumnNames: test_id
+            constraintName: fk_question_test_id
+            onDelete: CASCADE
+            referencedTableName: test
+            referencedColumnNames: id
