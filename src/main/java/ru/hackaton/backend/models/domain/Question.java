@@ -29,6 +29,9 @@ public class Question {
     @Column(name = "audio")
     private String audio;
 
+    @Column(name = "score")
+    private Integer score;
+
     @ManyToOne
 //    @NotNull
     private Test test;
