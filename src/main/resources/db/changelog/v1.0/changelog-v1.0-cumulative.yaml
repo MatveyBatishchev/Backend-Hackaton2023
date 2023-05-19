@@ -10,6 +10,15 @@ databaseChangeLog:
       file: create-article_content-table.yaml
   - include:
       relativeToChangelogFile: true
+      file: create-user-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_role-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_role.yaml
+  - include:
+      relativeToChangelogFile: true
       file: add-fk-article.yaml
   - include:
       relativeToChangelogFile: true
