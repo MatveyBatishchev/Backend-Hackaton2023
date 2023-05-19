@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-article
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице article"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: article
+            baseColumnNames: article_type_id
+            constraintName: fk_article_article_type_id
+            onDelete: CASCADE
+            referencedTableName: article_type
+            referencedColumnNames: id

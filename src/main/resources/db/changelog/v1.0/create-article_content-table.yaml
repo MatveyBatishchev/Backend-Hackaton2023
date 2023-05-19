@@ -1,15 +1,15 @@
 databaseChangeLog:
   - changeSet:
-      id: create-news_content-table
+      id: create-article_content-table
       author: MYBatishchev
-      comment: "Создание таблицы с записями о контенте новостей"
+      comment: "Создание таблицы с записями о контенте статьи"
       changes:
         - createTable:
-            tableName: news_content
-            remarks: "Таблица с записями о контенте новостей"
+            tableName: article_content
+            remarks: "Таблица с записями о контенте статьи"
             columns:
               - column:
-                  name: news_id
+                  name: article_id
                   type: bigint
                   constraints:
                     nullable: false

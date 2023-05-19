@@ -1,19 +1,16 @@
 databaseChangeLog:
   - include:
       relativeToChangelogFile: true
-      file: create-news-table.yaml
+      file: create-article-table.yaml
   - include:
       relativeToChangelogFile: true
-      file: create-category-table.yaml
+      file: create-article_type-table.yaml
   - include:
       relativeToChangelogFile: true
-      file: create-news_content-table.yaml
+      file: create-article_content-table.yaml
   - include:
       relativeToChangelogFile: true
-      file: create-news_category-table.yaml
+      file: add-fk-article.yaml
   - include:
       relativeToChangelogFile: true
-      file: add-fk-news_category.yaml
-  - include:
-      relativeToChangelogFile: true
-      file: add-fk-news_content.yaml
+      file: add-fk-article_content.yaml

@@ -1,14 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: create-news-table
+      id: create-article-table
       author: MYBatishchev
-      comment: "Создание таблицы с записями о метаданных новостей"
+      comment: "Создание таблицы с записями о статьях"
       changes:
-        - tagDatabase:
-            tag: create-news-table
         - createTable:
-            tableName: news
-            remarks: "Таблица с записями о метаданных новостей"
+            tableName: article
+            remarks: "Таблица с записями о метаданных статей"
             columns:
               - column:
                   name: id
@@ -18,25 +16,31 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(200)
-                  remarks: "Полное название новости"
+                  remarks: "Полное название статьи"
                   constraints:
                     nullable: false
               - column:
                   name: description
                   type: varchar(600)
-                  remarks: "Описание новости"
+                  remarks: "Описание статьи"
                   constraints:
                     nullable: true
               - column:
                   name: image
                   type: varchar(300)
-                  remarks: "Ссылка на изображение - превью новости"
+                  remarks: "Ссылка на изображение - превью статьи"
                   constraints:
                     nullable: false
               - column:
                   name: published
                   type: boolean
-                  remarks: "Маркер - была ли новость опубликована"
+                  remarks: "Маркер - была ли статья опубликована"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: article_type_id
+                  type: bigint
+                  remarks: "Внешний ключ для связи с типом статьи"
                   constraints:
                     nullable: false
               - column:

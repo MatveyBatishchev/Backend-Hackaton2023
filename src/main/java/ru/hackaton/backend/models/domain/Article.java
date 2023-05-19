@@ -6,17 +6,15 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "news")
-public class News {
+@Table(name = "article")
+public class Article {
 
     @Id
-    @SequenceGenerator(name = "news_sequence", sequenceName = "news_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_sequence")
+    @SequenceGenerator(name = "article_sequence", sequenceName = "article_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_sequence")
     @Column(name = "id")
     private long id;
 
@@ -32,21 +30,19 @@ public class News {
     @Column(name = "published")
     private boolean published;
 
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    ArticleContent articleContent;
+
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "news", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    NewsContent newsContent;
-
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "news_category",
-            joinColumns = {@JoinColumn(name = "news_id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id")})
-    private Set<Category> categories = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "article_type_id")
+    private ArticleType articleType;
 
 }

@@ -4,10 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
-public class NewsDto {
+public class ArticleDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private long id;
@@ -18,8 +17,7 @@ public class NewsDto {
 
     private String image;
 
-    @Schema(example = "false")
-    private Boolean published;
+    private boolean published;
 
     @Schema(example = "{\"json\": true}")
     private String content;
@@ -30,7 +28,6 @@ public class NewsDto {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime updatedAt;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Set<CategoryDto> categories;
+    private ArticleTypeDto articleType;
 
 }

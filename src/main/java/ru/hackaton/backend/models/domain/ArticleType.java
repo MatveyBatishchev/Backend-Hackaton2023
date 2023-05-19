@@ -10,19 +10,19 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "article_type")
+public class ArticleType {
 
     @Id
-    @SequenceGenerator(name = "category_sequence", sequenceName = "category_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @SequenceGenerator(name = "article_type_seq", sequenceName = "article_type_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_type_seq")
     @Column(name = "id")
     private long id;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
-    private Set<News> news = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "articleType")
+    private Set<Article> articles = new HashSet<>();
 
     @Column(name = "name")
     private String name;
