@@ -1,4 +1,4 @@
-package ru.hackaton.backend.config.filter;
+package ru.hackaton.backend.config.filters;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
@@ -14,7 +14,7 @@ import ru.hackaton.backend.util.PageWrapper;
 @ControllerAdvice
 public class PaginationHeaderFilter implements ResponseBodyAdvice<PageWrapper<?>> {
 
-    @Value("${headers.pagination}")
+    @Value("${application.headers.pagination}")
     private String paginationHeader;
 
     @Override
