@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-article_type-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о типах статьей"
+      changes:
+        - createTable:
+            tableName: article_type
+            remarks: "Таблица с записями о типах статьей"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(36)
+                  remarks: "Полное название типа"
+                  constraints:
+                    unique: true
+                    nullable: false

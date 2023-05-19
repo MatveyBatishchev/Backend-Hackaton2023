@@ -1,4 +1,16 @@
 databaseChangeLog:
   - include:
       relativeToChangelogFile: true
-      file:
+      file: create-article-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-article_type-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-article_content-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-article.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-article_content.yaml
