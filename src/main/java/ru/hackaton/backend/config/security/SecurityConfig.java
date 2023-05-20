@@ -36,9 +36,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable);
         http
                 .authorizeHttpRequests(requests ->
-                    requests
-                        .anyRequest()
-                        .authenticated());
+                        requests
+                                .requestMatchers("/auth/*")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated());
         http
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.accessDeniedHandler(accessDeniedHandler)

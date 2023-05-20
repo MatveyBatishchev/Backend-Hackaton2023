@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.ArticleDto;
 import ru.hackaton.backend.util.PageWrapper;
@@ -28,10 +29,12 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@PathVariable("id") long id, @RequestBody ArticleDto articleDto);
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);
 
+    @PreAuthorize("hasAuthority('USER')")
     @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

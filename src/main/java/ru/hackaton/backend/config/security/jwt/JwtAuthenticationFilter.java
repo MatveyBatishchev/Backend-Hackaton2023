@@ -9,15 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.hackaton.backend.errors.handler.ApiError;
-import ru.hackaton.backend.services.MyUserDetailsService;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,30 +29,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    private final MyUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        if (request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/auth/refresh")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authorizationHeader = request.getHeader(AUTHORIZATION);
-        final String token;
-        final String userEmail;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
-                token = authorizationHeader.substring("Bearer ".length());
-                userEmail = jwtService.extractUsername(token);
+                final String token = authorizationHeader.substring("Bearer ".length());
+                final String userEmail = jwtService.extractUsername(token);
 
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-                    if (jwtService.isTokenValid(token, userDetails)) {
+                    if (!jwtService.isTokenExpired(token)) {
+                        List<String> roles = jwtService.extractRoles(token);
+                        if (roles == null) throw new AccessDeniedException("Invalid token");
+
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                userEmail,
                                 null,
-                                userDetails.getAuthorities()
+                                roles.stream().map(SimpleGrantedAuthority::new).toList()
                         );
                         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -67,4 +71,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
+
 }

@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 @Service
 public class JwtService {
@@ -30,12 +29,12 @@ public class JwtService {
     private long refreshTokenExpiration;
 
     public String generateAccessToken(UserDetails userDetails) {
-        return buildToken(userDetails, accessTokenExpiration);
+        return buildAccessToken(userDetails, accessTokenExpiration);
     }
 
     public Map<String, String> generateTokens(UserDetails userDetails) {
-        String accessToken = buildToken(userDetails, accessTokenExpiration);
-        String refreshToken = buildToken(userDetails, refreshTokenExpiration);
+        String accessToken = buildAccessToken(userDetails, accessTokenExpiration);
+        String refreshToken = buildRefreshToken(userDetails, refreshTokenExpiration);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
@@ -44,11 +43,21 @@ public class JwtService {
         return tokens;
     }
 
-    private String buildToken(UserDetails userDetails, long expiration) {
+    private String buildAccessToken(UserDetails userDetails, long expiration) {
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return Jwts
                 .builder()
                 .claim("roles", roles)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private String buildRefreshToken(UserDetails userDetails, long expiration) {
+        return Jwts
+                .builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -65,22 +74,20 @@ public class JwtService {
                 .getBody();
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        final Claims claims = extractAllClaims(token);
+        return claims.getSubject();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    @SuppressWarnings("unchecked")
+    public List<String> extractRoles(String token) {
+        final Claims claims = extractAllClaims(token);
+        return claims.get("roles", List.class);
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+    public boolean isTokenExpired(String token) {
+        final Claims claims = extractAllClaims(token);
+        return claims.getExpiration().before(new Date());
     }
 
     private Key getSignInKey() {
