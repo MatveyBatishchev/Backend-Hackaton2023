@@ -13,7 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry myCorsRegistry) {
         myCorsRegistry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Header", "Access-Control-Expose-Headers", "Content-Range", "Content-Length", "Connection", "Content-Type", "X-Total-Count", "X-Content-Type-Options", "Set-Cookies", "*")
-                .allowedMethods("GET", "POST", "PUT", "HEAD", "OPTIONS", "PATCH");
+                .exposedHeaders("X-Total-Count", "Content-Range")
+                .allowedMethods("GET", "POST", "PUT", "HEAD", "OPTIONS", "PATCH")
+                .allowedHeaders("*");
     }
 }

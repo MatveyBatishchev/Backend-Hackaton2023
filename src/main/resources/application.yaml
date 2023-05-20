@@ -26,6 +26,3 @@ springdoc:
     doc-expansion: none
   api-docs:
     path: /swagger.json
-
-headers:
-  pagination: X-Total-Count
