@@ -38,6 +38,7 @@ public class Test {
     private Integer maxScore;
 
     @Column(name = "difficulty")
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)

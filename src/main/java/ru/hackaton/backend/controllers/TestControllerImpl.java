@@ -3,6 +3,7 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.TestDto;
+import ru.hackaton.backend.models.domain.Difficulty;
 import ru.hackaton.backend.services.TestService;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class TestControllerImpl implements TestController {
     }
 
     @Override
-    public List<TestDto> readAll(Integer pageNum, Integer perPage) {
-        return testService.getAllTests(pageNum, perPage);
+    public List<TestDto> readAll(Integer pageNum, Integer perPage, Difficulty difficulty) {
+        return testService.getAllTests(pageNum, perPage, difficulty);
     }
 }

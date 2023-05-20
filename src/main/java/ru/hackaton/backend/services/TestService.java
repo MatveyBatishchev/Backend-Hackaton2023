@@ -6,11 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.TestDto;
 import ru.hackaton.backend.mappers.TestMapper;
+import ru.hackaton.backend.models.domain.Difficulty;
 import ru.hackaton.backend.models.domain.Test;
 import ru.hackaton.backend.repositories.TestRepository;
+
+import static ru.hackaton.backend.repositories.TestRepository.Specs.*;
 
 import java.util.List;
 
@@ -54,11 +58,14 @@ public class TestService {
         testRepository.deleteById(id);
     }
 
-    public List<TestDto> getAllTests(int pageNum, int perPage) {
+    public List<TestDto> getAllTests(int pageNum, int perPage, Difficulty difficulty) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
-        Page<Test> tests = testRepository.findAll(pageable);
+        Specification<Test> spec = Specification.where(null);
+        if (difficulty != null) spec = spec.and(difficultyEquals(difficulty));
+
+        Page<Test> tests = testRepository.findAll(spec, pageable);
 
         return testMapper.toDtoList(tests.getContent());
 
