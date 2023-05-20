@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.ArticleDto;
 import ru.hackaton.backend.util.PageWrapper;
@@ -14,7 +13,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Articles")
 @RequestMapping("/articles")
-@CrossOrigin
 public interface ArticleController {
 
     @SecurityRequirement(name = "Bearer Authentication")
@@ -33,7 +31,6 @@ public interface ArticleController {
     void update(@PathVariable("id") long id, @RequestBody ArticleDto articleDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);

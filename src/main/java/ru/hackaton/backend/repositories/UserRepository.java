@@ -1,14 +1,35 @@
 package ru.hackaton.backend.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.hackaton.backend.models.domain.User;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
+    @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
+
+    @NonNull
+    @Override
+    @EntityGraph(attributePaths = "roles")
+    Page<User> findAll(@NonNull Pageable pageable);
+
+    @Modifying
+    @Query(value = "DELETE FROM main.user_role WHERE user_id=:user_id", nativeQuery = true)
+    void deleteRolesFromUser(@Param("user_id") long userId);
+
+    @Modifying
+    @Query(value = "INSERT INTO main.user_role(user_id, role) VALUES (:user_id, unnest(:roles))", nativeQuery = true)
+    void addRolesToUser(@Param("user_id") long userId, @Param("roles") String[] roles);
 
 }

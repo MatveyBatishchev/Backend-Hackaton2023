@@ -12,11 +12,12 @@ databaseChangeLog:
                   name: user_id
                   type: bigint
                   constraints:
-                    nullable: false
                     primaryKey: true
+                    nullable: false
               - column:
                   name: role
                   type: varchar(20)
                   remarks: "Роль пользователя"
                   constraints:
+                    primaryKey: true
                     nullable: false

@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.hackaton.backend.errors.handler.ApiError;
+import ru.hackaton.backend.models.auth.TokenType;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;

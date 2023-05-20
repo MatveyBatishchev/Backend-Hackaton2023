@@ -14,10 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.config.security.jwt.JwtService;
-import ru.hackaton.backend.config.security.jwt.TokenType;
 import ru.hackaton.backend.errors.handler.ApiError;
 import ru.hackaton.backend.models.auth.AuthRequest;
 import ru.hackaton.backend.models.auth.AuthResponse;
+import ru.hackaton.backend.models.auth.TokenType;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Map;

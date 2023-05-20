@@ -27,6 +27,10 @@ springdoc:
   api-docs:
     path: /swagger.json
 
+logging:
+  level:
+    org.springframework.security: INFO
+
 application:
   security:
     jwt:

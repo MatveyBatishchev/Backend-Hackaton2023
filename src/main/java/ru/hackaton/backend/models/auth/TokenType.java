@@ -1,4 +1,4 @@
-package ru.hackaton.backend.config.security.jwt;
+package ru.hackaton.backend.models.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

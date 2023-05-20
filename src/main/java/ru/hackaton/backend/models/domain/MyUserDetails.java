@@ -15,6 +15,10 @@ public class MyUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public long getId() {
+        return user.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream().map(el -> new SimpleGrantedAuthority(el.name())).collect(Collectors.toList());
