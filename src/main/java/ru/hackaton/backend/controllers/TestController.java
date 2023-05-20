@@ -11,8 +11,8 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Tag(name = "Test")
-@RequestMapping("/test")
+@Tag(name = "Tests")
+@RequestMapping("/tests")
 @CrossOrigin()
 public interface TestController {
 

@@ -14,9 +14,9 @@ import ru.hackaton.backend.models.domain.Difficulty;
 import ru.hackaton.backend.models.domain.Test;
 import ru.hackaton.backend.repositories.TestRepository;
 
-import static ru.hackaton.backend.repositories.TestRepository.Specs.*;
-
 import java.util.List;
+
+import static ru.hackaton.backend.repositories.TestRepository.Specs.difficultyEquals;
 
 @Service
 @RequiredArgsConstructor
@@ -47,10 +47,10 @@ public class TestService {
     }
 
     public void updateTest(long id, TestDto testDto) {
-//        Test oldTest = findTestById(id);
-        Test newTest = testMapper.toTest(testDto);
+        Test updatedTest = testMapper.toTest(testDto);
+        updatedTest.setId(id);
 
-        testRepository.save(newTest);
+        testRepository.save(updatedTest);
 
     }
 
@@ -68,7 +68,6 @@ public class TestService {
         Page<Test> tests = testRepository.findAll(spec, pageable);
 
         return testMapper.toDtoList(tests.getContent());
-
     }
 
 }

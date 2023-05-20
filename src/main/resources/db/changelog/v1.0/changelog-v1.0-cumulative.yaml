@@ -1,4 +1,5 @@
 databaseChangeLog:
+#  Articles
   - include:
       relativeToChangelogFile: true
       file: create-article-table.yaml
@@ -23,3 +24,20 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: add-fk-article_content.yaml
+
+#  Tests
+  - include:
+      relativeToChangelogFile: true
+      file: create-test-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-question-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-answer-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-answer_question.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-question_test.yaml

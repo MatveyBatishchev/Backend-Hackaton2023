@@ -11,7 +11,13 @@ public class QuestionDto {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    private String content;
+    private String text;
+
+    private String video;
+
+    private String audio;
+
+    private int score;
 
     private Set<AnswerDto> answers;
 

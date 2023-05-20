@@ -10,6 +10,13 @@ public class AnswerDto {
     private Long id;
 
     private String text;
+
+    private String video;
+
+    private String audio;
+
+    private String explanation;
+
     private Boolean isCorrect;
 
 

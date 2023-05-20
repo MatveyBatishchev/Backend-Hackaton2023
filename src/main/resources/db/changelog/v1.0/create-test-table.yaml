@@ -38,6 +38,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: difficulty
-                  type: difficulty
+                  type: varchar(30)
                   constraints:
                     nullable: false
