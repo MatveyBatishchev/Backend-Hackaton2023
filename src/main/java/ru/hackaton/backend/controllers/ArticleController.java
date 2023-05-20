@@ -2,6 +2,7 @@ package ru.hackaton.backend.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin
 public interface ArticleController {
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ArticleDto create(@RequestBody ArticleDto articleDto);
@@ -24,17 +26,18 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.OK)
     ArticleDto read(@PathVariable("id") long id);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@PathVariable("id") long id, @RequestBody ArticleDto articleDto);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);
 
-    @PreAuthorize("hasAuthority('USER')")
     @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

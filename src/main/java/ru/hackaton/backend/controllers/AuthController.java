@@ -1,6 +1,7 @@
 package ru.hackaton.backend.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,8 +26,10 @@ public interface AuthController {
     @ResponseStatus(HttpStatus.OK)
     AuthResponse authenticate(@Valid AuthRequest authRequest);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/refresh")
-    @Operation(summary = "Возвращает обновлённый accessToken и прежний refreshToken")
+    @Operation(summary = "Возвращает обновлённый accessToken и прежний refreshToken",
+            description = "Bearer refresh токен должен быть прикреплён в заголовке Authorization")
     @ResponseStatus(HttpStatus.OK)
     void refresh(HttpServletRequest request, HttpServletResponse response);
 

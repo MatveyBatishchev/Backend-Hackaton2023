@@ -89,7 +89,6 @@
             <version>2.15.0</version>
         </dependency>
 
-
         <!-- Mapping -->
         <dependency>
             <groupId>org.mapstruct</groupId>

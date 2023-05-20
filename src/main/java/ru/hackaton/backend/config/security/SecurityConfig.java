@@ -3,6 +3,7 @@ package ru.hackaton.backend.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,8 +22,14 @@ import ru.hackaton.backend.errors.handler.CustomAccessDeniedHandler;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String[] SWAGGER_API_LIST = {
+            "/v3/api-docs/**",
+            "configuration/**",
+            "/swagger*/**",
+            "/webjars/**",
+            "/swagger-ui/**"
+    };
     private final JwtAuthenticationFilter jwtAuthFilter;
-
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
@@ -37,8 +44,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests ->
                         requests
-                                .requestMatchers("/auth/*")
-                                .permitAll()
+                                .requestMatchers("/auth/*").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
+                                .requestMatchers(SWAGGER_API_LIST).permitAll()
                                 .anyRequest()
                                 .authenticated());
         http

@@ -1,6 +1,7 @@
 package ru.hackaton.backend.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin
 public interface ArticleTypeController {
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(description = "Id при создании игнорируется, его можно не передавать")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -23,10 +25,12 @@ public interface ArticleTypeController {
     @ResponseStatus(HttpStatus.OK)
     ArticleTypeDto read(@PathVariable("id") long id);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@PathVariable("id") long id, @RequestBody ArticleTypeDto articleTypeDto);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);

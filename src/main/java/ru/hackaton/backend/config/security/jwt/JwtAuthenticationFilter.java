@@ -44,11 +44,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 final String token = authorizationHeader.substring("Bearer ".length());
+                final String tokenType = jwtService.extractTokenType(token);
                 final String userEmail = jwtService.extractUsername(token);
+
+                if (tokenType == null || !tokenType.equals(TokenType.ACCESS_TOKEN.getName()))
+                    throw new AccessDeniedException("Invalid token");
 
                 if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                    if (!jwtService.isTokenExpired(token)) {
+                    if (jwtService.isTokenValid(token)) {
                         List<String> roles = jwtService.extractRoles(token);
                         if (roles == null) throw new AccessDeniedException("Invalid token");
 
@@ -64,6 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             } catch (Exception exception) {
                 ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, exception);
+                response.setStatus(HttpStatus.FORBIDDEN.value());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), apiError);
             }
