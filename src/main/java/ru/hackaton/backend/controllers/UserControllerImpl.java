@@ -3,6 +3,7 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.UserDto;
+import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.services.UserService;
 import ru.hackaton.backend.util.PageWrapper;
@@ -43,5 +44,25 @@ public class UserControllerImpl implements UserController {
     @Override
     public PageWrapper<UserDto> readAll(Integer pageNum, Integer perPage) {
         return userService.getAllUsers(pageNum, perPage);
+    }
+
+    @Override
+    public UserTestDto readTest(long userId, long testId) {
+        return userService.readUserTest(userId, testId);
+    }
+
+    @Override
+    public void updateTest(long userId, long testId, UserTestDto userTestDto) {
+        userService.updateUserTest(userId, testId, userTestDto);
+    }
+
+    @Override
+    public void deleteTest(long userId, long testId) {
+
+    }
+
+    @Override
+    public PageWrapper<UserTestDto> readAllTests(long userId, Integer pageNum, Integer perPage) {
+        return null;
     }
 }

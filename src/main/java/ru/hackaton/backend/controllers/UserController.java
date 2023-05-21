@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.UserDto;
+import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.util.PageWrapper;
 
@@ -56,5 +57,32 @@ public interface UserController {
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<UserDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                                  @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @GetMapping(value = "/{userId}/tests/{testId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    UserTestDto readTest(@PathVariable("userId") long userId,
+                         @PathVariable("testId") long testId);
+
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @PutMapping("/{userId}/tests/{testId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateTest(@PathVariable("userId") long userId,
+                    @PathVariable("testId") long testId,
+                    @RequestBody UserTestDto userTestDto);
+
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @DeleteMapping("/{userId}/tests/{testId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteTest(@PathVariable("userId") long userId,
+                    @PathVariable("testId") long testId);
+
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @GetMapping(value = "/{userId}/tests", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    PageWrapper<UserTestDto> readAllTests(@PathVariable("userId") long userId,
+                                          @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
+                                          @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+
 
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 public class UserTest {
 
     @EmbeddedId
-    private UserTestId id;
+    private UserTestId id = new UserTestId();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
@@ -33,5 +34,19 @@ public class UserTest {
     public UserTest(User user, Test test) {
         this.user = user;
         this.test = test;
+        this.id = new UserTestId(user.getId(), test.getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserTest userTest = (UserTest) o;
+        return Objects.equals(user, test);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, test);
     }
 }

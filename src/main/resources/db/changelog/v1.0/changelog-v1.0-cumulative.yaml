@@ -100,3 +100,8 @@ databaseChangeLog:
       relativeToChangelogFile: true
       file: add-fk-school_art.yaml
 
+# UserTests
+
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_test-table.yaml
