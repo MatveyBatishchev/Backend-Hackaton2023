@@ -2,6 +2,7 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "\"user\"")
 public class User {
 
@@ -19,7 +21,7 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "email")
+    @Column(name = "email", updatable = false)
     private String email;
 
     @Column(name = "password")
@@ -43,4 +45,9 @@ public class User {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     private List<UserRole> roles = new ArrayList<>();
 
+    // Constructor for MyUserDetails
+    public User(long id, String email) {
+        this.id = id;
+        this.email = email;
+    }
 }

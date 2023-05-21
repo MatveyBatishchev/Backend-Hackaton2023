@@ -10,14 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.config.security.jwt.JwtService;
 import ru.hackaton.backend.errors.handler.ApiError;
 import ru.hackaton.backend.models.auth.AuthRequest;
 import ru.hackaton.backend.models.auth.AuthResponse;
 import ru.hackaton.backend.models.auth.TokenType;
+import ru.hackaton.backend.models.domain.MyUserDetails;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Map;
@@ -31,7 +30,7 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsService userDetailsService;
+    private final MyUserDetailsService userDetailsService;
 
     private final JwtService jwtService;
 
@@ -40,7 +39,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
         Map<String, String> tokens = jwtService.generateTokens(userDetails);
         return new AuthResponse(tokens.get("access_token"), tokens.get("refresh_token"));
     }
@@ -59,7 +58,7 @@ public class AuthService {
                     throw new AccessDeniedException("Invalid token");
 
                 if (userEmail != null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+                    MyUserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
                     if (jwtService.isTokenValid(refreshToken)) {
                         AuthResponse authResponse = new AuthResponse(jwtService.generateAccessToken(userDetails), refreshToken);

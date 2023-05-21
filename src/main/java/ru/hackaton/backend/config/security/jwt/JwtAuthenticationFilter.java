@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.hackaton.backend.errors.handler.ApiError;
 import ru.hackaton.backend.models.auth.TokenType;
+import ru.hackaton.backend.models.domain.MyUserDetails;
+import ru.hackaton.backend.models.domain.User;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -57,8 +59,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         List<String> roles = jwtService.extractRoles(token);
                         if (roles == null) throw new AccessDeniedException("Invalid token");
 
+                        MyUserDetails userDetails = new MyUserDetails(new User(jwtService.extractId(token), userEmail));
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                                userEmail,
+                                userDetails,
                                 null,
                                 roles.stream().map(SimpleGrantedAuthority::new).toList()
                         );

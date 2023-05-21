@@ -7,9 +7,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.models.auth.TokenType;
+import ru.hackaton.backend.models.domain.MyUserDetails;
 
 import java.security.Key;
 import java.util.Date;
@@ -29,11 +29,11 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshTokenExpiration;
 
-    public String generateAccessToken(UserDetails userDetails) {
+    public String generateAccessToken(MyUserDetails userDetails) {
         return buildToken(userDetails, accessTokenExpiration, TokenType.ACCESS_TOKEN);
     }
 
-    public Map<String, String> generateTokens(UserDetails userDetails) {
+    public Map<String, String> generateTokens(MyUserDetails userDetails) {
         String accessToken = buildToken(userDetails, accessTokenExpiration, TokenType.ACCESS_TOKEN);
         String refreshToken = buildToken(userDetails, refreshTokenExpiration, TokenType.REFRESH_TOKEN);
 
@@ -44,7 +44,7 @@ public class JwtService {
         return tokens;
     }
 
-    private String buildToken(UserDetails userDetails, long expiration, TokenType tokenType) {
+    private String buildToken(MyUserDetails userDetails, long expiration, TokenType tokenType) {
         List<String> roles = null;
         if (tokenType == TokenType.ACCESS_TOKEN) {
             roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
@@ -53,6 +53,7 @@ public class JwtService {
                 .builder()
                 .claim("token_type", tokenType.getName())
                 .claim("roles", roles)
+                .claim("user_id", userDetails.getId())
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -88,6 +89,11 @@ public class JwtService {
     public List<String> extractRoles(String token) {
         final Claims claims = extractAllClaims(token);
         return claims.get("roles", List.class);
+    }
+
+    public Long extractId(String token) {
+        final Claims claims = extractAllClaims(token);
+        return claims.get("user_id", Long.class);
     }
 
     private Key getSignInKey() {

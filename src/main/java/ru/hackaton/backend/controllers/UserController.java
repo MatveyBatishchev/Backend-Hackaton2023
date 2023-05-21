@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "Users")
 @RequestMapping("/users")
 public interface UserController {
@@ -22,27 +23,29 @@ public interface UserController {
     @ResponseStatus(HttpStatus.CREATED)
     UserDto create(@RequestBody UserDto userDto);
 
+    @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     UserDto read(@PathVariable("id") long id);
 
+    @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @Operation(description = "Роли пользователя при вызове данного endpoint-а не изменяются")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@PathVariable("id") long id, @RequestBody UserDto userDto);
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Изменение ролей пользователя")
     @PostMapping("/{id}/roles")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void update(@PathVariable("id") long id, @RequestBody List<UserRole> roles);
 
+    @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);
 
-    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<UserDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
