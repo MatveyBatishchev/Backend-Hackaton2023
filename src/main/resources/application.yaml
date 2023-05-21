@@ -11,7 +11,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
   liquibase:
-    enabled: true
+    enabled: false
   jpa:
     show-sql: true
     generate-ddl: false
@@ -26,3 +26,17 @@ springdoc:
     doc-expansion: none
   api-docs:
     path: /swagger.json
+
+logging:
+  level:
+    org.springframework.security: INFO
+
+application:
+  security:
+    jwt:
+      secret-key: 77217A25432A462D4A614E645267556B58703272357538782F413F4428472B4B
+      expiration: 900000
+      refresh-token:
+        expiration: 604800000
+  headers:
+    pagination: X-Total-Count

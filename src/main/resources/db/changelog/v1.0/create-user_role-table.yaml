@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user_role-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о ролях пользователях"
+      changes:
+        - createTable:
+            tableName: user_role
+            remarks: "Таблица с записями о ролях пользователей"
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(20)
+                  remarks: "Роль пользователя"
+                  constraints:
+                    primaryKey: true
+                    nullable: false

@@ -1,4 +1,4 @@
-package ru.hackaton.backend.config.filter;
+package ru.hackaton.backend.config.filters;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -12,6 +12,7 @@ import ru.hackaton.backend.util.PageWrapper;
 
 @ControllerAdvice
 public class PaginationHeaderFilter implements ResponseBodyAdvice<PageWrapper<?>> {
+
 
     private static final String totalCountHeader = "X-Total-Count";
 

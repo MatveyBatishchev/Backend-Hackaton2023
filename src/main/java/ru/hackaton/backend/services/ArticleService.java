@@ -47,6 +47,7 @@ public class ArticleService {
     public void updateArticle(long id, ArticleDto articleDto) {
         Article updatedArticle = articleMapper.toArticle(articleDto);
         updatedArticle.setId(id);
+        updatedArticle.getArticleContent().setId(id);
         articleRepository.save(updatedArticle);
     }
 

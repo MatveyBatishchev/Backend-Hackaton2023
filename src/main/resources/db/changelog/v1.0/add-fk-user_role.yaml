@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-user_role
+      author: MYBatishchev
+      comment: "Задаём внешний ключ в таблице user_role"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: user_role
+            baseColumnNames: user_id
+            constraintName: fk_user_role_user
+            onDelete: CASCADE
+            referencedTableName: user
+            referencedColumnNames: id
