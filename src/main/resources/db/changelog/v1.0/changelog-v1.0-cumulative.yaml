@@ -105,3 +105,9 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: create-user_test-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_test.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_test-view.yaml

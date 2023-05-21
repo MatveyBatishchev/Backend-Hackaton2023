@@ -17,6 +17,7 @@ public class UserTestDto {
 
     private Integer score;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime passedAt;
 
