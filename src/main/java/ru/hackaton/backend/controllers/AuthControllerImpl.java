@@ -25,8 +25,8 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    public AuthResponse authenticateOAuth(String oAuthCode, String oAuthProvider) {
-        return authService.authenticateOAuth(oAuthCode, oAuthProvider);
+    public AuthResponse authenticateOAuth(String accessToken, String userEmail) {
+        return authService.authenticateOAuth(accessToken, userEmail);
     }
 
 }

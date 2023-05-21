@@ -36,7 +36,7 @@ spring:
             authorization-uri: https://oauth.vk.com/authorize?revoke=1
             token-uri: https://oauth.vk.com/access_token
             user-info-uri: https://api.vk.com/method/users.get?v=5.131&fields=photo_max
-            user-name-attribute: email
+            user-name-attribute: response
 
 springdoc:
   swagger-ui:

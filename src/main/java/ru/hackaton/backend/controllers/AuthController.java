@@ -37,7 +37,7 @@ public interface AuthController {
     @PostMapping(path = "/login/oAuth")
     @Operation(summary = "Аутентификация в системе при помощи VK OAuth 2.0")
     @ResponseStatus(HttpStatus.OK)
-    AuthResponse authenticateOAuth(@RequestParam("oauth_code") String oAuthCode,
-                                   @RequestParam("oauth_provider") String oAuthProvider);
+    AuthResponse authenticateOAuth(@RequestParam("oauth_access_token") String accessToken,
+                                   @RequestParam("email") String userEmail);
 
 }
