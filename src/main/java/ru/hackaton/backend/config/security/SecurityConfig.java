@@ -3,7 +3,6 @@ package ru.hackaton.backend.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -55,13 +54,13 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests ->
                         requests
-//                                .anyRequest().permitAll());
-                                .requestMatchers("/auth/*").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                                .requestMatchers(SWAGGER_API_LIST).permitAll()
-                                .anyRequest()
-                                .authenticated());
+                                .anyRequest().permitAll());
+//                                .requestMatchers("/auth/*").permitAll()
+//                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+//                                .requestMatchers(SWAGGER_API_LIST).permitAll()
+//                                .anyRequest()
+//                                .authenticated());
         http
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.accessDeniedHandler(accessDeniedHandler)

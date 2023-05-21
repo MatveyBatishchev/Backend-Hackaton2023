@@ -50,4 +50,13 @@ public class User {
         this.id = id;
         this.email = email;
     }
+
+    public User(String email, String name, String avatar, LocalDateTime createdAt, LocalDateTime updatedAt, List<UserRole> roles) {
+        this.email = email;
+        this.name = name;
+        this.avatar = avatar;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.roles = roles;
+    }
 }

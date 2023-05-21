@@ -34,7 +34,6 @@ public interface AuthController {
     @ResponseStatus(HttpStatus.OK)
     void refresh(HttpServletRequest request, HttpServletResponse response);
 
-    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping(path = "/login/oAuth")
     @Operation(summary = "Аутентификация в системе при помощи VK OAuth 2.0")
     @ResponseStatus(HttpStatus.OK)
