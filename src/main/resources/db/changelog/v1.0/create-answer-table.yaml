@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-question-table
+      author: Damir
+      comment: "Создание таблицы, хранящей ответы в тестах"
+      changes:
+        - createTable:
+            tableName: answer
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: text
+                  type: text
+              - column:
+                  name: video
+                  type: text
+              - column:
+                  name: audio
+                  type: text
+              - column:
+                  name: explanation
+                  type: text
+              - column:
+                  name: is_correct
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: question_id
+                  type: bigint
+                  constraints:
+                    nullable: false
