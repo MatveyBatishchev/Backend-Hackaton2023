@@ -1,6 +1,5 @@
 package ru.hackaton.backend.config.filters;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,8 +13,10 @@ import ru.hackaton.backend.util.PageWrapper;
 @ControllerAdvice
 public class PaginationHeaderFilter implements ResponseBodyAdvice<PageWrapper<?>> {
 
-    @Value("${application.headers.pagination}")
-    private String paginationHeader;
+
+    private static final String totalCountHeader = "X-Total-Count";
+
+    private static final String contentRangeHeader = "Content-Range";
 
     @Override
     public boolean supports(MethodParameter returnType, @NonNull Class<? extends HttpMessageConverter<?>> converterType) {
@@ -27,7 +28,8 @@ public class PaginationHeaderFilter implements ResponseBodyAdvice<PageWrapper<?>
     @Override
     public PageWrapper<?> beforeBodyWrite(PageWrapper<?> pageWrapper, @NonNull MethodParameter returnType, @NonNull MediaType selectedContentType, @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         if (pageWrapper != null) {
-            response.getHeaders().add(paginationHeader, String.valueOf(pageWrapper.getTotalCount()));
+            response.getHeaders().add(totalCountHeader, String.valueOf(pageWrapper.getTotalCount()));
+            response.getHeaders().add(contentRangeHeader, request.getURI().getPath().substring(5) + " */" + pageWrapper.getTotalCount());
         }
         return pageWrapper;
     }
