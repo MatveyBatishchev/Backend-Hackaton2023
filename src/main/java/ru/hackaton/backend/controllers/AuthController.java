@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.hackaton.backend.models.auth.AuthRequest;
 import ru.hackaton.backend.models.auth.AuthResponse;
@@ -24,7 +25,7 @@ public interface AuthController {
     @PostMapping(path = "/login", consumes = APPLICATION_FORM_URLENCODED_VALUE)
     @Operation(summary = "Аутентификация в системе")
     @ResponseStatus(HttpStatus.OK)
-    AuthResponse authenticate(@Valid AuthRequest authRequest);
+    AuthResponse authenticateOAuth(@Valid AuthRequest authRequest);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/refresh")
@@ -32,5 +33,12 @@ public interface AuthController {
             description = "Bearer refresh токен должен быть прикреплён в заголовке Authorization")
     @ResponseStatus(HttpStatus.OK)
     void refresh(HttpServletRequest request, HttpServletResponse response);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PostMapping(path = "/login/oAuth")
+    @Operation(summary = "Аутентификация в системе при помощи VK OAuth 2.0")
+    @ResponseStatus(HttpStatus.OK)
+    AuthResponse authenticateOAuth(@RequestParam("oauth_code") String oAuthCode,
+                                   @RequestParam("oauth_provider") String oAuthProvider);
 
 }

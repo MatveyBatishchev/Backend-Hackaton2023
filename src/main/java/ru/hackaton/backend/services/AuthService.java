@@ -10,7 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.hackaton.backend.config.security.jwt.JwtService;
 import ru.hackaton.backend.errors.handler.ApiError;
 import ru.hackaton.backend.models.auth.AuthRequest;
@@ -33,6 +38,12 @@ public class AuthService {
     private final MyUserDetailsService userDetailsService;
 
     private final JwtService jwtService;
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
+
+    private final WebClient webClient;
+
+//    private final WebClient webClient;
 
     public AuthResponse authenticate(AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
@@ -73,6 +84,39 @@ public class AuthService {
                 new ObjectMapper().writeValue(response.getOutputStream(), apiError);
             }
         }
+    }
+
+    public AuthResponse authenticateOAuth(String oAuthCode, String oAuthProvider) {
+//        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(oAuthProvider);
+//        String tokenEndpointUri = clientRegistration.getProviderDetails().getTokenUri();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        // Exchange auth_code to access_token
+//        Map<String, String> accessTokenOAuthResponse = webClient.post()
+//                .uri(tokenEndpointUri)
+//                .headers(httpHeaders -> httpHeaders.addAll(headers))
+//                .body(BodyInserters.fromFormData(buildTokenRequestBody(oAuthCode, clientRegistration)))
+//                .retrieve()
+//                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {})
+//                .block();
+//
+//
+//        System.out.println(accessTokenOAuthResponse.get("access_token"));
+
+        return null;
+    }
+
+
+    private MultiValueMap<String, String> buildTokenRequestBody(String oAuthCode, ClientRegistration clientRegistration) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", clientRegistration.getClientId());
+        body.add("client_secret", clientRegistration.getClientSecret());
+        body.add("redirect_uri", clientRegistration.getRedirectUri());
+        body.add("grant_type", "authorization_code");
+        body.add("code", oAuthCode);
+        return body;
     }
 
 }

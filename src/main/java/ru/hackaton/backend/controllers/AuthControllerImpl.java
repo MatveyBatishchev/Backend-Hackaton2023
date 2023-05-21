@@ -15,13 +15,18 @@ public class AuthControllerImpl implements AuthController {
     private final AuthService authService;
 
     @Override
-    public AuthResponse authenticate(AuthRequest authRequest) {
+    public AuthResponse authenticateOAuth(AuthRequest authRequest) {
         return authService.authenticate(authRequest);
     }
 
     @Override
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         authService.refreshToken(request, response);
+    }
+
+    @Override
+    public AuthResponse authenticateOAuth(String oAuthCode, String oAuthProvider) {
+        return authService.authenticateOAuth(oAuthCode, oAuthProvider);
     }
 
 }
