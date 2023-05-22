@@ -1,9 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 
 @Data

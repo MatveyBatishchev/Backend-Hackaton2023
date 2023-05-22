@@ -1,9 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
-import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 import java.util.Collections;

@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.models.auth.AuthRequest;
 import ru.hackaton.backend.models.auth.AuthResponse;
+import ru.hackaton.backend.models.auth.OAuthRequest;
 import ru.hackaton.backend.services.AuthService;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +25,11 @@ public class AuthControllerImpl implements AuthController {
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         authService.refreshToken(request, response);
     }
+
+    @Override
+    public AuthResponse authenticateOAuth(OAuthRequest oAuthRequest) {
+        return authService.authenticateOAuth(oAuthRequest);
+    }
+
 
 }
