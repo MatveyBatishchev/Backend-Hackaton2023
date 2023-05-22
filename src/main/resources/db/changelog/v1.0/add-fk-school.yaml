@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-school
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице school"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: school
+            baseColumnNames: district_id
+            constraintName: fk_school_district_id
+            onDelete: CASCADE
+            referencedTableName: district
+            referencedColumnNames: id

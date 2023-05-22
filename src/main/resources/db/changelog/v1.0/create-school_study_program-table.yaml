@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-school_study_program-table
+      author: MYBatishchev
+      comment: "Создание таблицы посредника для связи между школами и учебными программами"
+      changes:
+        - createTable:
+            tableName: school_study_program
+            remarks: "Таблица посредник для связи между школами и учебными программами"
+            columns:
+              - column:
+                  name: school_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: study_program_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true

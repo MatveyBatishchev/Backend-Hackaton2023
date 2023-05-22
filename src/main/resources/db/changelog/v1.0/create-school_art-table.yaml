@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-school_art-table
+      author: MYBatishchev
+      comment: "Создание таблицы посредника для связи между школами и направлениями искусства"
+      changes:
+        - createTable:
+            tableName: school_art
+            remarks: "Таблица посредник для связи между школами и направлениями искусства"
+            columns:
+              - column:
+                  name: school_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: art_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true

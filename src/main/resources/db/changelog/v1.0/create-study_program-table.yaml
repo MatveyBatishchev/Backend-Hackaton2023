@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-study_program-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями об учебных программах в школах"
+      changes:
+        - createTable:
+            tableName: study_program
+            remarks: "Таблица с записями об учебных программах в школах"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(100)
+                  remarks: "Название учебной программы"
+                  constraints:
+                    unique: true
+                    nullable: false

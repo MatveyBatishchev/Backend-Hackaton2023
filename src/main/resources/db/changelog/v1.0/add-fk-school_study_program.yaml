@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-school_study_program
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице school_study_program"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: school_study_program
+            baseColumnNames: school_id
+            constraintName: fk_school_study_program_school_id
+            onDelete: CASCADE
+            referencedTableName: school
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: school_study_program
+            baseColumnNames: study_program_id
+            constraintName: fk_school_study_program_study_program_id
+            onDelete: CASCADE
+            referencedTableName: study_program
+            referencedColumnNames: id

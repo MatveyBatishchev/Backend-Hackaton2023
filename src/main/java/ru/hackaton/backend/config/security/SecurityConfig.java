@@ -3,11 +3,11 @@ package ru.hackaton.backend.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,7 +21,7 @@ import ru.hackaton.backend.errors.handler.CustomAccessDeniedHandler;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -54,13 +54,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests ->
                         requests
-                                .anyRequest().permitAll());
-//                                .requestMatchers("/auth/*").permitAll()
-//                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-//                                .requestMatchers(SWAGGER_API_LIST).permitAll()
-//                                .anyRequest()
-//                                .authenticated());
+                                .requestMatchers("/auth/*").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers(SWAGGER_API_LIST).permitAll()
+                                .anyRequest()
+                                .authenticated());
         http
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.accessDeniedHandler(accessDeniedHandler)

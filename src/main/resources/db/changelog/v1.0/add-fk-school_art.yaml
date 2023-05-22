@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-school_art
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице school_art"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: school_art
+            baseColumnNames: school_id
+            constraintName: fk_school_art_school_id
+            onDelete: CASCADE
+            referencedTableName: school
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: school_art
+            baseColumnNames: art_id
+            constraintName: fk_school_art_art_id
+            onDelete: CASCADE
+            referencedTableName: art
+            referencedColumnNames: id
