@@ -60,6 +60,7 @@ public interface UserController {
                                  @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
 
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @PutMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -67,12 +68,14 @@ public interface UserController {
                           @PathVariable("testId") long testId,
                           @RequestBody UserTestDto userTestDto);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @DeleteMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTestResult(@PathVariable("userId") long userId,
                           @PathVariable("testId") long testId);
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @GetMapping(value = "/{userId}/tests", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

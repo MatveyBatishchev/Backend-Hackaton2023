@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
@@ -20,6 +21,9 @@ import ru.hackaton.backend.util.PageWrapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static ru.hackaton.backend.repositories.views.UserTestViewRepository.Specs.userIdEquals;
+import static ru.hackaton.backend.repositories.views.UserTestViewRepository.Specs.userIdIsNull;
 
 
 @Service
@@ -91,8 +95,13 @@ public class UserService {
 
     public PageWrapper<UserTestView> getAllTests(long userId, Integer pageNum, Integer perPage) {
         perPage = Math.min(perPage, 100);
-        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "passedAt"));
-        Page<UserTestView> page = userTestViewRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
+
+//        Specification<UserTestView> spec = Specification
+//                .where(userIdEquals(userId))
+//                .or(userIdIsNull());
+
+        Page<UserTestView> page = userTestViewRepository.findAll(userId, pageable);
 
         return new PageWrapper<>(page.getTotalElements(), page.getContent());
     }

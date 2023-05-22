@@ -26,11 +26,13 @@ public class UserTestView {
     private LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime updatedAt;
-    private int maxScore;
+    private Integer maxScore;
     private String difficulty;
+
+    private String art;
     private Long userId;
 
-    private int score;
+    private Integer score;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime passedAt;
