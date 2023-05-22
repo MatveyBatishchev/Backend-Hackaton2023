@@ -22,6 +22,9 @@ databaseChangeLog:
                   name: description
                   type: varchar(255)
               - column:
+                  name: image
+                  type: varchar(255)
+              - column:
                   name: created_at
                   type: datetime
                   constraints:

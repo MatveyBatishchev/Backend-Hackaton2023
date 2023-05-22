@@ -1,5 +1,5 @@
 databaseChangeLog:
-#  Articles
+  #  Articles
   - include:
       relativeToChangelogFile: true
       file: create-article-table.yaml
@@ -25,7 +25,7 @@ databaseChangeLog:
       relativeToChangelogFile: true
       file: add-fk-article_content.yaml
 
-#  Tests
+  #  Tests
   - include:
       relativeToChangelogFile: true
       file: create-test-table.yaml
@@ -41,3 +41,24 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: add-fk-question_test.yaml
+
+  # Art
+  - include:
+      relativeToChangelogFile: true
+      file: create-art-table.yaml
+
+  # Art and Article
+  - include:
+      relativeToChangelogFile: true
+      file: create-article_art-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-article_art.yaml
+
+  # Art and Test
+  - include:
+      relativeToChangelogFile: true
+      file: create-test_art-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-test_art.yaml
