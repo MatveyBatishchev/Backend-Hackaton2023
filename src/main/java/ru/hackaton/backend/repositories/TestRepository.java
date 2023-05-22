@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface TestRepository extends JpaRepository<Test, Long>, JpaSpecificationExecutor<Test> {
 
 
-    @EntityGraph(attributePaths = {"arts"})
+    @EntityGraph(attributePaths = {"art"})
     @Override
     @NonNull
     Optional<Test> findById(@NonNull Long id);
@@ -26,7 +26,7 @@ public interface TestRepository extends JpaRepository<Test, Long>, JpaSpecificat
 
     @Override
     @NonNull
-    @EntityGraph(attributePaths = {"arts"})
+    @EntityGraph(attributePaths = {"art"})
     Page<Test> findAll(Specification<Test> spec, @NonNull Pageable pageable);
 
 

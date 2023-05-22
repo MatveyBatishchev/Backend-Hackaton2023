@@ -60,9 +60,6 @@ databaseChangeLog:
   # Art and Test
   - include:
       relativeToChangelogFile: true
-      file: create-test_art-table.yaml
-  - include:
-      relativeToChangelogFile: true
       file: add-fk-test_art.yaml
 
   # Schools
@@ -102,6 +99,7 @@ databaseChangeLog:
 
 # UserTests
 
+  # UserTests
   - include:
       relativeToChangelogFile: true
       file: create-user_test-table.yaml
