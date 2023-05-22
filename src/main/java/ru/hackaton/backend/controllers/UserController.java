@@ -64,25 +64,30 @@ public interface UserController {
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @PutMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateTestResult(@PathVariable("userId") long userId,
-                          @PathVariable("testId") long testId,
-                          @RequestBody UserTestDto userTestDto);
+    void updateUserTest(@PathVariable("userId") long userId,
+                        @PathVariable("testId") long testId,
+                        @RequestBody UserTestDto userTestDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @DeleteMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteTestResult(@PathVariable("userId") long userId,
-                          @PathVariable("testId") long testId);
+    void deleteUserTest(@PathVariable("userId") long userId,
+                        @PathVariable("testId") long testId);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @GetMapping(value = "/{userId}/tests", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    PageWrapper<UserTestView> readAllTests(@PathVariable("userId") long userId,
-                                           @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
-                                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
-                                           @RequestParam(value = "art_name", required = false) String artname);
+    PageWrapper<UserTestView> readAllUserTests(@PathVariable("userId") long userId,
+                                               @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
+                                               @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
+                                               @RequestParam(value = "art_name", required = false) String artname);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @GetMapping("/{userId}/position")
+    @ResponseStatus(HttpStatus.OK)
+    int getUserPosition(@PathVariable("userId") long userId);
 
 
 }

@@ -77,19 +77,19 @@ public class UserService {
 
 
     @Transactional
-    public void updateUserTestResult(long userId, long testId, UserTestDto userTestDto) {
-        userRepository.deleteUserTestResult(userId, testId);
+    public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {
+        userRepository.deleteUserTest(userId, testId);
 
         //Т.к. у нас нет мапера на UserTestDto, мы игнорируем
         // поле UserTestDto.passedAt и получаем текущую дату через LocalDateTime.now()
-        userRepository.addUserTestResult(userId, testId, userTestDto.getScore(), LocalDateTime.now());
+        userRepository.addUserTest(userId, testId, userTestDto.getScore(), LocalDateTime.now());
     }
 
-    public void deleteUserTestResult(long userId, long testId) {
-        userRepository.deleteUserTestResult(userId, testId);
+    public void deleteUserTest(long userId, long testId) {
+        userRepository.deleteUserTest(userId, testId);
     }
 
-    public PageWrapper<UserTestView> getAllTests(long userId, Integer pageNum, Integer perPage, String artName) {
+    public PageWrapper<UserTestView> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
 
@@ -100,6 +100,10 @@ public class UserService {
             page = userTestViewRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
 
         return new PageWrapper<>(page.getTotalElements(), page.getContent());
+    }
+
+    public int getUserPosition(long userId) {
+        return userRepository.getUserPosition(userId);
     }
 
 }

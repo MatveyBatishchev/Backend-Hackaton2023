@@ -35,17 +35,30 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query(value = "DELETE FROM main.user_test WHERE user_id = :user_id AND test_id = :test_id", nativeQuery = true)
-    void deleteUserTestResult(@Param("user_id") long userId, @Param("test_id") long testId);
+    void deleteUserTest(@Param("user_id") long userId, @Param("test_id") long testId);
 
     @Modifying
     @Query(value = """
                 INSERT INTO main.user_test (user_id, test_id, score, passed_at)
                 VALUES (:user_id, :test_id, :score, :passed_at)
             """, nativeQuery = true)
-    void addUserTestResult(@Param("user_id") long userId,
-                        @Param("test_id") long testId,
-                        @Param("score") int score,
-                        @Param("passed_at") LocalDateTime passedAt);
+    void addUserTest(@Param("user_id") long userId,
+                     @Param("test_id") long testId,
+                     @Param("score") int score,
+                     @Param("passed_at") LocalDateTime passedAt);
+
+    @Query(value = """
+            SELECT position
+            FROM (
+               SELECT id,
+                    ROW_NUMBER() OVER(
+                       ORDER BY score DESC
+                    ) AS position
+               FROM main.user
+            ) result
+            WHERE id = :user_id
+            """, nativeQuery = true)
+    int getUserPosition(@Param("user_id") long userId);
 
 
 }

@@ -49,17 +49,22 @@ public class UserControllerImpl implements UserController {
 
 
     @Override
-    public void updateTestResult(long userId, long testId, UserTestDto userTestDto) {
-        userService.updateUserTestResult(userId, testId, userTestDto);
+    public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {
+        userService.updateUserTest(userId, testId, userTestDto);
     }
 
     @Override
-    public void deleteTestResult(long userId, long testId) {
-        userService.deleteUserTestResult(userId, testId);
+    public void deleteUserTest(long userId, long testId) {
+        userService.deleteUserTest(userId, testId);
     }
 
     @Override
-    public PageWrapper<UserTestView> readAllTests(long userId, Integer pageNum, Integer perPage, String artName) {
-        return userService.getAllTests(userId, pageNum, perPage, artName);
+    public PageWrapper<UserTestView> readAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+        return userService.getAllUserTests(userId, pageNum, perPage, artName);
+    }
+
+    @Override
+    public int getUserPosition(long userId) {
+        return userService.getUserPosition(userId);
     }
 }
