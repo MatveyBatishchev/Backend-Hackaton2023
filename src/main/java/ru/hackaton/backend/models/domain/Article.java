@@ -19,16 +19,22 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_sequence")
     @Column(name = "id")
     private long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "image")
     private String image;
+
     @Column(name = "published")
     private boolean published;
+
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
+
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
     

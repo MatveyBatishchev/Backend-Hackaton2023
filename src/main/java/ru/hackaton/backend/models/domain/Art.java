@@ -2,6 +2,10 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,5 +19,10 @@ public class Art {
     private Long id;
 
     private String name;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "arts")
+    private Set<School> schools;
 
 }
