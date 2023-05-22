@@ -1,9 +1,6 @@
 package ru.hackaton.backend.mappers;
 
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.models.domain.User;
 import ru.hackaton.backend.models.domain.UserRole;
@@ -23,6 +20,13 @@ public interface UserMapper {
     @Mapping(target = "roles", qualifiedByName = "mapUserRolesToList")
     UserDto toDto(User user);
 
+    @Named("toLeaderboardDto")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "avatar", target = "avatar")
+    @Mapping(source = "score", target = "score")
+    UserDto toLeaderboardDto(User user);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(LocalDateTime.now())")
@@ -32,6 +36,9 @@ public interface UserMapper {
 
     @IterableMapping(qualifiedByName = "toUserDto")
     List<UserDto> mapToList(Collection<User> users);
+
+    @IterableMapping(qualifiedByName = "toLeaderboardDto")
+    List<UserDto> mapToLeaderboardList(Collection<User> users);
 
     @Named("mapUserRolesToList")
     List<String> mapRolesToList(Collection<UserRole> userRoles);
