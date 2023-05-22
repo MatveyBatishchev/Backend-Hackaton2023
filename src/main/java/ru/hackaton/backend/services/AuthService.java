@@ -18,10 +18,12 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.hackaton.backend.config.security.jwt.JwtService;
 import ru.hackaton.backend.errors.handler.ApiError;
 import ru.hackaton.backend.models.auth.AuthRequest;
 import ru.hackaton.backend.models.auth.AuthResponse;
+import ru.hackaton.backend.models.auth.OAuthRequest;
 import ru.hackaton.backend.models.auth.TokenType;
 import ru.hackaton.backend.models.domain.MyUserDetails;
 import ru.hackaton.backend.models.domain.User;
@@ -91,95 +93,42 @@ public class AuthService {
         }
     }
 
-    public AuthResponse authenticateOAuth(String accessToken, String userEmail) {
-        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("vk");
-
-        Optional<User> optional = userRepository.findByEmail(userEmail);
-        User user;
-        if (optional.isEmpty()) {
-            // call oauth UserInfo endpoint with provided Access_Token
-            OAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DefaultOAuth2UserService();
-            OAuth2UserRequest userRequest = new OAuth2UserRequest(
-                    clientRegistration,
-                    new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, accessToken, Instant.now(), Instant.MAX),
-                    Map.of("v", "5.131")
-            );
-            OAuth2User oAuth2User = userService.loadUser(userRequest);
-
-            ArrayList<LinkedHashMap<String, Object>> responseArray = oAuth2User.getAttribute("response");
-            LinkedHashMap<String, Object> userAttributes = responseArray.get(0);
-            user = userRepository.save(
-                    new User(userEmail,
-                            userAttributes.get("first_name") + " " + userAttributes.get("last_name"),
-                            userAttributes.get("photo_max").toString(),
-                            LocalDateTime.now(),
-                            LocalDateTime.now(),
-                            List.of(UserRole.USER, UserRole.OAUTH_USER)));
-        } else {
-            user = optional.get();
+    public AuthResponse authenticateOAuth(OAuthRequest oAuthRequest) {
+        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(oAuthRequest.getOAuthProvider());
+        if (clientRegistration == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid access_token or oAuth_provider");
         }
+
+        User user = null;
+        if (clientRegistration.getRegistrationId().equals("vk")) {
+            String userEmail = oAuthRequest.getUserEmail();
+
+            Optional<User> optional = userRepository.findByEmail(userEmail);
+            if (optional.isEmpty()) {
+                OAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DefaultOAuth2UserService();
+                OAuth2UserRequest userRequest = new OAuth2UserRequest(
+                        clientRegistration,
+                        new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, oAuthRequest.getAccessToken(), Instant.now(), Instant.MAX)
+                );
+                OAuth2User oAuth2User = userService.loadUser(userRequest);
+
+                ArrayList<LinkedHashMap<String, Object>> responseArray = oAuth2User.getAttribute("response");
+                LinkedHashMap<String, Object> userAttributes = responseArray.get(0);
+                user = userRepository.save(
+                        new User(userEmail,
+                                userAttributes.get("first_name") + " " + userAttributes.get("last_name"),
+                                userAttributes.get("photo_max").toString(),
+                                LocalDateTime.now(),
+                                LocalDateTime.now(),
+                                List.of(UserRole.USER, UserRole.VK_USER)));
+            } else {
+                user = optional.get();
+            }
+        }
+        if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid access_token or oAuth_provider");
+
         Map<String, String> tokens = jwtService.generateTokens(new MyUserDetails(user));
         return new AuthResponse(tokens.get("access_token"), tokens.get("refresh_token"));
     }
-
-//    @SneakyThrows
-//    public AuthResponse authenticateOAuth(String oAuthCode, String oAuthProvider) {
-//        ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId(oAuthProvider);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//
-//        // Exchange auth_code to access_token
-//        Map<String, String> accessTokenOAuthResponse = webClient.post()
-//                .uri(clientRegistration.getProviderDetails().getTokenUri())
-//                .headers(httpHeaders -> httpHeaders.addAll(headers))
-//                .body(BodyInserters.fromFormData(buildTokenRequestBody(oAuthCode, clientRegistration)))
-//                .retrieve()
-//                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {})
-//                .block();
-//
-//        assert accessTokenOAuthResponse != null;
-//        String accessToken = accessTokenOAuthResponse.get("access_token");
-//        String email = accessTokenOAuthResponse.get("email");
-//
-//        Optional<User> user = userRepository.findByEmail(email);
-//        if (user.isEmpty()) {
-//            String jsonResponse = webClient.post()
-//                    .uri(clientRegistration.getProviderDetails().getUserInfoEndpoint().getUri())
-//                    .headers(httpHeaders -> httpHeaders.add("Authorization", "Bearer " + accessToken))
-//                    .attribute("v", "5.131")
-//                    .retrieve()
-//                    .bodyToMono(String.class)
-//                    .block();
-//
-//
-//            Map<String, Object> responseMap = new ObjectMapper().readValue(jsonResponse, new TypeReference<Map<String, Object>>() {});
-//            List<Map<String, Object>> responseList = (List<Map<String, Object>>) responseMap.get("response");
-//            Map<String, Object> oAuthUser = responseList.get(0);
-//
-//            User newUser = new User(email,
-//                    oAuthUser.get("first_name") + " " + oAuthUser.get("last_name"),
-//                    String.valueOf(oAuthUser.get("photo_max")),
-//                    LocalDateTime.now(),
-//                    LocalDateTime.now(),
-//                    List.of(UserRole.USER, UserRole.OAUTH_USER));
-//            Map<String, String> tokens = jwtService.generateTokens(new MyUserDetails(userRepository.save(newUser)));
-//            return new AuthResponse(tokens.get("access_token"), tokens.get("refresh_token"));
-//        } else {
-//            Map<String, String> tokens = jwtService.generateTokens(new MyUserDetails(user.get()));
-//            return new AuthResponse(tokens.get("access_token"), tokens.get("refresh_token"));
-//        }
-//    }
-//
-//
-//    private MultiValueMap<String, String> buildTokenRequestBody(String oAuthCode, ClientRegistration clientRegistration) {
-//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//        body.add("client_id", clientRegistration.getClientId());
-//        body.add("client_secret", clientRegistration.getClientSecret());
-//        body.add("redirect_uri", clientRegistration.getRedirectUri());
-//        body.add("grant_type", "authorization_code");
-//        body.add("code", oAuthCode);
-//        return body;
-//    }
 
 }

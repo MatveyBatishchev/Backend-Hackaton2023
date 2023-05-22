@@ -4,5 +4,5 @@ public enum UserRole {
     USER,
     ADMIN,
     CONTENT_MANAGER,
-    OAUTH_USER
+    VK_USER
 }
