@@ -14,8 +14,6 @@ import java.util.Set;
 @Table(name = "article")
 public class Article {
 
-    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    ArticleContent articleContent;
     @Id
     @SequenceGenerator(name = "article_sequence", sequenceName = "article_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_sequence")
@@ -33,6 +31,10 @@ public class Article {
     private LocalDateTime createdAt;
     @Column(name = "updated_At")
     private LocalDateTime updatedAt;
+    
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    ArticleContent articleContent;
+    
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
