@@ -30,7 +30,7 @@ public class School {
     private String address;
 
     @Column(name = "phone_number")
-    private boolean published;
+    private boolean phoneNumber;
 
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
