@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-test_art
+      author: Damir
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: test_art
+            baseColumnNames: test_id
+            constraintName: fk_test_art_test_id
+            onDelete: CASCADE
+            referencedTableName: test
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: test_art
+            baseColumnNames: art_id
+            constraintName: fk_test_art_art_id
+            onDelete: CASCADE
+            referencedTableName: art
+            referencedColumnNames: id

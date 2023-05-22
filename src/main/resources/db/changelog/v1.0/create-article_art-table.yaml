@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-article_art-table
+      author: Damir
+      changes:
+        - createTable:
+            tableName: article_art
+            columns:
+              - column:
+                  name: article_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: art_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+          addPrimaryKey:
+            tableName: article_art
+            columnNames: article_id, art_id
+            constraintName: pk_article_art

@@ -17,12 +17,12 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
 
-    @EntityGraph(attributePaths = {"articleContent", "articleType"})
+    @EntityGraph(attributePaths = {"articleContent", "articleType", "arts"})
     @Override
     @NonNull
     Optional<Article> findById(@NonNull Long aLong);
 
-    @EntityGraph(attributePaths = "articleType")
+    @EntityGraph(attributePaths = {"articleType", "arts"})
     @Override
     @NonNull
     Page<Article> findAll(Specification<Article> spec, @NonNull Pageable pageable);

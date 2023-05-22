@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-art-table
+      author: Damir
+      changes:
+        - createTable:
+            tableName: art
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(36)
+                  constraints:
+                    unique: true
+                    nullable: false

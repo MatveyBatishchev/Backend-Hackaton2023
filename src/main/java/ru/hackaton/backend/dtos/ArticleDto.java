@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 public class ArticleDto {
@@ -32,5 +33,7 @@ public class ArticleDto {
     private LocalDateTime updatedAt;
 
     private ArticleTypeDto articleType;
+
+    private Set<ArtDto> arts;
 
 }

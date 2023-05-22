@@ -2,6 +2,8 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -26,6 +28,9 @@ public class Test {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "created_at")
 //    @NotNull
     private LocalDateTime createdAt;
@@ -47,6 +52,15 @@ public class Test {
     @EqualsAndHashCode.Exclude
     @Getter(AccessLevel.NONE)
     private Set<Question> questions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "test_art",
+            joinColumns = {@JoinColumn(name = "test_id")},
+            inverseJoinColumns = {@JoinColumn(name = "art_id")})
+    //TODO эта штука происходит из-за двунаправленной связи???!
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+    private Set<Art> arts;
 
     public void addQuestion(Question question) {
         questions.add(question);

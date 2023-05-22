@@ -3,6 +3,7 @@ package ru.hackaton.backend.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import ru.hackaton.backend.models.domain.Difficulty;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -16,6 +17,8 @@ public class TestDto {
     private String title;
 
     private String description;
+
+    private String image;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -31,5 +34,7 @@ public class TestDto {
     private String difficulty;
 
     private Set<QuestionDto> questions;
+
+    private Set<ArtDto> arts;
 
 }
