@@ -13,7 +13,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Arts")
 @RequestMapping("/arts")
-@CrossOrigin
 public interface ArtController {
 
     @PreAuthorize("hasAuthority('ADMIN')")

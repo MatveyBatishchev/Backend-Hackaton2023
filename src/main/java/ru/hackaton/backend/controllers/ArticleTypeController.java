@@ -13,7 +13,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Article Types")
 @RequestMapping("/article_types")
-@CrossOrigin
 public interface ArticleTypeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
