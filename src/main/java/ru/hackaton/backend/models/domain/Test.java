@@ -57,9 +57,6 @@ public class Test {
     @JoinTable(name = "test_art",
             joinColumns = {@JoinColumn(name = "test_id")},
             inverseJoinColumns = {@JoinColumn(name = "art_id")})
-    //TODO эта штука происходит из-за двунаправленной связи???!
-//    @ToString.Exclude
-//    @EqualsAndHashCode.Exclude
     private Set<Art> arts;
 
     public void addQuestion(Question question) {
