@@ -81,7 +81,8 @@ public interface UserController {
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<UserTestView> readAllTests(@PathVariable("userId") long userId,
                                            @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
-                                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+                                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
+                                           @RequestParam(value = "art_name", required = false) String artname);
 
 
 }
