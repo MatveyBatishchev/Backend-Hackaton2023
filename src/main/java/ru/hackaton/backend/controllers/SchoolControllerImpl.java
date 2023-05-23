@@ -37,4 +37,15 @@ public class SchoolControllerImpl implements SchoolController {
         return schoolService.getAllSchools(pageNum, perPage);
     }
 
+    @Override
+    public void updateSchoolArts(long id, Long[] artIds) {
+        schoolService.updateSchoolArts(id, artIds);
+    }
+
+    @Override
+    public void updateSchoolStudyPrograms(long id, Long[] studyProgramIds) {
+        schoolService.updateSchoolStudyPrograms(id, studyProgramIds);
+    }
+
+
 }

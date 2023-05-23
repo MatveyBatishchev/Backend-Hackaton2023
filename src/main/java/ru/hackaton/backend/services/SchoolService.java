@@ -1,6 +1,7 @@
 package ru.hackaton.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,8 +13,6 @@ import ru.hackaton.backend.mappers.SchoolMapper;
 import ru.hackaton.backend.models.domain.School;
 import ru.hackaton.backend.repositories.SchoolRepository;
 import ru.hackaton.backend.util.PageWrapper;
-
-import java.time.LocalDateTime;
 
 
 @Service
@@ -28,12 +27,11 @@ public class SchoolService {
 
     private School findSchoolById(long id) {
         return schoolRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Статья с id " + id + " не была найдена!"));
+                new EntityNotFoundException("Учебное заведение с id " + id + " не была найдена!"));
     }
 
     public SchoolDto createSchool(SchoolDto schoolDto) {
         School newSchool = schoolMapper.toSchool(schoolDto);
-        newSchool.setCreatedAt(LocalDateTime.now());
         return schoolMapper.toDto(schoolRepository.save(newSchool));
     }
 
@@ -42,10 +40,11 @@ public class SchoolService {
     }
 
     public void updateSchool(long id, SchoolDto schoolDto) {
-        School updatedSchool = schoolMapper.toSchool(schoolDto);
-        updatedSchool.setId(id);
-        updatedSchool.getSchoolContent().setId(id);
-        schoolRepository.save(updatedSchool);
+        School dbSchool = findSchoolById(id);
+        schoolDto.setId(id);
+        schoolMapper.updateSchoolFromSchoolDto(schoolDto, dbSchool);
+        System.out.println(dbSchool);
+        schoolRepository.save(dbSchool);
     }
 
     public void deleteSchoolById(long id) {
@@ -59,6 +58,18 @@ public class SchoolService {
 
         Page<School> page = schoolRepository.findAll(pageable);
         return new PageWrapper<>(page.getTotalElements(), schoolMapper.mapToList(page.getContent()));
+    }
+
+    @Transactional
+    public void updateSchoolArts(long id, Long[] artIds) {
+        schoolRepository.deleteArtsFromSchool(id);
+        schoolRepository.addArtsToSchool(id, artIds);
+    }
+
+    @Transactional
+    public void updateSchoolStudyPrograms(long id, Long[] studyProgramIds) {
+        schoolRepository.deleteStudyProgramsFromSchool(id);
+        schoolRepository.addStudyProgramsToSchool(id, studyProgramIds);
     }
 
 }

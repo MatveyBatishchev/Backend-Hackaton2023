@@ -30,7 +30,7 @@ public class School {
     private String address;
 
     @Column(name = "phone_number")
-    private boolean phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
@@ -51,7 +51,7 @@ public class School {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "school_art",
             joinColumns = {@JoinColumn(name = "school_id")},
             inverseJoinColumns = {@JoinColumn(name = "art_id")})
@@ -63,7 +63,6 @@ public class School {
     @JoinTable(name = "school_study_program",
             joinColumns = {@JoinColumn(name = "school_id")},
             inverseJoinColumns = {@JoinColumn(name = "study_program_id")})
-    private Set<StudyProgram> studyPrograms;
-
+    private Set<StudyProgram> studyPrograms = new HashSet<>();
 
 }

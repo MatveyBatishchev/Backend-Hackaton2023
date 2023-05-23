@@ -9,6 +9,7 @@ import ru.hackaton.backend.models.domain.StudyProgram;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
 @Mapper(componentModel = "spring", config = IgnoreUnmappedMapperConfig.class)
@@ -19,6 +20,10 @@ public interface StudyProgramMapper {
 
     @Mapping(target = "id", ignore = true)
     StudyProgram toStudyProgram(StudyProgramDto studyDtoDto);
+
+    @Named("mapToStudyProgramDtoSet")
+    @IterableMapping(qualifiedByName = "toStudyProgramDto")
+    Set<StudyProgramDto> mapToSet(Collection<StudyProgram> studyDtos);
 
     @IterableMapping(qualifiedByName = "toStudyProgramDto")
     List<StudyProgramDto> mapToList(Collection<StudyProgram> studyDtos);

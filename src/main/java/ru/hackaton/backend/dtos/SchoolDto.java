@@ -18,7 +18,7 @@ public class SchoolDto {
 
     private String address;
 
-    private boolean phoneNumber;
+    private String phoneNumber;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime createdAt;
@@ -29,10 +29,12 @@ public class SchoolDto {
     @Schema(example = "{\"json\": true}")
     private String content;
 
-    private DistrictDto districtDto;
+    private DistrictDto district;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<ArtDto> arts;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<StudyProgramDto> studyPrograms;
 
 }
