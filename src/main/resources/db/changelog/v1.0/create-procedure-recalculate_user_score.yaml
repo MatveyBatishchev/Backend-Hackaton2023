@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-procedure-recalculate_user_score
+      author: Damir
+      changes:
+        - createProcedure:
+            procedureBody: >
+              CREATE OR REPLACE PROCEDURE main.recalculate_user_score(IN user_id_var bigint)
+              LANGUAGE 'plpgsql'
+              AS $BODY$
+              DECLARE
+               scoreSum bigint;
+               BEGIN
+               	scoreSum = SUM(score) FROM main.user_test WHERE user_id = user_id_var;
+              	UPDATE main.user SET score = scoreSum WHERE id = user_id_var;
+               END;
+              $BODY$;
+              ALTER PROCEDURE main.recalculate_user_score(bigint)
+                  OWNER TO postgres;
