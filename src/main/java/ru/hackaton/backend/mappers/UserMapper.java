@@ -28,6 +28,7 @@ public interface UserMapper {
     UserDto toLeaderboardDto(User user);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "score", ignore = true)
     @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(LocalDateTime.now())")
     @Mapping(target = "password", qualifiedByName = "encodePassword")

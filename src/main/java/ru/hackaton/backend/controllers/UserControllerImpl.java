@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
-import ru.hackaton.backend.models.domain.views.UserTestView;
+import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.UserService;
 import ru.hackaton.backend.util.PageWrapper;
 
@@ -59,7 +59,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public PageWrapper<UserTestView> readAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+    public PageWrapper<UserTest> readAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
         return userService.getAllUserTests(userId, pageNum, perPage, artName);
     }
 

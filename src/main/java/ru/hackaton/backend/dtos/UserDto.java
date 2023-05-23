@@ -23,6 +23,7 @@ public class UserDto {
 
     private String avatar;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long score;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)

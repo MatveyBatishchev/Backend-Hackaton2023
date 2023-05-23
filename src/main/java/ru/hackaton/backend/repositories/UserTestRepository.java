@@ -1,4 +1,4 @@
-package ru.hackaton.backend.repositories.views;
+package ru.hackaton.backend.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,11 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import ru.hackaton.backend.models.domain.Difficulty;
-import ru.hackaton.backend.models.domain.views.UserTestView;
-import ru.hackaton.backend.models.domain.views.UserTestView_;
-import ru.hackaton.backend.repositories.ReadOnlyRepository;
+import ru.hackaton.backend.models.domain.UserTest;
 
-public interface UserTestViewRepository extends ReadOnlyRepository<UserTestView, Long> {
+public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
 
 
     @NonNull
@@ -44,7 +42,7 @@ public interface UserTestViewRepository extends ReadOnlyRepository<UserTestView,
                  LEFT JOIN main.user_test ut ON t.id = ut.test_id AND ut.user_id = :user_id
 
             """)
-    Page<UserTestView> findAll(@Param("user_id") long userId, @NonNull Pageable pageable);
+    Page<UserTest> findAll(@Param("user_id") long userId, @NonNull Pageable pageable);
 
 
     @NonNull
@@ -79,21 +77,21 @@ public interface UserTestViewRepository extends ReadOnlyRepository<UserTestView,
              WHERE lower(a.name) = :art_name
 
             """)
-    Page<UserTestView> findAllWhereArtNameEquals(@Param("user_id") long userId,
-                                                 @Param("art_name") String artName,
-                                                 @NonNull Pageable pageable);
+    Page<UserTest> findAllWhereArtNameEquals(@Param("user_id") long userId,
+                                             @Param("art_name") String artName,
+                                             @NonNull Pageable pageable);
 
 
-    interface Specs {
-
-        static Specification<UserTestView> difficultyEquals(Difficulty difficulty) {
-            return (root, query, builder) -> builder.equal(root.get(UserTestView_.difficulty), difficulty.toString());
-        }
-
-        static Specification<UserTestView> artNameEquals(String artName) {
-            return (root, query, builder) -> builder.equal(root.get(UserTestView_.art), artName);
-        }
-
-    }
+//    interface Specs {
+//
+//        static Specification<UserTest> difficultyEquals(Difficulty difficulty) {
+//            return (root, query, builder) -> builder.equal(root.get(UserTest_.difficulty), difficulty.toString());
+//        }
+//
+//        static Specification<UserTest> artNameEquals(String artName) {
+//            return (root, query, builder) -> builder.equal(root.get(UserTest_.art), artName);
+//        }
+//
+//    }
 
 }

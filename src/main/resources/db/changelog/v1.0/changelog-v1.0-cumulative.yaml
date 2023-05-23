@@ -97,8 +97,6 @@ databaseChangeLog:
       relativeToChangelogFile: true
       file: add-fk-school_art.yaml
 
-# UserTests
-
   # UserTests
   - include:
       relativeToChangelogFile: true

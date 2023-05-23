@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
-import ru.hackaton.backend.models.domain.views.UserTestView;
+import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.util.PageWrapper;
 
 import java.util.List;
@@ -79,10 +79,10 @@ public interface UserController {
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
     @GetMapping(value = "/{userId}/tests", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    PageWrapper<UserTestView> readAllUserTests(@PathVariable("userId") long userId,
-                                               @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
-                                               @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
-                                               @RequestParam(value = "art_name", required = false) String artname);
+    PageWrapper<UserTest> readAllUserTests(@PathVariable("userId") long userId,
+                                           @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
+                                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
+                                           @RequestParam(value = "art_name", required = false) String artname);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{userId}/position")

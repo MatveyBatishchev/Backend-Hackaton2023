@@ -1,4 +1,4 @@
-package ru.hackaton.backend.models.domain.views;
+package ru.hackaton.backend.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Immutable
 @Table(name = "user_test_view")
-public class UserTestView {
+@Immutable
+public class UserTest {
 
     @Id
     private Long testId;

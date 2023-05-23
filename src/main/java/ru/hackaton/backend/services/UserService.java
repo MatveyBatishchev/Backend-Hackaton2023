@@ -13,9 +13,9 @@ import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.mappers.UserMapper;
 import ru.hackaton.backend.models.domain.User;
 import ru.hackaton.backend.models.domain.UserRole;
-import ru.hackaton.backend.models.domain.views.UserTestView;
+import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.repositories.UserRepository;
-import ru.hackaton.backend.repositories.views.UserTestViewRepository;
+import ru.hackaton.backend.repositories.UserTestRepository;
 import ru.hackaton.backend.util.PageWrapper;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserTestViewRepository userTestViewRepository;
+    private final UserTestRepository userTestRepository;
 
     private final UserMapper userMapper;
 
@@ -85,19 +85,20 @@ public class UserService {
         userRepository.addUserTest(userId, testId, userTestDto.getScore(), LocalDateTime.now());
     }
 
+    @Transactional
     public void deleteUserTest(long userId, long testId) {
         userRepository.deleteUserTest(userId, testId);
     }
 
-    public PageWrapper<UserTestView> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
 
-        Page<UserTestView> page;
+        Page<UserTest> page;
         if (artName == null)
-            page = userTestViewRepository.findAll(userId, pageable);
+            page = userTestRepository.findAll(userId, pageable);
         else
-            page = userTestViewRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
+            page = userTestRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
 
         return new PageWrapper<>(page.getTotalElements(), page.getContent());
     }
