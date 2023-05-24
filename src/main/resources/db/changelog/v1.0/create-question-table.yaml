@@ -23,12 +23,13 @@ databaseChangeLog:
                   name: audio
                   type: text
               - column:
+                  name: image
+                  type: text
+              - column:
+                  name: explanation
+                  type: text
+              - column:
                   name: test_id
                   type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: score
-                  type: int
                   constraints:
                     nullable: false

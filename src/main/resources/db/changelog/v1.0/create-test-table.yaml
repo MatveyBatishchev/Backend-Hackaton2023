@@ -35,7 +35,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: max_score
+                  name: score_per_question
                   type: int
                   constraints:
                     nullable: false

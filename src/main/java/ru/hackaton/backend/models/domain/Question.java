@@ -1,9 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,8 +27,11 @@ public class Question {
     @Column(name = "audio")
     private String audio;
 
-    @Column(name = "score")
-    private Integer score;
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "explanation")
+    private String explanation;
 
     @ManyToOne
 //    @NotNull

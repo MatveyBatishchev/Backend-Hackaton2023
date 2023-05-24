@@ -23,7 +23,7 @@ databaseChangeLog:
                   name: audio
                   type: text
               - column:
-                  name: explanation
+                  name: image
                   type: text
               - column:
                   name: is_correct

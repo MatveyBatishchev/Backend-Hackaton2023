@@ -1,9 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 
 @Data
@@ -26,8 +24,8 @@ public class Answer {
     @Column(name = "audio")
     private String audio;
 
-    @Column(name = "explanation")
-    private String explanation;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "is_correct")
 //    @NotNull
