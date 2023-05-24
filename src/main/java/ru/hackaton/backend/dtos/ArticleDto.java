@@ -34,6 +34,7 @@ public class ArticleDto {
 
     private ArticleTypeDto articleType;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<ArtDto> arts;
 
 }

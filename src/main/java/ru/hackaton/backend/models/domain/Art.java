@@ -22,7 +22,12 @@ public class Art {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "arts")
+    @ManyToMany(mappedBy = "arts", fetch = FetchType.LAZY)
     private Set<School> schools;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "arts", fetch = FetchType.LAZY)
+    private Set<Article> articles;
 
 }

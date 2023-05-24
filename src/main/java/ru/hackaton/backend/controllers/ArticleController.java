@@ -18,13 +18,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/articles")
 public interface ArticleController {
 
+    @Operation(description = "Во вложенном объекте articleType воспринимется только **id**, поле name игнорируется (можно не указывать)." +
+            "Cвязывание статьи с направлениями происходит в другом endpoint-e")
     @PreAuthorize("hasAuthority('ADMIN')")
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ArticleDto create(@RequestBody ArticleDto articleDto);
 
-    @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     ArticleDto read(@PathVariable("id") long id);
@@ -42,6 +43,7 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);
 
+    @Operation(description = "В данном endpoint-е не приходит контент статей и их направления, только общая информация и тип.")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<ArticleDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
@@ -52,6 +54,12 @@ public interface ArticleController {
                                     @RequestParam(value = "article_type_ids", required = false) List<Long> articleTypeIds,
                                         @Parameter(description = "Массив идентификаторов направлений для фильтрации по ним")
                                     @RequestParam(value = "art_ids", required = false) List<Long> artIds);
+
+    @Operation(summary = "Устанавливает направления для статьи (перезаписывая старые)")
+    @PutMapping("/{id}/arts")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateArticleArts(@PathVariable("id") long id,
+                          @RequestParam("art_ids") Long[] artIds);
 
 
 }

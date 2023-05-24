@@ -1,5 +1,7 @@
 package ru.hackaton.backend.repositories;
 
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
@@ -9,10 +11,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-import ru.hackaton.backend.models.domain.Art_;
-import ru.hackaton.backend.models.domain.District_;
-import ru.hackaton.backend.models.domain.School;
-import ru.hackaton.backend.models.domain.School_;
+import ru.hackaton.backend.models.domain.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,12 +60,14 @@ public interface SchoolRepository extends JpaRepository<School, Long>, JpaSpecif
         static Specification<School> artsContainsAll(List<Long> artIds) {
             return (root, query, builder) -> {
                 Predicate[] predicates = new Predicate[artIds.size()];
+                Join<School, Art> artsJoin = root.join(School_.ARTS);
+                Expression<List<Long>> artIdsExpression = artsJoin.get(Art_.ID);
 
                 for (int i = 0; i < artIds.size(); i++) {
-                    predicates[i] = builder.literal(artIds.get(i)).in(root.join(School_.ARTS).get(Art_.ID));
+                    predicates[i] = builder.literal(artIds.get(i)).in(artIdsExpression);
                 }
 
-                return builder.and(predicates);
+                return builder.or(predicates);
             };
         }
 
