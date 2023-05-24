@@ -15,9 +15,9 @@ import ru.hackaton.backend.repositories.ArticleRepository;
 import ru.hackaton.backend.util.PageWrapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import static ru.hackaton.backend.repositories.ArticleRepository.Specs.articleTypeEquals;
-import static ru.hackaton.backend.repositories.ArticleRepository.Specs.nameLike;
+import static ru.hackaton.backend.repositories.ArticleRepository.Specs.*;
 
 @Service
 @RequiredArgsConstructor
@@ -55,13 +55,15 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String nameSearch, Long articleTypeId) {
+    public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String nameSearch,
+                                                  List<Long> articleTypeIds, List<Long> artIds) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
         Specification<Article> spec = Specification.where(null);
         if (nameSearch != null) spec = spec.and(nameLike(nameSearch));
-        if (articleTypeId != null) spec = spec.and(articleTypeEquals(articleTypeId));
+        if (articleTypeIds != null) spec = spec.and(articleTypeIdIn(articleTypeIds));
+        if (artIds != null) spec = spec.and(artsContainsAll(artIds));
 
         Page<Article> page = articleRepository.findAll(spec, pageable);
         return new PageWrapper<>(page.getTotalElements(), articleMapper.mapToList(page.getContent()));

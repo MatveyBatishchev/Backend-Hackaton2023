@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hackaton.backend.dtos.ArticleDto;
 import ru.hackaton.backend.util.PageWrapper;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "Articles")
@@ -44,7 +46,12 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<ArticleDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                                     @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
-                                    @Parameter(description = "Строковое значение для поиска по названиям статей") @RequestParam(value = "search", required = false) String search,
-                                    @Parameter(description = "ID - значение для поиска по типам статей") @RequestParam(value = "article_type_id", required = false) Long articleTypeId);
+                                        @Parameter(description = "Строковое значение для поиска по названиям статей")
+                                    @RequestParam(value = "search", required = false) String search,
+                                        @Parameter(description = "Массив идентификаторов типо статей для фильтрации по ним")
+                                    @RequestParam(value = "article_type_ids", required = false) List<Long> articleTypeIds,
+                                        @Parameter(description = "Массив идентификаторов направлений для фильтрации по ним")
+                                    @RequestParam(value = "art_ids", required = false) List<Long> artIds);
+
 
 }

@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.hackaton.backend.models.domain.Art_;
+import ru.hackaton.backend.models.domain.District_;
 import ru.hackaton.backend.models.domain.School;
 import ru.hackaton.backend.models.domain.School_;
 
@@ -27,7 +28,7 @@ public interface SchoolRepository extends JpaRepository<School, Long>, JpaSpecif
     @EntityGraph(attributePaths = {"arts", "district"})
     @Override
     @NonNull
-    Page<School> findAll(Specification<School> spec, @NonNull Pageable pageable);
+    Page<School> findAll(@NonNull Specification<School> spec, @NonNull Pageable pageable);
 
     @Modifying
     @Query(value = "DELETE FROM main.school_art WHERE school_id=:school_id", nativeQuery = true)
@@ -52,7 +53,7 @@ public interface SchoolRepository extends JpaRepository<School, Long>, JpaSpecif
 
         static Specification<School> districtIdIn(List<Long> districtIds) {
             return (root, query, builder) -> {
-                Path<Long> districtIdPath = root.get(School_.DISTRICT);
+                Path<Long> districtIdPath = root.get(School_.DISTRICT).get(District_.ID);
                 return districtIdPath.in(districtIds);
             };
         }
