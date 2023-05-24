@@ -17,7 +17,9 @@ public class QuestionDto {
 
     private String audio;
 
-    private int score;
+    private String image;
+
+    private String explanation;
 
     private Set<AnswerDto> answers;
 

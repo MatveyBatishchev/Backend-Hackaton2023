@@ -15,7 +15,7 @@ public class AnswerDto {
 
     private String audio;
 
-    private String explanation;
+    private String image;
 
     private Boolean isCorrect;
 

@@ -37,8 +37,8 @@ public class Test {
 //    @NotNull
     private LocalDateTime updatedAt;
 
-    @Column(name = "max_score")
-    private Integer maxScore;
+    @Column(name = "score_per_question")
+    private Integer scorePerQuestion;
 
     @Column(name = "difficulty")
     @Enumerated(EnumType.STRING)
