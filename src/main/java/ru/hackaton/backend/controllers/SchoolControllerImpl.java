@@ -6,6 +6,8 @@ import ru.hackaton.backend.dtos.SchoolDto;
 import ru.hackaton.backend.services.SchoolService;
 import ru.hackaton.backend.util.PageWrapper;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class SchoolControllerImpl implements SchoolController {
@@ -33,8 +35,8 @@ public class SchoolControllerImpl implements SchoolController {
     }
 
     @Override
-    public PageWrapper<SchoolDto> readAll(Integer pageNum, Integer perPage) {
-        return schoolService.getAllSchools(pageNum, perPage);
+    public PageWrapper<SchoolDto> readAll(Integer pageNum, Integer perPage, String search, List<Long> districtIds, List<Long> artIds) {
+        return schoolService.getAllSchools(pageNum, perPage, search, districtIds, artIds);
     }
 
     @Override

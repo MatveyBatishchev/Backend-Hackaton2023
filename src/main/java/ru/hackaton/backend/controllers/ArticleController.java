@@ -22,6 +22,7 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.CREATED)
     ArticleDto create(@RequestBody ArticleDto articleDto);
 
+    @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     ArticleDto read(@PathVariable("id") long id);
@@ -39,7 +40,6 @@ public interface ArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable("id") long id);
 
-    @Operation(description = "Во вложенном объекте articleType воспринимется только id, поле name игнорируется (можно не указывать)")
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<ArticleDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.SchoolDto;
 import ru.hackaton.backend.mappers.SchoolMapper;
@@ -14,12 +15,16 @@ import ru.hackaton.backend.models.domain.School;
 import ru.hackaton.backend.repositories.SchoolRepository;
 import ru.hackaton.backend.util.PageWrapper;
 
+import java.util.List;
+
+import static ru.hackaton.backend.repositories.SchoolRepository.Specs.*;
+
 
 @Service
 @RequiredArgsConstructor
 public class SchoolService {
 
-    private final static String DEFAULT_SORT_OPTION = "updatedAt";
+    private final static String DEFAULT_SORT_OPTION = "id";
 
     private final SchoolRepository schoolRepository;
 
@@ -51,12 +56,16 @@ public class SchoolService {
         schoolRepository.deleteById(id);
     }
 
-    public PageWrapper<SchoolDto> getAllSchools(Integer pageNum, Integer perPage) {
+    public PageWrapper<SchoolDto> getAllSchools(Integer pageNum, Integer perPage, String search, List<Long> districtIds, List<Long> artIds) {
         perPage = Math.min(perPage, 100);
-        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
+        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.ASC, DEFAULT_SORT_OPTION));
 
+        Specification<School> spec = Specification.where(null);
+        if (search != null) spec = spec.and(nameLike(search));
+        if (districtIds != null) spec = spec.and(districtIdIn(districtIds));
+        if (artIds != null) spec = spec.and(artsContainsAll(artIds));
 
-        Page<School> page = schoolRepository.findAll(pageable);
+        Page<School> page = schoolRepository.findAll(spec, pageable);
         return new PageWrapper<>(page.getTotalElements(), schoolMapper.mapToList(page.getContent()));
     }
 

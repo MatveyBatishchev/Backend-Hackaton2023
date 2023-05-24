@@ -41,7 +41,8 @@ public interface UserController {
     @Operation(summary = "Устанавливает роли пользователя (перезаписывая старые)")
     @PostMapping("/{id}/roles")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateUserRoles(@PathVariable("id") long id, @RequestBody List<UserRole> roles);
+    void updateUserRoles(@PathVariable("id") long id,
+                         @RequestParam List<UserRole> roles);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")

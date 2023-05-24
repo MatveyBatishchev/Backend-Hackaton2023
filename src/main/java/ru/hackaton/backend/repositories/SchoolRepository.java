@@ -1,20 +1,23 @@
 package ru.hackaton.backend.repositories;
 
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
+import ru.hackaton.backend.models.domain.Art_;
 import ru.hackaton.backend.models.domain.School;
+import ru.hackaton.backend.models.domain.School_;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SchoolRepository extends JpaRepository<School, Long> {
+public interface SchoolRepository extends JpaRepository<School, Long>, JpaSpecificationExecutor<School> {
 
     @EntityGraph(attributePaths = {"schoolContent", "arts", "studyPrograms", "district"})
     @Override
@@ -24,7 +27,7 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
     @EntityGraph(attributePaths = {"arts", "district"})
     @Override
     @NonNull
-    Page<School> findAll(@NonNull Pageable pageable);
+    Page<School> findAll(Specification<School> spec, @NonNull Pageable pageable);
 
     @Modifying
     @Query(value = "DELETE FROM main.school_art WHERE school_id=:school_id", nativeQuery = true)
@@ -41,5 +44,31 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
     @Modifying
     @Query(value = "INSERT INTO main.school_study_program(school_id, study_program_id) VALUES (:school_id, unnest(:study_program_ids))", nativeQuery = true)
     void addStudyProgramsToSchool(@Param("school_id") long schoolId, @Param("study_program_ids") Long[] studyProgramIds);
+
+    interface Specs {
+        static Specification<School> nameLike(String name) {
+            return (root, query, builder) -> builder.like(builder.lower(root.get(School_.NAME)), "%" + name.toLowerCase() + "%");
+        }
+
+        static Specification<School> districtIdIn(List<Long> districtIds) {
+            return (root, query, builder) -> {
+                Path<Long> districtIdPath = root.get(School_.DISTRICT);
+                return districtIdPath.in(districtIds);
+            };
+        }
+
+        static Specification<School> artsContainsAll(List<Long> artIds) {
+            return (root, query, builder) -> {
+                Predicate[] predicates = new Predicate[artIds.size()];
+
+                for (int i = 0; i < artIds.size(); i++) {
+                    predicates[i] = builder.literal(artIds.get(i)).in(root.join(School_.ARTS).get(Art_.ID));
+                }
+
+                return builder.and(predicates);
+            };
+        }
+
+    }
 
 }

@@ -55,12 +55,12 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String name_search, Long articleTypeId) {
+    public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String nameSearch, Long articleTypeId) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
         Specification<Article> spec = Specification.where(null);
-        if (name_search != null) spec = spec.and(nameLike(name_search));
+        if (nameSearch != null) spec = spec.and(nameLike(nameSearch));
         if (articleTypeId != null) spec = spec.and(articleTypeEquals(articleTypeId));
 
         Page<Article> page = articleRepository.findAll(spec, pageable);
