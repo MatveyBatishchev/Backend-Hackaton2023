@@ -15,7 +15,7 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: name
-                  type: varchar(36)
+                  type: varchar(50)
                   remarks: "Полное название типа"
                   constraints:
                     unique: true

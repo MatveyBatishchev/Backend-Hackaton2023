@@ -1,6 +1,7 @@
 package ru.hackaton.backend.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,6 @@ import ru.hackaton.backend.models.domain.Article;
 import ru.hackaton.backend.repositories.ArticleRepository;
 import ru.hackaton.backend.util.PageWrapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static ru.hackaton.backend.repositories.ArticleRepository.Specs.*;
@@ -23,7 +23,7 @@ import static ru.hackaton.backend.repositories.ArticleRepository.Specs.*;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final static String DEFAULT_SORT_OPTION = "updatedAt";
+    private final static String DEFAULT_SORT_OPTION = "id";
 
     private final ArticleRepository articleRepository;
 
@@ -36,7 +36,6 @@ public class ArticleService {
 
     public ArticleDto createArticle(ArticleDto articleDto) {
         Article newArticle = articleMapper.toArticle(articleDto);
-        newArticle.setCreatedAt(LocalDateTime.now());
         return articleMapper.toDto(articleRepository.save(newArticle));
     }
 
@@ -45,20 +44,26 @@ public class ArticleService {
     }
 
     public void updateArticle(long id, ArticleDto articleDto) {
-        Article updatedArticle = articleMapper.toArticle(articleDto);
-        updatedArticle.setId(id);
-        updatedArticle.getArticleContent().setId(id);
-        articleRepository.save(updatedArticle);
+        Article dbArticle = findArticleById(id);
+        articleDto.setId(id);
+        articleMapper.updateArticleFromArticleDto(articleDto, dbArticle);
+        articleRepository.save(dbArticle);
     }
 
     public void deleteArticleById(long id) {
         articleRepository.deleteById(id);
     }
 
+    @Transactional
+    public void updateArticleArts(long id, Long[] artIds) {
+        articleRepository.deleteArtsFromArticle(id);
+        articleRepository.addArtsToArticle(id, artIds);
+    }
+
     public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String nameSearch,
                                                   List<Long> articleTypeIds, List<Long> artIds) {
         perPage = Math.min(perPage, 100);
-        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
+        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.ASC, DEFAULT_SORT_OPTION));
 
         Specification<Article> spec = Specification.where(null);
         if (nameSearch != null) spec = spec.and(nameLike(nameSearch));
