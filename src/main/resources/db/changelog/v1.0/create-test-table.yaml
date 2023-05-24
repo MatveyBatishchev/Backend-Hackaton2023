@@ -44,3 +44,8 @@ databaseChangeLog:
                   type: varchar(30)
                   constraints:
                     nullable: false
+              - column:
+                  name: art_id
+                  type: bigint
+                  constraints:
+                    nullable: false

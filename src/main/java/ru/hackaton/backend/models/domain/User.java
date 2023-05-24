@@ -19,7 +19,7 @@ public class User {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "email", updatable = false)
     private String email;
@@ -32,6 +32,9 @@ public class User {
 
     @Column(name = "avatar")
     private String avatar;
+
+    @Column(name = "score")
+    private Long score = 0l;
 
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;

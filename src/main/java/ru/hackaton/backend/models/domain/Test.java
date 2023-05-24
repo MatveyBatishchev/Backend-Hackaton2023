@@ -2,8 +2,6 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -46,6 +44,8 @@ public class Test {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private Art art;
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
@@ -53,11 +53,6 @@ public class Test {
     @Getter(AccessLevel.NONE)
     private Set<Question> questions = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "test_art",
-            joinColumns = {@JoinColumn(name = "test_id")},
-            inverseJoinColumns = {@JoinColumn(name = "art_id")})
-    private Set<Art> arts;
 
     public void addQuestion(Question question) {
         questions.add(question);

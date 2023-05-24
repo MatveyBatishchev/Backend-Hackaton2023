@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user_test-view
+      author: Damir
+      changes:
+        - createView:
+            selectQuery: SELECT t.id as test_id, t.title, t.description, t.image, t.created_at, t.updated_at, t.max_score, t.difficulty, a.name as art, ut.user_id, ut.score, ut.passed_at FROM test t LEFT JOIN user_test ut ON t.id = ut.test_id JOIN Art a ON t.art_id = a.id
+            viewName: user_test_view

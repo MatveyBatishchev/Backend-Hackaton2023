@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-trigger-TR_update_userscore
+      author: Damir
+      changes:
+        - sql:
+            sql: >
+              CREATE OR REPLACE FUNCTION main."TR_update_userscore"()
+                  RETURNS trigger
+                  LANGUAGE 'plpgsql'
+                   NOT LEAKPROOF
+              AS $BODY$
+              	DECLARE
+              	oldScore bigint;
+              	newScore bigint;
+              	delta bigint;
+              	BEGIN
+              -- 		If there is no old record - default to zero
+              		IF OLD IS NULL THEN
+              			oldScore = 0;
+              			ELSE
+              			oldScore = OLD.score;
+              		END IF;
+              		-- 		If there is no new record - default to zero
+              		IF NEW IS NULL THEN
+              			newScore = 0;
+              			ELSE
+              			newScore = NEW.score;
+              		END IF;
+              	delta = newScore - oldScore;
+              	IF OLD IS NOT NULL THEN
+              		UPDATE main.user SET score = score + delta WHERE id = OLD.user_id;
+              	ELSE
+              		UPDATE main.user SET score = score + delta WHERE id = NEW.user_id;
+              	END IF;
+              	RETURN NULL;
+              END;
+              $BODY$;
+
+              ALTER FUNCTION main."TR_update_userscore"()
+                  OWNER TO postgres;
+            splitStatements: false
+
+      rollback:
+        - sql:
+            sql: DROP FUNCTION main."TR_update_userscore"

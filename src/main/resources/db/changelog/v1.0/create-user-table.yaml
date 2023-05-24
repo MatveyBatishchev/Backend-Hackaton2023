@@ -36,6 +36,12 @@ databaseChangeLog:
                   type: varchar(300)
                   remarks: "Ссылка на изображение - аватар пользователя"
               - column:
+                  name: score
+                  type: bigint
+                  constraints:
+                    nullable: false
+                  defaultValue: 0
+              - column:
                   name: created_at
                   type: datetime
                   constraints:

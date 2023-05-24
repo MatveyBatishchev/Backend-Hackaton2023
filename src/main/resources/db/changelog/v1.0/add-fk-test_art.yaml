@@ -4,16 +4,9 @@ databaseChangeLog:
       author: Damir
       changes:
         - addForeignKeyConstraint:
-            baseTableName: test_art
-            baseColumnNames: test_id
-            constraintName: fk_test_art_test_id
-            onDelete: CASCADE
-            referencedTableName: test
-            referencedColumnNames: id
-        - addForeignKeyConstraint:
-            baseTableName: test_art
+            baseTableName: test
             baseColumnNames: art_id
-            constraintName: fk_test_art_art_id
+            constraintName: fk_test_art_id
             onDelete: CASCADE
             referencedTableName: art
             referencedColumnNames: id

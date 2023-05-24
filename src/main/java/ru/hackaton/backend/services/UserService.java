@@ -9,12 +9,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.hackaton.backend.dtos.UserDto;
+import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.mappers.UserMapper;
 import ru.hackaton.backend.models.domain.User;
 import ru.hackaton.backend.models.domain.UserRole;
+import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.repositories.UserRepository;
+import ru.hackaton.backend.repositories.UserTestRepository;
 import ru.hackaton.backend.util.PageWrapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -26,7 +30,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final UserTestRepository userTestRepository;
+
     private final UserMapper userMapper;
+
+
+//    private final UserTestMapper userTestMapper;
 
     private User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(() ->
@@ -64,6 +73,38 @@ public class UserService {
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
         Page<User> page = userRepository.findAll(pageable);
         return new PageWrapper<>(page.getTotalElements(), userMapper.mapToList(page.getContent()));
+    }
+
+
+    @Transactional
+    public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {
+        userRepository.deleteUserTest(userId, testId);
+
+        //Т.к. у нас нет мапера на UserTestDto, мы игнорируем
+        // поле UserTestDto.passedAt и получаем текущую дату через LocalDateTime.now()
+        userRepository.addUserTest(userId, testId, userTestDto.getScore(), LocalDateTime.now());
+    }
+
+    @Transactional
+    public void deleteUserTest(long userId, long testId) {
+        userRepository.deleteUserTest(userId, testId);
+    }
+
+    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+        perPage = Math.min(perPage, 100);
+        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
+
+        Page<UserTest> page;
+        if (artName == null)
+            page = userTestRepository.findAll(userId, pageable);
+        else
+            page = userTestRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
+
+        return new PageWrapper<>(page.getTotalElements(), page.getContent());
+    }
+
+    public int getUserPosition(long userId) {
+        return userRepository.getUserPosition(userId);
     }
 
 }

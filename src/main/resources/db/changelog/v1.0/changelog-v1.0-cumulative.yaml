@@ -60,9 +60,6 @@ databaseChangeLog:
   # Art and Test
   - include:
       relativeToChangelogFile: true
-      file: create-test_art-table.yaml
-  - include:
-      relativeToChangelogFile: true
       file: add-fk-test_art.yaml
 
   # Schools
@@ -100,3 +97,25 @@ databaseChangeLog:
       relativeToChangelogFile: true
       file: add-fk-school_art.yaml
 
+  # UserTests
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_test-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_test.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_test-view.yaml
+
+
+# TODO add appropriate comments
+  - include:
+      relativeToChangelogFile: true
+      file: create-trigger-TR_update_userscore.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-trigger-TR_update_userscore_to_user_test.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-procedure-recalculate_user_score.yaml

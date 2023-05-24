@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user_test-table
+      author: Damir
+      changes:
+        - createTable:
+            tableName: user_test
+            remarks: "Таблица, хранящая результаты прохождения тестов пользователями"
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: test_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: score
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: passed_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+          addPrimaryKey:
+            tableName: user_test
+            columnNames: user_id, test_id
+            constraintName: pk_user_test

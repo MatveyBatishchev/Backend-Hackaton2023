@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-trigger-TR_update_userscore_to_user_test
+      author: Damir
+      changes:
+        - sql:
+            sql: >
+              CREATE OR REPLACE TRIGGER "TR_update_userscore"
+                  AFTER INSERT OR DELETE OR UPDATE 
+                  ON main.user_test
+                  FOR EACH ROW
+                  EXECUTE FUNCTION main."TR_update_userscore"();
+            splitStatements: false
+
+      rollback:
+        - sql:
+            DROP TRIGGER "TR_update_userscore" ON main.user_test

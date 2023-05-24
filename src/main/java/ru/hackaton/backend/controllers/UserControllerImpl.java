@@ -3,7 +3,9 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hackaton.backend.dtos.UserDto;
+import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
+import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.UserService;
 import ru.hackaton.backend.util.PageWrapper;
 
@@ -43,5 +45,26 @@ public class UserControllerImpl implements UserController {
     @Override
     public PageWrapper<UserDto> readAll(Integer pageNum, Integer perPage) {
         return userService.getAllUsers(pageNum, perPage);
+    }
+
+
+    @Override
+    public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {
+        userService.updateUserTest(userId, testId, userTestDto);
+    }
+
+    @Override
+    public void deleteUserTest(long userId, long testId) {
+        userService.deleteUserTest(userId, testId);
+    }
+
+    @Override
+    public PageWrapper<UserTest> readAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+        return userService.getAllUserTests(userId, pageNum, perPage, artName);
+    }
+
+    @Override
+    public int getUserPosition(long userId) {
+        return userService.getUserPosition(userId);
     }
 }
