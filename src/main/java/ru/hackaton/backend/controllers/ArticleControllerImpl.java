@@ -39,4 +39,9 @@ public class ArticleControllerImpl implements ArticleController {
         return articleService.getAllArticles(pageNum, perPage, search, articleTypeIds, artIds);
     }
 
+    @Override
+    public void updateArticleArts(long id, Long[] artIds) {
+        articleService.updateArticleArts(id, artIds);
+    }
+
 }

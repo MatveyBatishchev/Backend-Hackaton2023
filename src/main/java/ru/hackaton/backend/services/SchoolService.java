@@ -48,7 +48,6 @@ public class SchoolService {
         School dbSchool = findSchoolById(id);
         schoolDto.setId(id);
         schoolMapper.updateSchoolFromSchoolDto(schoolDto, dbSchool);
-        System.out.println(dbSchool);
         schoolRepository.save(dbSchool);
     }
 
