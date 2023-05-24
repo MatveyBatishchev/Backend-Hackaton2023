@@ -11,6 +11,14 @@ databaseChangeLog:
       file: create-article_content-table.yaml
   - include:
       relativeToChangelogFile: true
+      file: add-fk-article.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-article_content.yaml
+
+  # Users
+  - include:
+      relativeToChangelogFile: true
       file: create-user-table.yaml
   - include:
       relativeToChangelogFile: true
@@ -18,14 +26,8 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: add-fk-user_role.yaml
-  - include:
-      relativeToChangelogFile: true
-      file: add-fk-article.yaml
-  - include:
-      relativeToChangelogFile: true
-      file: add-fk-article_content.yaml
 
-  #  Tests
+  # Tests
   - include:
       relativeToChangelogFile: true
       file: create-test-table.yaml
@@ -62,3 +64,39 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: add-fk-test_art.yaml
+
+  # Schools
+  - include:
+      relativeToChangelogFile: true
+      file: create-school-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-school-content-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-study_program-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-district-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-school_study_program-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-school.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-school_content.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-school_study_program.yaml
+
+
+  # Schools and Art
+  - include:
+      relativeToChangelogFile: true
+      file: create-school_art-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-school_art.yaml
+

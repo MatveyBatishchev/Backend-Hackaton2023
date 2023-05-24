@@ -31,7 +31,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public void update(long id, List<UserRole> roles) {
+    public void updateUserRoles(long id, List<UserRole> roles) {
         userService.updateUserRoles(id, roles);
     }
 

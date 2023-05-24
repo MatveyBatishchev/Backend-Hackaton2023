@@ -5,9 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,8 +19,8 @@ import ru.hackaton.backend.errors.handler.CustomAccessDeniedHandler;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
+//@EnableWebSecurity
+//@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -53,8 +51,7 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource());
         http
                 .authorizeHttpRequests(requests ->
-                        requests
-                                .anyRequest().permitAll());
+                        requests.anyRequest().permitAll());
 //                                .requestMatchers("/auth/*").permitAll()
 //                                .requestMatchers(HttpMethod.GET, "/articles/*", "/articles", "/article_types", "/article_types/*").permitAll()
 //                                .requestMatchers(HttpMethod.POST, "/users").permitAll()

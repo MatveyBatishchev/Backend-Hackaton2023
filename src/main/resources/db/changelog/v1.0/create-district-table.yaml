@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-district-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями об округах Москвы"
+      changes:
+        - createTable:
+            tableName: district
+            remarks: "Таблица с записями об округах Москвы"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(35)
+                  remarks: "Название округа"
+                  constraints:
+                    unique: true
+                    nullable: false

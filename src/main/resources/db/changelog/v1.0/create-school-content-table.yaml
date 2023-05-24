@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-school_content-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о контенте(страницах описания) школ"
+      changes:
+        - createTable:
+            tableName: school_content
+            remarks: "Таблица с записями о контенте(страницах описания) школ"
+            columns:
+              - column:
+                  name: school_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: content
+                  type: jsonb
+                  remarks: "Форматированный текст статьи о школе в формате json"
+                  constraints:
+                    nullable: false

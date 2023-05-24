@@ -6,6 +6,8 @@ import ru.hackaton.backend.dtos.ArticleDto;
 import ru.hackaton.backend.services.ArticleService;
 import ru.hackaton.backend.util.PageWrapper;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ArticleControllerImpl implements ArticleController {
@@ -33,8 +35,8 @@ public class ArticleControllerImpl implements ArticleController {
     }
 
     @Override
-    public PageWrapper<ArticleDto> readAll(Integer pageNum, Integer perPage, String search, Long articleTypeId) {
-        return articleService.getAllArticles(pageNum, perPage, search, articleTypeId);
+    public PageWrapper<ArticleDto> readAll(Integer pageNum, Integer perPage, String search, List<Long> articleTypeIds, List<Long> artIds) {
+        return articleService.getAllArticles(pageNum, perPage, search, articleTypeIds, artIds);
     }
 
 }
