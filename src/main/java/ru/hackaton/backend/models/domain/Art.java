@@ -30,4 +30,9 @@ public class Art {
     @ManyToMany(mappedBy = "arts", fetch = FetchType.LAZY)
     private Set<Article> articles;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "art", fetch = FetchType.LAZY)
+    private Set<Course> courses;
+
 }
