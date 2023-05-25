@@ -62,6 +62,7 @@ public interface UserController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Устанавливает, сколько очков пользователь получил за прохождение теста")
     @PutMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateUserTest(@PathVariable("userId") long userId,
@@ -70,6 +71,7 @@ public interface UserController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Удаляет данные пользователя о прохождении данного теста")
     @DeleteMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteUserTest(@PathVariable("userId") long userId,
@@ -77,6 +79,10 @@ public interface UserController {
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = """
+            Возвращает все тесты вообще, а также результаты пользователя за эти тесты. 
+            Если пользователь ещё не проходил какой-то тест, то поля результатов будут null
+            """)
     @GetMapping(value = "/{userId}/tests", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<UserTest> readAllUserTests(@PathVariable("userId") long userId,
@@ -85,6 +91,7 @@ public interface UserController {
                                            @RequestParam(value = "art_name", required = false) String artname);
 
     @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Возвращает текущую позицию пользователя в рейтинге")
     @GetMapping("/{userId}/position")
     @ResponseStatus(HttpStatus.OK)
     int getUserPosition(@PathVariable("userId") long userId);
