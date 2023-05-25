@@ -3,6 +3,7 @@ package ru.hackaton.backend.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public interface UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto create(@RequestBody UserDto userDto);
+    UserDto create(@RequestBody @Valid UserDto userDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
@@ -39,7 +40,7 @@ public interface UserController {
     @Operation(description = "Роли пользователя при вызове данного endpoint-а не изменяются")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void update(@PathVariable("id") long id, @RequestBody UserDto userDto);
+    void update(@PathVariable("id") long id, @RequestBody @Valid UserDto userDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('ADMIN')")

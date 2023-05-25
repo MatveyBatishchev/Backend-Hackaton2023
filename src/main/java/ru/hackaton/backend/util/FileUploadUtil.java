@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class FileUploadUtil {
@@ -23,8 +24,11 @@ public class FileUploadUtil {
 
     private final Path fileStorageLocation;
 
+    private final String fileUploadPath;
+
     @Autowired
     public FileUploadUtil(@Value("${file.uploadDir}") String fileUploadPath) {
+        this.fileUploadPath = fileUploadPath;
         this.fileStorageLocation = Paths.get(fileUploadPath).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -40,9 +44,10 @@ public class FileUploadUtil {
     }
 
     public UploadFileResponse saveFile(MultipartFile file, FileEntityMarker fileEntityMarker) {
-        String fileName = validateFile(file, mediaTypes);
-        String contentType = getMediaType(file.getContentType());
+        String originalFilename = validateFile(file, mediaTypes);
         String entityMarker = fileEntityMarker.getName();
+        String contentType = getMediaType(file.getContentType());
+        String uuidFilename = UUID.randomUUID() + getFileExtension(originalFilename);
 
         if (fileEntityMarker.equals(FileEntityMarker.USER))
             throw new FileStorageException("Invalid multipart file or file_entity_marker");
@@ -51,31 +56,33 @@ public class FileUploadUtil {
             Path targetLocation = this.fileStorageLocation
                     .resolve(entityMarker)
                     .resolve(contentType)
-                    .resolve(fileName);
+                    .resolve(uuidFilename);
 
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/media/")
-                    .path("/" + entityMarker)
+                    .path("/" + fileUploadPath)
+                    .path(entityMarker)
                     .path("/" + contentType)
-                    .path("/" + fileName)
+                    .path("/" + uuidFilename)
                     .toUriString();
 
-            return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+            return new UploadFileResponse(originalFilename, fileDownloadUri, file.getContentType(), file.getSize());
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
     }
 
     public UploadFileResponse saveUserAvatar(long id, MultipartFile file) {
-        String fileName = validateFile(file, List.of("image"));
-        String userFileMarker = FileEntityMarker.USER.getName();
+        String originalFilename = validateFile(file, List.of("image"));
+        String entityMarker = FileEntityMarker.USER.getName();
+        String contentType = "image";
+        String uuidFilename = UUID.randomUUID() + getFileExtension(originalFilename);
 
         try {
             Path targetLocation = this.fileStorageLocation
-                    .resolve(userFileMarker)
-                    .resolve("image")
+                    .resolve(entityMarker)
+                    .resolve(contentType)
                     .resolve(String.valueOf(id));
 
             if (!Files.exists(targetLocation)) {
@@ -83,20 +90,20 @@ public class FileUploadUtil {
             } else {
                 FileUtils.cleanDirectory(targetLocation.toFile());
             }
-            targetLocation = targetLocation.resolve(fileName);
+            targetLocation = targetLocation.resolve(uuidFilename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/media/")
-                    .path("/" + userFileMarker)
-                    .path("/image")
+                    .path("/" + fileUploadPath)
+                    .path(entityMarker)
+                    .path("/" + contentType)
                     .path("/" + id)
-                    .path("/" + fileName)
+                    .path("/" + uuidFilename)
                     .toUriString();
 
-            return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+            return new UploadFileResponse(uuidFilename, fileDownloadUri, file.getContentType(), file.getSize());
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
     }
 
@@ -113,6 +120,14 @@ public class FileUploadUtil {
             throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
         }
         return fileName;
+    }
+
+    public String getFileExtension(String filename) {
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex == -1 || dotIndex == filename.length() - 1) {
+            throw new FileStorageException("Invalid multipart file or file_entity_marker");
+        }
+        return filename.substring(dotIndex).toLowerCase();
     }
 
     private String getMediaType(String contentType) {
