@@ -22,7 +22,7 @@ public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
                         t.image,
                         t.created_at,
                         t.updated_at,
-                        t.max_score,
+                        t.score_per_question,
                         t.difficulty,
                         a.name AS art,
                         ut.user_id,
@@ -31,16 +31,11 @@ public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
                        FROM main.test t
                          LEFT JOIN main.user_test ut ON t.id = ut.test_id AND ut.user_id = :user_id
                          JOIN main.art a ON t.art_id = a.id
-
-
-
-
                     """, countQuery = """
 
             SELECT count(t.id)
                FROM main.test t
                  LEFT JOIN main.user_test ut ON t.id = ut.test_id AND ut.user_id = :user_id
-
             """)
     Page<UserTest> findAll(@Param("user_id") long userId, @NonNull Pageable pageable);
 
@@ -55,7 +50,7 @@ public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
                         t.image,
                         t.created_at,
                         t.updated_at,
-                        t.max_score,
+                        t.score_per_question,
                         t.difficulty,
                         a.name AS art,
                         ut.user_id,
@@ -65,17 +60,12 @@ public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
                          LEFT JOIN main.user_test ut ON t.id = ut.test_id AND ut.user_id = :user_id
                          JOIN main.art a ON t.art_id = a.id
                      WHERE lower(a.name) = :art_name
-
-
-
-
                     """, countQuery = """
 
             SELECT count(t.id)
                FROM main.test t
                  LEFT JOIN main.user_test ut ON t.id = ut.test_id AND ut.user_id = :user_id
              WHERE lower(a.name) = :art_name
-
             """)
     Page<UserTest> findAllWhereArtNameEquals(@Param("user_id") long userId,
                                              @Param("art_name") String artName,
