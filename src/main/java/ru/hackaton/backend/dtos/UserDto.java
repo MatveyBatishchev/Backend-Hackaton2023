@@ -21,6 +21,7 @@ public class UserDto {
 
     private String name;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String avatar;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
