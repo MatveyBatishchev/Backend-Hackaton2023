@@ -14,9 +14,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Component
 public class FileUploadUtil {
+
+    private final static List<String> mediaTypes = List.of("image", "video", "audio");
 
     private final Path fileStorageLocation;
 
@@ -25,29 +28,40 @@ public class FileUploadUtil {
         this.fileStorageLocation = Paths.get(fileUploadPath).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
+            for (FileEntityMarker fileEntityMarker : FileEntityMarker.values()) {
+                for (String mediaType : mediaTypes) {
+                    Files.createDirectories(this.fileStorageLocation.resolve(fileEntityMarker.getName()).resolve(mediaType));
+                }
+            }
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored", ex);
         }
     }
 
     @SneakyThrows
-    public UploadFileResponse saveFile(MultipartFile file) {
-        // Normalize file name
+    public UploadFileResponse saveFile(MultipartFile file, FileEntityMarker fileEntityMarker) {
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
-            // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
-            // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            String contentType = file.getContentType().substring(0, file.getContentType().indexOf('/'));
+            String entityMarker = fileEntityMarker.getName();
+
+            Path targetLocation = this.fileStorageLocation
+                    .resolve(entityMarker)
+                    .resolve(contentType)
+                    .resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/media/")
-                    .path(fileName)
+                    .path("/" + entityMarker)
+                    .path("/" + contentType)
+                    .path("/" + fileName)
                     .toUriString();
 
             return UploadFileResponse.builder()
