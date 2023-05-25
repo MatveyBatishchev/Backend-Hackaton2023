@@ -32,6 +32,12 @@ public class School {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "longitude", updatable = false)
+    private double longitude;
+
+    @Column(name = "latitude", updatable = false)
+    private double latitude;
+
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;
 

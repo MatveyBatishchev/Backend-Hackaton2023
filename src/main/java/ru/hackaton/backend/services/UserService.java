@@ -8,15 +8,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
+import ru.hackaton.backend.errors.UserAlreadyExistException;
 import ru.hackaton.backend.mappers.UserMapper;
 import ru.hackaton.backend.models.domain.User;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.repositories.UserRepository;
 import ru.hackaton.backend.repositories.UserTestRepository;
+import ru.hackaton.backend.util.FileUploadUtil;
 import ru.hackaton.backend.util.PageWrapper;
+import ru.hackaton.backend.util.UploadFileResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +38,8 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final FileUploadUtil fileUploadUtil;
+
 
 //    private final UserTestMapper userTestMapper;
 
@@ -43,6 +49,9 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail()))
+            throw new UserAlreadyExistException("There is already an account with that email address: " + userDto.getEmail());
+
         User newUser = userMapper.toUser(userDto);
         return userMapper.toDto(userRepository.save(newUser));
     }
@@ -75,6 +84,16 @@ public class UserService {
         return new PageWrapper<>(page.getTotalElements(), userMapper.mapToList(page.getContent()));
     }
 
+    @Transactional
+    public UploadFileResponse uploadUserAvatar(long id, MultipartFile file) {
+        if (userRepository.existsById(id)) {
+            UploadFileResponse uploadFileResponse = fileUploadUtil.saveUserAvatar(id, file);
+            userRepository.updateUserAvatar(id, uploadFileResponse.getFileUri());
+            return uploadFileResponse;
+        } else {
+            throw new EntityNotFoundException("Пользователь с id " + id + " не была найдена!");
+        }
+    }
 
     @Transactional
     public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {

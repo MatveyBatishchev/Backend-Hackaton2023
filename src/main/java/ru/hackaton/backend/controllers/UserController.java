@@ -3,18 +3,22 @@ package ru.hackaton.backend.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.util.PageWrapper;
+import ru.hackaton.backend.util.UploadFileResponse;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 
 @Tag(name = "Users")
@@ -23,7 +27,7 @@ public interface UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto create(@RequestBody UserDto userDto);
+    UserDto create(@RequestBody @Valid UserDto userDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
@@ -36,7 +40,7 @@ public interface UserController {
     @Operation(description = "Роли пользователя при вызове данного endpoint-а не изменяются")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void update(@PathVariable("id") long id, @RequestBody UserDto userDto);
+    void update(@PathVariable("id") long id, @RequestBody @Valid UserDto userDto);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -59,6 +63,11 @@ public interface UserController {
     PageWrapper<UserDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                                  @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
 
+    @Operation(summary = "Загрузка аватара пользователя")
+    @PutMapping(value ="/{id}/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    UploadFileResponse uploadAvatar(@PathVariable("id") long id,
+                                    @RequestParam("file") MultipartFile file);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
