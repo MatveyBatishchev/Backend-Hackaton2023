@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
