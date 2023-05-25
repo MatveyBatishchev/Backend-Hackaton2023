@@ -32,16 +32,24 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: address
-                  type: varchar(100)
+                  type: varchar(400)
                   remarks: "Адрес учебного заведения"
                   constraints:
                     nullable: false
               - column:
                   name: phone_number
-                  type: varchar(20)
+                  type: varchar(100)
                   remarks: "Главный телефон учебного заведения"
                   constraints:
                     nullable: false
+              - column:
+                  name: longitude
+                  type: double precision
+                  remarks: "Долгота в координатах школы"
+              - column:
+                  name: latitude
+                  type: double precision
+                  remarks: "Широта в координатах школы"
               - column:
                   name: created_at
                   type: datetime

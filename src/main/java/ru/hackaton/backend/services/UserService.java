@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
+import ru.hackaton.backend.errors.UserAlreadyExistException;
 import ru.hackaton.backend.mappers.UserMapper;
 import ru.hackaton.backend.models.domain.User;
 import ru.hackaton.backend.models.domain.UserRole;
@@ -48,6 +49,9 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail()))
+            throw new UserAlreadyExistException("There is already an account with that email address: " + userDto.getEmail());
+
         User newUser = userMapper.toUser(userDto);
         return userMapper.toDto(userRepository.save(newUser));
     }

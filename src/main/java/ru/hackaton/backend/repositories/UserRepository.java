@@ -25,6 +25,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "roles")
     Page<User> findAll(@NonNull Pageable pageable);
 
+    boolean existsByEmail(String email);
+
     @Modifying
     @Query(value = "DELETE FROM main.user_role WHERE user_id=:user_id", nativeQuery = true)
     void deleteRolesFromUser(@Param("user_id") long userId);
