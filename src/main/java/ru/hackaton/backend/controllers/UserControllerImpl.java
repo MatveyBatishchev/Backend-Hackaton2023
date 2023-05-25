@@ -2,12 +2,14 @@ package ru.hackaton.backend.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.UserService;
 import ru.hackaton.backend.util.PageWrapper;
+import ru.hackaton.backend.util.UploadFileResponse;
 
 import java.util.List;
 
@@ -47,6 +49,10 @@ public class UserControllerImpl implements UserController {
         return userService.getAllUsers(pageNum, perPage);
     }
 
+    @Override
+    public UploadFileResponse uploadAvatar(long id, MultipartFile file) {
+        return userService.uploadUserAvatar(id, file);
+    }
 
     @Override
     public void updateUserTest(long userId, long testId, UserTestDto userTestDto) {

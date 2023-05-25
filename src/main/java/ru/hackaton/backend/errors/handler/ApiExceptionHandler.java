@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.hackaton.backend.errors.FileStorageException;
 
 import java.sql.SQLException;
 
@@ -92,6 +93,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex) {
         return buildResponseEntity(new ApiError(INTERNAL_SERVER_ERROR, ex));
+    }
+
+    @ExceptionHandler({FileStorageException.class})
+    protected ResponseEntity<Object> handleEntityNotFoundException(FileStorageException ex) {
+        return buildResponseEntity(new ApiError(BAD_REQUEST, ex));
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {

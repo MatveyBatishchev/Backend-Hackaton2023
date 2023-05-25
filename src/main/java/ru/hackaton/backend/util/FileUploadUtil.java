@@ -1,6 +1,6 @@
 package ru.hackaton.backend.util;
 
-import lombok.SneakyThrows;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,7 +30,8 @@ public class FileUploadUtil {
             Files.createDirectories(this.fileStorageLocation);
             for (FileEntityMarker fileEntityMarker : FileEntityMarker.values()) {
                 for (String mediaType : mediaTypes) {
-                    Files.createDirectories(this.fileStorageLocation.resolve(fileEntityMarker.getName()).resolve(mediaType));
+                    Path mediaTypeDirectory = fileStorageLocation.resolve(fileEntityMarker.getName()).resolve(mediaType);
+                    Files.createDirectories(mediaTypeDirectory);
                 }
             }
         } catch (Exception ex) {
@@ -38,23 +39,20 @@ public class FileUploadUtil {
         }
     }
 
-    @SneakyThrows
     public UploadFileResponse saveFile(MultipartFile file, FileEntityMarker fileEntityMarker) {
+        String fileName = validateFile(file, mediaTypes);
+        String contentType = getMediaType(file.getContentType());
+        String entityMarker = fileEntityMarker.getName();
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        if (fileEntityMarker.equals(FileEntityMarker.USER))
+            throw new FileStorageException("Invalid multipart file or file_entity_marker");
 
         try {
-            if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
-
-            String contentType = file.getContentType().substring(0, file.getContentType().indexOf('/'));
-            String entityMarker = fileEntityMarker.getName();
-
             Path targetLocation = this.fileStorageLocation
                     .resolve(entityMarker)
                     .resolve(contentType)
                     .resolve(fileName);
+
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -64,15 +62,61 @@ public class FileUploadUtil {
                     .path("/" + fileName)
                     .toUriString();
 
-            return UploadFileResponse.builder()
-                        .fileName(fileName)
-                        .fileUri(fileDownloadUri)
-                        .contentType(file.getContentType())
-                        .fileSize(file.getSize())
-                    .build();
+            return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
+    }
+
+    public UploadFileResponse saveUserAvatar(long id, MultipartFile file) {
+        String fileName = validateFile(file, List.of("image"));
+        String userFileMarker = FileEntityMarker.USER.getName();
+
+        try {
+            Path targetLocation = this.fileStorageLocation
+                    .resolve(userFileMarker)
+                    .resolve("image")
+                    .resolve(String.valueOf(id));
+
+            if (!Files.exists(targetLocation)) {
+                Files.createDirectories(targetLocation);
+            } else {
+                FileUtils.cleanDirectory(targetLocation.toFile());
+            }
+            targetLocation = targetLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/media/")
+                    .path("/" + userFileMarker)
+                    .path("/image")
+                    .path("/" + id)
+                    .path("/" + fileName)
+                    .toUriString();
+
+            return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+        }
+    }
+
+    private String validateFile(MultipartFile file, List<String> mediaTypes) {
+        if (file == null
+                || file.getOriginalFilename() == null
+                || file.getContentType() == null
+                || !mediaTypes.contains(getMediaType(file.getContentType()))) {
+            throw new FileStorageException("Invalid multipart file or file_entity_marker");
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        if (fileName.contains("..")) {
+            throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+        }
+        return fileName;
+    }
+
+    private String getMediaType(String contentType) {
+        return contentType.substring(0, contentType.indexOf('/'));
     }
 
 }

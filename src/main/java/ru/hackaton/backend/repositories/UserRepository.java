@@ -60,5 +60,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """, nativeQuery = true)
     int getUserPosition(@Param("user_id") long userId);
 
+    @Modifying
+    @Query(value = """
+            UPDATE main.user
+            SET avatar = :avatar
+            WHERE id = :user_id
+            """, nativeQuery = true)
+    void updateUserAvatar(@Param("user_id") long id, @Param("avatar") String avatar);
+
 
 }
