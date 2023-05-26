@@ -24,7 +24,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     @NonNull
     Optional<Article> findById(@NonNull Long aLong);
 
-    @EntityGraph(attributePaths = {"articleType"})
+    @EntityGraph(attributePaths = {"articleType", "arts"})
     @Override
     @NonNull
     Page<Article> findAll(@NonNull Specification<Article> spec, @NonNull Pageable pageable);

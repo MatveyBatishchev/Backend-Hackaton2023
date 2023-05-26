@@ -21,11 +21,10 @@ public interface ArticleMapper {
     @Mapping(target = "arts", qualifiedByName = "mapToArtDtoSet")
     ArticleDto toDto(Article article);
 
-    @Named("toArticleDtoIgnoringContentAndArts")
+    @Named("toArticleDtoIgnoringContent")
     @Mapping(target = "content", ignore = true)
-    @Mapping(target = "arts", ignore = true)
     @Mapping(target = "articleType", qualifiedByName = "toArticleTypeDto")
-    ArticleDto toDtoIgnoringContentAndArts(Article article);
+    ArticleDto toDtoIgnoringContent(Article article);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "arts", ignore = true)
@@ -43,7 +42,7 @@ public interface ArticleMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     void updateArticleFromArticleDto(ArticleDto articleDto, @MappingTarget Article entity);
 
-    @IterableMapping(qualifiedByName = "toArticleDtoIgnoringContentAndArts")
+    @IterableMapping(qualifiedByName = "toArticleDtoIgnoringContent")
     List<ArticleDto> mapToList(Collection<Article> articles);
 
 }
