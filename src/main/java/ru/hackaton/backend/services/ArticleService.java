@@ -23,7 +23,7 @@ import static ru.hackaton.backend.repositories.ArticleRepository.Specs.*;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final static String DEFAULT_SORT_OPTION = "id";
+    private final static String DEFAULT_SORT_OPTION = "updatedAt";
 
     private final ArticleRepository articleRepository;
 
@@ -63,7 +63,7 @@ public class ArticleService {
     public PageWrapper<ArticleDto> getAllArticles(Integer pageNum, Integer perPage, String nameSearch,
                                                   List<Long> articleTypeIds, List<Long> artIds) {
         perPage = Math.min(perPage, 100);
-        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.ASC, DEFAULT_SORT_OPTION));
+        Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
         Specification<Article> spec = Specification.where(null);
         if (nameSearch != null) spec = spec.and(nameLike(nameSearch));
