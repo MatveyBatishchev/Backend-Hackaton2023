@@ -109,15 +109,15 @@ public class UserService {
         userRepository.deleteUserTest(userId, testId);
     }
 
-    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, Long artId) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
 
         Page<UserTest> page;
-        if (artName == null)
+        if (artId == null)
             page = userTestRepository.findAll(userId, pageable);
         else
-            page = userTestRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
+            page = userTestRepository.findAllWhereArtIdEquals(userId, artId, pageable);
 
         return new PageWrapper<>(page.getTotalElements(), page.getContent());
     }

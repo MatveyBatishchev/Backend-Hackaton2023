@@ -97,7 +97,7 @@ public interface UserController {
     PageWrapper<UserTest> readAllUserTests(@PathVariable("userId") long userId,
                                            @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                                            @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
-                                           @RequestParam(value = "art_name", required = false) String artname);
+                                           @RequestParam(value = "art_id", required = false) Long artId);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Возвращает текущую позицию пользователя в рейтинге")
