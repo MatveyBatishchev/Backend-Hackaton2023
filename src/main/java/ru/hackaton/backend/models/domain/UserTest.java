@@ -29,10 +29,15 @@ public class UserTest {
     private Integer scorePerQuestion;
     private String difficulty;
 
+    private Long artId;
     private String art;
+
+    private Long questionsSize;
     private Long userId;
 
     private Integer score;
+
+    private Long answersSize;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime passedAt;

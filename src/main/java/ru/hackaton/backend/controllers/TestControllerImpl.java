@@ -36,7 +36,17 @@ public class TestControllerImpl implements TestController {
     }
 
     @Override
-    public List<TestDto> readAll(Integer pageNum, Integer perPage, Difficulty difficulty) {
-        return testService.getAllTests(pageNum, perPage, difficulty);
+    public List<TestDto> readAll(Integer pageNum, Integer perPage, Difficulty difficulty, Long artId) {
+        return testService.getAllTests(pageNum, perPage, difficulty, artId);
+    }
+
+    @Override
+    public Long getCount(Long artName) {
+        return testService.getCount(artName);
+    }
+
+    @Override
+    public Long getScoreSum(Long artName) {
+        return testService.getScoreSum(artName);
     }
 }

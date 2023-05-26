@@ -109,21 +109,35 @@ public class UserService {
         userRepository.deleteUserTest(userId, testId);
     }
 
-    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
+    public PageWrapper<UserTest> getAllUserTests(long userId, Integer pageNum, Integer perPage, Long artId) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, "updated_at"));
 
         Page<UserTest> page;
-        if (artName == null)
+        if (artId == null)
             page = userTestRepository.findAll(userId, pageable);
         else
-            page = userTestRepository.findAllWhereArtNameEquals(userId, artName.toLowerCase(), pageable);
+            page = userTestRepository.findAllWhereArtIdEquals(userId, artId, pageable);
 
         return new PageWrapper<>(page.getTotalElements(), page.getContent());
     }
 
     public int getUserPosition(long userId) {
         return userRepository.getUserPosition(userId);
+    }
+
+    public long getUserTestsCount(long userId, Long artId) {
+        if (artId != null)
+            return userTestRepository.findCount(userId, artId);
+
+        return userTestRepository.findCount(userId);
+    }
+
+    public long getUserTestsScoreSum(long userId, Long artId) {
+        if (artId != null)
+            return userTestRepository.findScoreSum(userId, artId);
+
+        return userTestRepository.findScoreSum(userId);
     }
 
 }

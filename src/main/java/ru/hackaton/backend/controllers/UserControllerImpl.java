@@ -65,12 +65,22 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public PageWrapper<UserTest> readAllUserTests(long userId, Integer pageNum, Integer perPage, String artName) {
-        return userService.getAllUserTests(userId, pageNum, perPage, artName);
+    public PageWrapper<UserTest> readAllUserTests(long userId, Integer pageNum, Integer perPage, Long artId) {
+        return userService.getAllUserTests(userId, pageNum, perPage, artId);
     }
 
     @Override
     public int getUserPosition(long userId) {
         return userService.getUserPosition(userId);
+    }
+
+    @Override
+    public long getUserTestsCount(long userId, Long artId) {
+        return userService.getUserTestsCount(userId, artId);
+    }
+
+    @Override
+    public long getUserTestsScoreSum(long userId, Long artId) {
+        return userService.getUserTestsScoreSum(userId, artId);
     }
 }

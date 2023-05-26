@@ -16,6 +16,7 @@ import ru.hackaton.backend.repositories.TestRepository;
 
 import java.util.List;
 
+import static ru.hackaton.backend.repositories.TestRepository.Specs.artIdEquals;
 import static ru.hackaton.backend.repositories.TestRepository.Specs.difficultyEquals;
 
 @Service
@@ -58,16 +59,33 @@ public class TestService {
         testRepository.deleteById(id);
     }
 
-    public List<TestDto> getAllTests(int pageNum, int perPage, Difficulty difficulty) {
+    public List<TestDto> getAllTests(int pageNum, int perPage, Difficulty difficulty, Long artId) {
         perPage = Math.min(perPage, 100);
         Pageable pageable = PageRequest.of(pageNum, perPage, Sort.by(Sort.Direction.DESC, DEFAULT_SORT_OPTION));
 
         Specification<Test> spec = Specification.where(null);
         if (difficulty != null) spec = spec.and(difficultyEquals(difficulty));
+        if (artId != null) spec = spec.and(artIdEquals(artId));
 
         Page<Test> tests = testRepository.findAll(spec, pageable);
 
         return testMapper.toDtoList(tests.getContent());
     }
 
+    public long getCount(Long artId) {
+        Specification<Test> spec = null;
+
+        if (artId != null) spec = Specification.where(artIdEquals(artId));
+
+        return testRepository.count(spec);
+    }
+
+    public long getScoreSum(Long artId) {
+
+        if (artId != null)
+            return testRepository.findScoreSum(artId);
+
+        return testRepository.findScoreSum();
+
+    }
 }
