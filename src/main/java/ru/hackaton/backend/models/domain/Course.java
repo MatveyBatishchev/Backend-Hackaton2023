@@ -43,11 +43,14 @@ public class Course {
     @OneToMany
     private Set<Lesson> lessons = new HashSet<>();
 
+    @OneToOne
+    private StudyProgram studyProgram;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "school_art",
-            joinColumns = {@JoinColumn(name = "school_id")},
-            inverseJoinColumns = {@JoinColumn(name = "art_id")})
-    private Set<User> users = new HashSet<>();
+
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(name = "school_art",
+//            joinColumns = {@JoinColumn(name = "school_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "art_id")})
+//    private Set<User> users = new HashSet<>();
 
 }
