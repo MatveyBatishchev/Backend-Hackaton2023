@@ -1,5 +1,6 @@
 package ru.hackaton.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,10 +52,12 @@ public interface TestController {
 
     @GetMapping(value = "/count", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Возвращает количество тестов")
     Long getCount(@RequestParam(value = "art_id", required = false) Long artId);
 
     @GetMapping(value = "/score-sum", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Возвращает сумму очков, которые можно получить за прохождение тестов")
     Long getScoreSum(@RequestParam(value = "art_id", required = false) Long artId);
 
 }

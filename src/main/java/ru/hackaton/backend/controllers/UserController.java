@@ -64,7 +64,7 @@ public interface UserController {
                                  @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
 
     @Operation(summary = "Загрузка аватара пользователя")
-    @PutMapping(value ="/{id}/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{id}/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     UploadFileResponse uploadAvatar(@PathVariable("id") long id,
                                     @RequestParam("file") MultipartFile file);
@@ -105,5 +105,20 @@ public interface UserController {
     @ResponseStatus(HttpStatus.OK)
     int getUserPosition(@PathVariable("userId") long userId);
 
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Возвращает количество тестов, пройденных пользователем")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @GetMapping("/{userId}/tests/count")
+    @ResponseStatus(HttpStatus.OK)
+    long getUserTestsCount(@PathVariable("userId") long userId,
+                          @RequestParam(value = "art_id", required = false) Long artId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @Operation(summary = "Возвращает сумму очков за тесты, пройденные пользователем")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @GetMapping("/{userId}/tests/score-sum")
+    @ResponseStatus(HttpStatus.OK)
+    long getUserTestsScoreSum(@PathVariable("userId") long userId,
+                             @RequestParam(value = "art_id", required = false) Long artId);
 
 }

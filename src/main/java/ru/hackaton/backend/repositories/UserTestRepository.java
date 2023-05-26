@@ -2,11 +2,9 @@ package ru.hackaton.backend.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
-import ru.hackaton.backend.models.domain.Difficulty;
 import ru.hackaton.backend.models.domain.UserTest;
 
 public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
@@ -78,8 +76,49 @@ public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
              WHERE a.id = :art_id
             """)
     Page<UserTest> findAllWhereArtIdEquals(@Param("user_id") long userId,
-                                             @Param("art_id") Long artId,
-                                             @NonNull Pageable pageable);
+                                           @Param("art_id") Long artId,
+                                           @NonNull Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = """
+                    SELECT COUNT(*)
+                    FROM main.user_test ut
+                    INNER JOIN main.test t ON t.id = ut.test_id
+                    WHERE ut.user_id = :user_id
+                    """)
+    Long findCount(@Param("user_id") long userId);
+
+
+    @Query(nativeQuery = true,
+            value = """
+                    SELECT COUNT(*)
+                    FROM main.user_test ut
+                    INNER JOIN main.test t ON t.id = ut.test_id
+                    WHERE ut.user_id = :user_id  AND art_id = :art_id
+                    """)
+    Long findCount(@Param("user_id") long userId,
+                   @Param("art_id") long artId);
+
+
+    @Query(nativeQuery = true,
+            value = """
+                    SELECT COALESCE(sum(ut.score), 0)
+                    FROM main.user_test ut
+                    JOIN main.test t ON t.id = ut.test_id
+                    WHERE ut.user_id = :user_id
+                    """)
+    Long findScoreSum(@Param("user_id") long userId);
+
+
+    @Query(nativeQuery = true,
+            value = """
+                    SELECT COALESCE(sum(ut.score), 0)
+                    FROM main.user_test ut
+                    JOIN main.test t ON t.id = ut.test_id
+                    WHERE ut.user_id = :user_id  AND art_id = :art_id
+                    """)
+    Long findScoreSum(@Param("user_id") long userId,
+                      @Param("art_id") long artId);
 
 
 //    interface Specs {

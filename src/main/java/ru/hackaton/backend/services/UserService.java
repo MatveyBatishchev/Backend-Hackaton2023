@@ -126,4 +126,18 @@ public class UserService {
         return userRepository.getUserPosition(userId);
     }
 
+    public long getUserTestsCount(long userId, Long artId) {
+        if (artId != null)
+            return userTestRepository.findCount(userId, artId);
+
+        return userTestRepository.findCount(userId);
+    }
+
+    public long getUserTestsScoreSum(long userId, Long artId) {
+        if (artId != null)
+            return userTestRepository.findScoreSum(userId, artId);
+
+        return userTestRepository.findScoreSum(userId);
+    }
+
 }
