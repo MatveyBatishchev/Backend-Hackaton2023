@@ -46,6 +46,15 @@ public interface TestController {
     @ResponseStatus(HttpStatus.OK)
     List<TestDto> readAll(@RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
                           @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage,
-                          @Parameter(description = "Сложность теста (LITE, INTERMEDIATE, HARD)") @RequestParam(value = "difficulty", required = false) Difficulty difficulty);
+                          @Parameter(description = "Сложность теста (LITE, INTERMEDIATE, HARD)") @RequestParam(value = "difficulty", required = false) Difficulty difficulty,
+                          @RequestParam(value = "art_id", required = false) Long artId);
+
+    @GetMapping(value = "/count", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    Long getCount(@RequestParam(value = "art_id", required = false) Long artId);
+
+    @GetMapping(value = "/score-sum", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    Long getScoreSum(@RequestParam(value = "art_id", required = false) Long artId);
 
 }
