@@ -88,7 +88,7 @@ public class UserService {
     public UploadFileResponse uploadUserAvatar(long id, MultipartFile file) {
         if (userRepository.existsById(id)) {
             UploadFileResponse uploadFileResponse = fileUploadUtil.saveUserAvatar(id, file);
-            userRepository.updateUserAvatar(id, uploadFileResponse.getFileUri());
+            userRepository.updateUserAvatar(id, uploadFileResponse.getFileDetails().getFileUri());
             return uploadFileResponse;
         } else {
             throw new EntityNotFoundException("Пользователь с id " + id + " не была найдена!");

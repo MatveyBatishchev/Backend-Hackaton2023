@@ -67,7 +67,12 @@ public class FileUploadUtil {
                     .path("/" + uuidFilename)
                     .toUriString();
 
-            return new UploadFileResponse(originalFilename, fileDownloadUri, file.getContentType(), file.getSize());
+            return new UploadFileResponse(1, new FileDetails(
+                    uuidFilename,
+                    fileDownloadUri,
+                    file.getContentType(),
+                    file.getSize()
+            ));
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
@@ -101,7 +106,12 @@ public class FileUploadUtil {
                     .path("/" + uuidFilename)
                     .toUriString();
 
-            return new UploadFileResponse(uuidFilename, fileDownloadUri, file.getContentType(), file.getSize());
+            return new UploadFileResponse(1, new FileDetails(
+                    uuidFilename,
+                    fileDownloadUri,
+                    file.getContentType(),
+                    file.getSize()
+            ));
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + originalFilename + ". Please try again!", ex);
         }
