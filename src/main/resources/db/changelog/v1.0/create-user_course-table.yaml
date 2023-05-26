@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user_course-table
+      author: Damir
+      changes:
+        - createTable:
+            tableName: user_course
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
