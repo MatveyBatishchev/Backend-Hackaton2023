@@ -26,7 +26,6 @@ public interface TestRepository extends JpaRepository<Test, Long>, JpaSpecificat
     @NonNull
     Optional<Test> findById(@NonNull Long id);
 
-
     @Override
     @NonNull
     @EntityGraph(attributePaths = {"art"})
@@ -38,6 +37,8 @@ public interface TestRepository extends JpaRepository<Test, Long>, JpaSpecificat
     @Query(value = "SELECT SUM(t.scorePerQuestion * size(t.questions)) FROM Test t")
     Long findScoreSum();
 
+    @Query(value = "SELECT SUM(t.scorePerQuestion * size(t.questions)) FROM Test t WHERE t.id = :test_id")
+    Long findScoreSumByTestId(@Param("test_id") long testId);
 
     interface Specs {
 

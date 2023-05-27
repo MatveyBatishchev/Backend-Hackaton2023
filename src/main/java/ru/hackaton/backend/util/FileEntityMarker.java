@@ -15,6 +15,8 @@ public enum FileEntityMarker {
 
     USER("users"),
 
+    SCHOOL("schools"),
+
     TEST("tests");
 
     private final String name;

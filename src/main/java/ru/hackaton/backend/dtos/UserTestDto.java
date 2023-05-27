@@ -21,4 +21,11 @@ public class UserTestDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     private LocalDateTime passedAt;
 
+    // For spring projections as it doesn't resolve lombok constructor
+    public UserTestDto(Long userId, Long testId, Integer score, LocalDateTime passedAt) {
+        this.userId = userId;
+        this.testId = testId;
+        this.score = score;
+        this.passedAt = passedAt;
+    }
 }

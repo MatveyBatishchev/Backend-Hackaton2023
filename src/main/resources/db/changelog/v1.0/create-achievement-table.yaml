@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-achievement-table
+      author: MYBatishchev
+      comment: "Создание таблицы с записями о достижениях"
+      changes:
+        - createTable:
+            tableName: achievement
+            remarks: "Таблица с записями о достижениях"
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: varchar(200)
+                  remarks: "Название достижения"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: success_info
+                  type: varchar(200)
+                  remarks: "Сообщение при получении достижения"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: painting_name
+                  type: varchar(200)
+                  remarks: "Название картины в достижении"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: painting_caption
+                  type: varchar(100)
+                  remarks: "Подпись к картине (автор/год) в достижении"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: painting_description
+                  type: text
+                  remarks: "Описание картины в достижении"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: image
+                  type: varchar(300)
+                  remarks: "Ссылка на изображение картины"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: achievement_type
+                  type: smallint
+                  remarks: "Уникальный тип достижения, описывающий его"
+                  constraints:
+                    nullable: false
+                    unique: true

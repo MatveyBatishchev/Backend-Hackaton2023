@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-achievement-table
+      author: MYBatishchev
+      comment: "Создание таблицы посредника для связи между пользователями и достижениями"
+      changes:
+        - createTable:
+            tableName: user_achievement
+            remarks: "Таблица посредник для связи между пользователями и достижениями"
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: achievement_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
