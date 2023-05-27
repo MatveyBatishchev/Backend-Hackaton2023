@@ -26,9 +26,6 @@ databaseChangeLog:
                   name: image
                   type: varchar(255)
               - column:
-                  name: content
-                  type: bigint
-              - column:
                   name: duration
                   type: bigint
               - column:

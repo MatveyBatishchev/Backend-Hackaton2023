@@ -22,9 +22,6 @@ databaseChangeLog:
                   name: image
                   type: varchar(255)
               - column:
-                  name: content
-                  type: bigint
-              - column:
                   name: description
                   type: varchar(255)
                   constraints:
