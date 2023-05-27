@@ -9,13 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hackaton.backend.dtos.CourseDto;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.errors.UserAlreadyExistException;
+import ru.hackaton.backend.mappers.CourseMapper;
 import ru.hackaton.backend.mappers.UserMapper;
-import ru.hackaton.backend.models.domain.User;
-import ru.hackaton.backend.models.domain.UserRole;
-import ru.hackaton.backend.models.domain.UserTest;
+import ru.hackaton.backend.models.domain.*;
+import ru.hackaton.backend.repositories.CourseRepository;
 import ru.hackaton.backend.repositories.UserRepository;
 import ru.hackaton.backend.repositories.UserTestRepository;
 import ru.hackaton.backend.util.FileUploadUtil;
@@ -24,6 +25,8 @@ import ru.hackaton.backend.util.UploadFileResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,6 +38,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserTestRepository userTestRepository;
+
+    private final CourseRepository courseRepository;
+
+    private final CourseMapper courseMapper;
 
     private final UserMapper userMapper;
 
@@ -138,6 +145,41 @@ public class UserService {
             return userTestRepository.findScoreSum(userId, artId);
 
         return userTestRepository.findScoreSum(userId);
+    }
+
+    public List<CourseDto> getUserCourses(long userId) {
+        User user = findUserById(userId);
+
+        Set<UserCourse> userCourses = user.getCourses();
+
+
+        return courseMapper.toDtoList(
+                userCourses.stream()
+                        .map(UserCourse::getCourse)
+                        .collect(Collectors.toList()));
+
+    }
+
+    public void addUserCourse(long userId, long courseId) {
+        User user = findUserById(userId);
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Курс с id %d не был найден!".formatted(courseId)));
+
+        user.addCourse(course);
+
+        userRepository.save(user);
+
+    }
+
+    public void deleteUserCourse(long userId, long courseId) {
+        User user = findUserById(userId);
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Курс с id %d не был найден!".formatted(courseId)));
+
+        user.removeCourse(course);
+
+        userRepository.save(user);
+
     }
 
 }

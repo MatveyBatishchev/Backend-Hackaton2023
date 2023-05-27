@@ -3,8 +3,6 @@ package ru.hackaton.backend.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import ru.hackaton.backend.models.domain.Art;
-import ru.hackaton.backend.models.domain.StudyProgram;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -38,6 +36,10 @@ public class CourseDto {
     private LocalDateTime updatedAt;
 
     private ArtDto art;
+
+    //На сколько процентов пользователь прошёл данный курс
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private Integer completion = null;
 
     private Set<LessonDto> lessons;
 
