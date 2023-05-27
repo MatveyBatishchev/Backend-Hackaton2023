@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import ru.hackaton.backend.models.domain.Art_;
 import ru.hackaton.backend.models.domain.Course;
 import ru.hackaton.backend.models.domain.Course_;
-import ru.hackaton.backend.models.domain.Test;
 
 import java.util.Optional;
 

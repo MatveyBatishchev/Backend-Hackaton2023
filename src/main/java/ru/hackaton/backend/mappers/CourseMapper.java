@@ -20,6 +20,7 @@ public interface CourseMapper {
     @Mapping(target = "content", expression = "java(course.getContent().getContent())")
     @Mapping(target = "art", qualifiedByName = "toArtDto")
     @Mapping(target = "studyProgram", qualifiedByName = "toStudyProgramDto")
+    @Mapping(target = "lessons", qualifiedByName = "toLessonDtoWithoutContent")
     CourseDto toDto(Course course);
 
     @Mapping(source = "studyProgram", target = "studyProgram", ignore = true)

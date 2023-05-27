@@ -19,6 +19,7 @@ public class LessonContent {
     @EqualsAndHashCode.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JoinColumn(name = "lesson_id")
     private Lesson lesson;
 
 
