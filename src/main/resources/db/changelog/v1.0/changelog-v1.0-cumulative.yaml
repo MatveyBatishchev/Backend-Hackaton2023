@@ -150,10 +150,10 @@ databaseChangeLog:
       file: create-user_course_lesson-table.yaml
   - include:
       relativeToChangelogFile: true
-      file: add-fk-course_content_course.yaml
+      file: add-fk-lesson_content_lesson.yaml
   - include:
       relativeToChangelogFile: true
-      file: add-fk-course_course_content.yaml
+      file: add-fk-course_content_course.yaml
   - include:
       relativeToChangelogFile: true
       file: add-fk-course_study_program.yaml
