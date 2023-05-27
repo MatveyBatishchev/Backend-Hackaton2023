@@ -2,9 +2,10 @@ package ru.hackaton.backend.models.domain;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,11 +48,29 @@ public class Course {
     @JoinColumn(name = "art_id")
     private Art art;
 
-    @OneToMany
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     private Set<Lesson> lessons = new HashSet<>();
-
     @OneToOne
+    @JoinColumn(name = "study_program_id")
     private StudyProgram studyProgram;
+
+    public void addLesson(Lesson lesson) {
+        lessons.add(lesson);
+        lesson.setCourse(this);
+    }
+
+    public void removeLesson(Lesson lesson) {
+        lessons.remove(lesson);
+        lesson.setCourse(null);
+    }
+
+    public Set<Lesson> getLessons() {
+        return Collections.unmodifiableSet(lessons);
+    }
 
 
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

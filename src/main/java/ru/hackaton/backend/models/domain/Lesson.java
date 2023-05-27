@@ -38,6 +38,7 @@ public class Lesson {
     private LocalDateTime updatedAt;
 
     @ManyToOne
+//    @JoinColumn(name = "course_id")
     private Course course;
 
     @Column(name = "intro")
