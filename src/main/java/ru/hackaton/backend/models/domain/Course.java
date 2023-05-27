@@ -4,6 +4,7 @@ package ru.hackaton.backend.models.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,12 @@ public class Course {
 
     @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "created_At", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_At")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "art_id")

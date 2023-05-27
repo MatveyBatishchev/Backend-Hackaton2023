@@ -3,6 +3,8 @@ package ru.hackaton.backend.models.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "lesson")
@@ -28,6 +30,12 @@ public class Lesson {
 
     @Column(name = "duration")
     private Integer duration;
+
+    @Column(name = "created_At", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_At")
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     private Course course;

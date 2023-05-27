@@ -32,6 +32,16 @@ databaseChangeLog:
                   name: duration
                   type: bigint
               - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
                   name: course_id
                   type: bigint
                   constraints:
