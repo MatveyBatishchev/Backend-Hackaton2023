@@ -16,8 +16,8 @@ public class Lesson {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "order")
-    private Integer order;
+    @Column(name = "lesson_order")
+    private Integer lessonOrder;
 
     @Column(name = "name")
     private String name;

@@ -13,7 +13,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
               - column:
-                  name: order
+                  name: lesson_order
                   type: smallint
                   constraints:
                     nullable: false
