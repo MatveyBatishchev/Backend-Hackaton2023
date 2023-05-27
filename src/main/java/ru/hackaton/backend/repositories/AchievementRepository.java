@@ -1,10 +1,14 @@
 package ru.hackaton.backend.repositories;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.hackaton.backend.models.domain.Achievement;
+import ru.hackaton.backend.models.domain.AchievementType;
 
 import java.util.List;
 
@@ -20,6 +24,14 @@ public interface AchievementRepository extends JpaRepository<Achievement, Long> 
             ORDER BY a.id""", nativeQuery = true)
     Page<Achievement> findAllWithUserReceived(Long userId, Pageable pageable);
 
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO main.user_achievement(user_id, achievement_id) VALUES (:user_id, :achievement_id)",
+            nativeQuery = true)
+    void addAchievementToUser(@Param("user_id") long userId, @Param("achievement_id") long achievementId);
+
     List<Achievement> findAllByUserId(Long userId);
+
+    Achievement findByAchievementType(AchievementType achievementType);
 
 }

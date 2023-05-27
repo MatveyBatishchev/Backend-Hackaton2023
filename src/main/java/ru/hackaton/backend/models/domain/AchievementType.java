@@ -9,6 +9,6 @@ public enum AchievementType {
     COURSE_FIRST_LESSON,
     COURSE_MORE_1,
     COURSE_PURCHASED,
-    TEST_MORE_1000_POINTS,
+    PROFILE_MORE_100_POINTS,
     VK_SHARE
 }

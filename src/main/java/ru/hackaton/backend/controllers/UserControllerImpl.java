@@ -10,6 +10,8 @@ import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.AchievementService;
 import ru.hackaton.backend.services.UserService;
+import ru.hackaton.backend.util.AchievementCategory;
+import ru.hackaton.backend.util.AchievementResponse;
 import ru.hackaton.backend.util.PageWrapper;
 import ru.hackaton.backend.util.UploadFileResponse;
 
@@ -86,6 +88,11 @@ public class UserControllerImpl implements UserController {
     @Override
     public long getUserTestsScoreSum(long userId, Long artId) {
         return userService.getUserTestsScoreSum(userId, artId);
+    }
+
+    @Override
+    public List<AchievementResponse> checkUserAchievement(long userId, AchievementCategory achievementCategory) {
+        return achievementService.checkUserAchievements(userId, achievementCategory);
     }
 
     @Override

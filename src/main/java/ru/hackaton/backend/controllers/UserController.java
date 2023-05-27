@@ -13,6 +13,8 @@ import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
+import ru.hackaton.backend.util.AchievementCategory;
+import ru.hackaton.backend.util.AchievementResponse;
 import ru.hackaton.backend.util.PageWrapper;
 import ru.hackaton.backend.util.UploadFileResponse;
 
@@ -121,6 +123,14 @@ public interface UserController {
     @ResponseStatus(HttpStatus.OK)
     long getUserTestsScoreSum(@PathVariable("userId") long userId,
                              @RequestParam(value = "art_id", required = false) Long artId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Проверят выполнение условий по достижениям с переданным типом для заданного пользователя")
+    @GetMapping(value = "/{id}/achievements-check", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    List<AchievementResponse> checkUserAchievement(@PathVariable("id") long id,
+                                                   @RequestParam("achievement_category") AchievementCategory achievementCategory);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")

@@ -34,7 +34,7 @@ public class User {
     private String avatar;
 
     @Column(name = "score")
-    private Long score = 0l;
+    private Long score = 0L;
 
     @Column(name = "created_At", updatable = false)
     private LocalDateTime createdAt;

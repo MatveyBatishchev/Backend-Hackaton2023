@@ -46,6 +46,7 @@ public class Test {
 
     @OneToOne(fetch = FetchType.EAGER)
     private Art art;
+
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @ToString.Exclude

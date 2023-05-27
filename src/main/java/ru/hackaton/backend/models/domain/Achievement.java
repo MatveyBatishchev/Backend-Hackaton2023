@@ -2,6 +2,7 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,7 @@ public class Achievement {
     @Column(name = "image")
     private String image;
 
+    @Formula(value = "false")
     private boolean received;
 
     @Column(name = "success_info")
