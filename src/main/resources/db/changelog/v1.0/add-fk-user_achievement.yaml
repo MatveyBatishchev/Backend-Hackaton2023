@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-user_achievement
+      author: MYBatishchev
+      comment: "Задаём внешние ключи в таблице user_achievement"
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: user_achievement
+            baseColumnNames: achievement_id
+            constraintName: fk_user_achievement_achievement_id
+            onDelete: CASCADE
+            referencedTableName: achievement
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: user_achievement
+            baseColumnNames: user_id
+            constraintName: fk_school_art_user_id
+            onDelete: CASCADE
+            referencedTableName: user
+            referencedColumnNames: id

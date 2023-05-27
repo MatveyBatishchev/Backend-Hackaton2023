@@ -3,10 +3,12 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hackaton.backend.dtos.AchievementDto;
 import ru.hackaton.backend.dtos.UserDto;
 import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
+import ru.hackaton.backend.services.AchievementService;
 import ru.hackaton.backend.services.UserService;
 import ru.hackaton.backend.util.PageWrapper;
 import ru.hackaton.backend.util.UploadFileResponse;
@@ -18,6 +20,8 @@ import java.util.List;
 public class UserControllerImpl implements UserController {
 
     private final UserService userService;
+
+    private final AchievementService achievementService;
 
     @Override
     public UserDto create(UserDto userDto) {
@@ -83,4 +87,10 @@ public class UserControllerImpl implements UserController {
     public long getUserTestsScoreSum(long userId, Long artId) {
         return userService.getUserTestsScoreSum(userId, artId);
     }
+
+    @Override
+    public PageWrapper<AchievementDto> readAllAchievements(long id) {
+        return achievementService.getAllAchievements(id);
+    }
+
 }

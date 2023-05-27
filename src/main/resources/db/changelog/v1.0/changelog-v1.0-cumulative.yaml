@@ -119,3 +119,13 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: create-procedure-recalculate_user_score.yaml
+
+  - include:
+      relativeToChangelogFile: true
+      file: create-achievement-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_achievement-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_achievement.yaml
