@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class CourseDto {
@@ -37,7 +37,7 @@ public class CourseDto {
 
     private ArtDto art;
 
-    private Set<LessonDto> lessons;
+    private List<LessonDto> lessons;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private StudyProgramDto studyProgram;

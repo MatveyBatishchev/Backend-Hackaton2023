@@ -26,6 +26,9 @@ public class School {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "address")
     private String address;
 

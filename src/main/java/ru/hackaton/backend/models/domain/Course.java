@@ -1,14 +1,13 @@
 package ru.hackaton.backend.models.domain;
 
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,7 +42,7 @@ public class Course {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
-    private LocalDateTime updatedAt;;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "art_id")
@@ -54,7 +53,8 @@ public class Course {
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
-    private Set<Lesson> lessons = new HashSet<>();
+    @OrderBy("lessonOrder ASC")
+    private List<Lesson> lessons = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "study_program_id")
     private StudyProgram studyProgram;
@@ -70,15 +70,8 @@ public class Course {
         lesson.setCourse(null);
     }
 
-    public Set<Lesson> getLessons() {
-        return Collections.unmodifiableSet(lessons);
+    public List<Lesson> getLessons() {
+        return Collections.unmodifiableList(lessons);
     }
-
-
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(name = "school_art",
-//            joinColumns = {@JoinColumn(name = "school_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "art_id")})
-//    private Set<User> users = new HashSet<>();
 
 }

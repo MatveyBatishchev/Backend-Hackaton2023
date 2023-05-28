@@ -17,6 +17,7 @@ public class SchoolDto {
 
     private String email;
 
+    private String image;
     private String address;
 
     private String phoneNumber;
