@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
+import ru.hackaton.backend.dtos.UserTestDto;
 import ru.hackaton.backend.models.domain.User;
 
 import java.time.LocalDateTime;
@@ -38,6 +39,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "DELETE FROM main.user_test WHERE user_id = :user_id AND test_id = :test_id", nativeQuery = true)
     void deleteUserTest(@Param("user_id") long userId, @Param("test_id") long testId);
+
+    @Query(value = "SELECT new ru.hackaton.backend.dtos.UserTestDto(ut.userId, ut.id, ut.score, ut.passedAt) FROM UserTest ut WHERE ut.userId = :user_id AND ut.id = :test_id")
+    UserTestDto getUserTest(@Param("user_id") long userId, @Param("test_id") long testId);
 
     @Modifying
     @Query(value = """

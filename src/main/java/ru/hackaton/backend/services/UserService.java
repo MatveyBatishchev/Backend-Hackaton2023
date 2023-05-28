@@ -259,4 +259,7 @@ public class UserService {
     }
 
 
+    public UserTestDto getUserTest(long userId, long testId) {
+        return userRepository.getUserTest(userId, testId);
+    }
 }

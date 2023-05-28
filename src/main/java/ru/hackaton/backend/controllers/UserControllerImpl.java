@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.*;
-import ru.hackaton.backend.models.domain.UserCourse;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.AchievementService;
@@ -67,6 +66,11 @@ public class UserControllerImpl implements UserController {
     @Override
     public void deleteUserTest(long userId, long testId) {
         userService.deleteUserTest(userId, testId);
+    }
+
+    @Override
+    public UserTestDto getUserTest(long userId, long testId) {
+        return userService.getUserTest(userId, testId);
     }
 
     @Override

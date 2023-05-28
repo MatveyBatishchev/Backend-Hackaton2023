@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hackaton.backend.dtos.*;
-import ru.hackaton.backend.models.domain.UserCourse;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.util.AchievementCategory;
@@ -86,6 +85,14 @@ public interface UserController {
     @DeleteMapping("/{userId}/tests/{testId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteUserTest(@PathVariable("userId") long userId,
+                        @PathVariable("testId") long testId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Получает данные пользователя о прохождении данного теста")
+    @GetMapping("/{userId}/tests/{testId}")
+    @ResponseStatus(HttpStatus.OK)
+    UserTestDto getUserTest(@PathVariable("userId") long userId,
                         @PathVariable("testId") long testId);
 
     @SecurityRequirement(name = "Bearer Authentication")
