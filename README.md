@@ -15,6 +15,7 @@
 * Ссылка на админ-панель: http://178.170.196.129
 * Ссылка на репозиторий с кодом для Frontend (React Native): https://github.com/MatveyBatishchev/Frontend-Hackaton2023
 * Ссылка на репозиторий с кодом для админ-панели: https://github.com/MatveyBatishchev/AdminPanel-Hackaton2023
+* Ссылка на дизайн макеты Figma: https://www.figma.com/file/eu1NW4aWjXNBL30D3l456k/Design?type=design&node-id=0%3A1&t=ynPYe6ZCf8bkGy1M-1
 > Проекты были развёрнуты в облачном хранилище при помощи сервиса **SberCloud**
 
 ## Введение
