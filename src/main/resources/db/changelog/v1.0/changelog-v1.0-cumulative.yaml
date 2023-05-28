@@ -129,3 +129,43 @@ databaseChangeLog:
   - include:
       relativeToChangelogFile: true
       file: add-fk-user_achievement.yaml
+      # Courses
+  - include:
+      relativeToChangelogFile: true
+      file: create-course-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-course_content-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-lesson-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-lesson_content-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_course-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: create-user_course_lesson-table.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-lesson_content_lesson.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-course_content_course.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-course_study_program.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-lesson_course.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_course_course.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_course_lesson_user_course.yaml
+  - include:
+      relativeToChangelogFile: true
+      file: add-fk-user_course_user.yaml

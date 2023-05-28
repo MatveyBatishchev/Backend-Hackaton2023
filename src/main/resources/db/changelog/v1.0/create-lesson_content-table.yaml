@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-lesson_content-table
+      author: Damir
+      changes:
+        - createTable:
+            tableName: lesson_content
+            columns:
+              - column:
+                  name: lesson_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: content
+                  type: jsonb
+                  remarks: "Форматированный текст статьи в формате json"
+                  constraints:
+                    nullable: false

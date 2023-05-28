@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-course-table
+      author: Damir
+      comment: "Создание таблицы, хранящей курсы"
+      changes:
+        - createTable:
+            tableName: course
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: duration
+                  type: bigint
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: art_id
+                  type: bigint
+              - column:
+                  name: study_program_id
+                  type: bigint

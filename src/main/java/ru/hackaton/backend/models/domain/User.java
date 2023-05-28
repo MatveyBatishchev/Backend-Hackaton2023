@@ -1,12 +1,10 @@
 package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Data
@@ -48,6 +46,13 @@ public class User {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     private List<UserRole> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
+    private Set<UserCourse> courses = new HashSet<>();
+
     // Constructor for MyUserDetails
     public User(long id, String email) {
         this.id = id;
@@ -61,5 +66,19 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.roles = roles;
+    }
+
+    public void addCourse(Course course) {
+        courses.add(new UserCourse(this, course));
+    }
+
+    public void removeCourse(Course course) {
+        //TODO Is this correct? I'm not sure. This needs to be tested
+        UserCourse userCourse = new UserCourse(this, course);
+        courses.remove(userCourse);
+    }
+
+    public Set<UserCourse> getCourses() {
+        return Collections.unmodifiableSet(courses);
     }
 }

@@ -16,6 +16,12 @@ import java.util.List;
         config = IgnoreUnmappedMapperConfig.class)
 public interface UserMapper {
 
+
+    @Named("toId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(source = "id", target = "id")
+    UserDto toId(User user);
+
     @Named("toUserDto")
     @Mapping(target = "roles", qualifiedByName = "mapUserRolesToList")
     UserDto toDto(User user);

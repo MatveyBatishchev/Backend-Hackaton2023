@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hackaton.backend.dtos.AchievementDto;
-import ru.hackaton.backend.dtos.UserDto;
-import ru.hackaton.backend.dtos.UserTestDto;
+import ru.hackaton.backend.dtos.*;
+import ru.hackaton.backend.models.domain.UserCourse;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.util.AchievementCategory;
@@ -114,7 +113,7 @@ public interface UserController {
     @GetMapping("/{userId}/tests/count")
     @ResponseStatus(HttpStatus.OK)
     long getUserTestsCount(@PathVariable("userId") long userId,
-                          @RequestParam(value = "art_id", required = false) Long artId);
+                           @RequestParam(value = "art_id", required = false) Long artId);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @Operation(summary = "Возвращает сумму очков за тесты, пройденные пользователем")
@@ -122,7 +121,7 @@ public interface UserController {
     @GetMapping("/{userId}/tests/score-sum")
     @ResponseStatus(HttpStatus.OK)
     long getUserTestsScoreSum(@PathVariable("userId") long userId,
-                             @RequestParam(value = "art_id", required = false) Long artId);
+                              @RequestParam(value = "art_id", required = false) Long artId);
 
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasAuthority('USER') and #id == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
@@ -138,5 +137,58 @@ public interface UserController {
     @GetMapping(value = "/{id}/achievements", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     PageWrapper<AchievementDto> readAllAchievements(@PathVariable("id") long id);
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Возвращает информацию о курсах, на которые записан пользователь")
+    @GetMapping(value = "/{userId}/courses", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    List<CourseDto> readAllUserCourses(@PathVariable("userId") long userId,
+                                       @RequestParam(value = "page", defaultValue = "0", required = false) Integer pageNum,
+                                       @RequestParam(value = "per_page", defaultValue = "25", required = false) Integer perPage);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Возвращает общую информацию о курсе, на который записан пользователь, со списком пройденных и непройденных уроков")
+    @GetMapping(value = "/{userId}/courses/{courseId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    UserCourseDto getUserCourse(@PathVariable("userId") long userId,
+                             @PathVariable("courseId") long courseId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Записывает пользователя на данный курс")
+    @PostMapping(value = "/{userId}/courses/{courseId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    void addUserCourse(@PathVariable("userId") long userId,
+                       @PathVariable("courseId") long courseId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Отписывает пользователя от данного курса")
+    @DeleteMapping(value = "/{userId}/courses/{courseId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    void deleteUserCourse(@PathVariable("userId") long userId,
+                          @PathVariable("courseId") long courseId);
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Отмечает данный урок как пройденный у пользователя")
+    @PostMapping(value = "/{userId}/courses{courseId}/lessons/{lessonId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    void completeUserLesson(@PathVariable("userId") long userId,
+                         @PathVariable("courseId") long courseId,
+                         @PathVariable("lessonId") long lessonId);
+
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('USER') and #userId == (authentication.getPrincipal()).getId() or hasAuthority('ADMIN')")
+    @Operation(summary = "Получает страницу данного урока из курса")
+    @GetMapping(value = "/{userId}/courses{courseId}/lessons/{lessonId}", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    LessonDto getCourseLesson(@PathVariable("userId") long userId,
+                              @PathVariable("courseId") long courseId,
+                              @PathVariable("lessonId") long lessonId);
 
 }

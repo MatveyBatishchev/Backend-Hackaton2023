@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fk-lesson_course
+      author: Damir
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: lesson
+            baseColumnNames: course_id
+            constraintName: fk_lesson_course_course_id
+            onDelete: CASCADE
+            referencedTableName: course
+            referencedColumnNames: id
