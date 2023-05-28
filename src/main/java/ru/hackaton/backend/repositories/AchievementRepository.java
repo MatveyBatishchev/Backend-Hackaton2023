@@ -18,11 +18,11 @@ public interface AchievementRepository extends JpaRepository<Achievement, Long> 
             SELECT
                 a.id, title, success_info, painting_name, painting_caption,
                 painting_description, image, achievement_type,
-            CASE WHEN u.user_id = :userId THEN true ELSE false END AS received
+                CASE WHEN u.user_id = :user_id THEN true ELSE false END AS received
             FROM main.achievement a
-            LEFT JOIN main.user_achievement u ON a.id = u.achievement_id
+            LEFT JOIN main.user_achievement u ON a.id = u.achievement_id AND u.user_id = :user_id
             ORDER BY a.id""", nativeQuery = true)
-    Page<Achievement> findAllWithUserReceived(Long userId, Pageable pageable);
+    Page<Achievement> findAllWithUserReceived(@Param("user_id") Long userId, Pageable pageable);
 
     @Modifying
     @Transactional
