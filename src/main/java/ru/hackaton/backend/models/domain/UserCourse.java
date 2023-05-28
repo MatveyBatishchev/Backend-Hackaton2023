@@ -2,7 +2,9 @@ package ru.hackaton.backend.models.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -19,18 +21,21 @@ public class UserCourse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
+    @MapsId("courseId")
     private Course course;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_course_lesson",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-                    @JoinColumn(name = "course_id", referencedColumnName = "course_id")},
-            inverseJoinColumns = {@JoinColumn(name = "lesson_id")})
-    private Set<Lesson> completedLessons = new HashSet<>();
+    @Transient
+    private Integer completion;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userCourse")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<UserCourseLesson> completedLessons = new HashSet<>();
 
 
     public UserCourse(User user, Course course) {
@@ -39,16 +44,4 @@ public class UserCourse {
         this.id = new UserCourseId(user.getId(), course.getId());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserCourse that = (UserCourse) o;
-        return Objects.equals(user, that.user) && Objects.equals(course, that.course);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(user, course);
-    }
 }

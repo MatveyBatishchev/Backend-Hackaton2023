@@ -9,11 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hackaton.backend.dtos.CourseDto;
-import ru.hackaton.backend.dtos.UserDto;
-import ru.hackaton.backend.dtos.UserTestDto;
+import ru.hackaton.backend.dtos.*;
 import ru.hackaton.backend.errors.UserAlreadyExistException;
 import ru.hackaton.backend.mappers.CourseMapper;
+import ru.hackaton.backend.mappers.LessonMapper;
+import ru.hackaton.backend.mappers.UserCourseMapper;
 import ru.hackaton.backend.mappers.UserMapper;
 import ru.hackaton.backend.models.domain.*;
 import ru.hackaton.backend.repositories.CourseRepository;
@@ -42,6 +42,10 @@ public class UserService {
     private final CourseRepository courseRepository;
 
     private final CourseMapper courseMapper;
+
+    private final LessonMapper lessonMapper;
+
+    private final UserCourseMapper userCourseMapper;
 
     private final UserMapper userMapper;
 
@@ -160,6 +164,29 @@ public class UserService {
 
     }
 
+    public UserCourseDto getUserCourse(long userId, long courseId) {
+        User user = findUserById(userId);
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Курс с id %d не был найден!".formatted(courseId)));
+
+        //Check if user is enrolled to the course
+        UserCourse userCourse = user.getCourses().stream()
+                .filter(uc -> course.equals(uc.getCourse()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Пользователь с id %d не записан на курс с id %d!".formatted(userId, courseId)));
+
+        //Calculating course completion in percents
+        double completion = (double) userCourse.getCompletedLessons().size() / userCourse.getCourse().getLessons().size();
+        userCourse.setCompletion((int) Math.round(completion * 100));
+
+
+        return userCourseMapper.toDto(userCourse);
+
+    }
+
+
     public void addUserCourse(long userId, long courseId) {
         User user = findUserById(userId);
         Course course = courseRepository.findById(courseId).orElseThrow(() ->
@@ -181,5 +208,55 @@ public class UserService {
         userRepository.save(user);
 
     }
+
+    public void completeUserLesson(long userId, long courseId, long lessonId) {
+        User user = findUserById(userId);
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Курс с id %d не был найден!".formatted(courseId)));
+
+        Set<UserCourse> userCourses = user.getCourses();
+
+        //Check if user is enrolled to the course
+        UserCourse userCourse = userCourses.stream()
+                .filter(uc -> course.equals(uc.getCourse()))
+                .findFirst()
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Пользователь с id %d не записан на курс с id %d!".formatted(userId, courseId)));
+
+        //Check if specified lesson exists
+        Lesson lesson = userCourse.getCourse().getLessons().stream()
+                .filter(l -> l.getId() == lessonId)
+                .findFirst()
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Урок с id %d не найден!".formatted(lessonId)));
+
+
+        UserCourseLesson userCourseLesson = new UserCourseLesson(userCourse, lesson);
+        userCourse.getCompletedLessons().add(userCourseLesson);
+
+        userRepository.save(user);
+
+    }
+
+
+    public LessonDto getCourseLesson(long userId, long courseId, long lessonId) {
+        User user = findUserById(userId);
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() ->
+                new EntityNotFoundException("Курс с id %d не был найден!".formatted(courseId)));
+
+
+        //Check if specified lesson exists
+        Lesson lesson = course.getLessons().stream()
+                .filter(l -> l.getId() == lessonId)
+                .findFirst()
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Урок с id %d не найден!".formatted(lessonId)));
+
+        return lessonMapper.toLessonDto(lesson);
+
+    }
+
 
 }

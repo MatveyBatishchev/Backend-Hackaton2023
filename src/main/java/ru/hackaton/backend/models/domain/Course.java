@@ -1,6 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,13 +43,13 @@ public class Course {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_At")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;;
 
     @ManyToOne
     @JoinColumn(name = "art_id")
     private Art art;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
@@ -57,6 +58,7 @@ public class Course {
     @OneToOne
     @JoinColumn(name = "study_program_id")
     private StudyProgram studyProgram;
+
 
     public void addLesson(Lesson lesson) {
         lessons.add(lesson);

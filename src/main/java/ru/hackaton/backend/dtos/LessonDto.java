@@ -34,9 +34,4 @@ public class LessonDto {
     private LocalDateTime updatedAt;
 
     private Boolean intro;
-
-    //Прошёл ли пользователь данный урок
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-
-    private Boolean completed = false;
 }

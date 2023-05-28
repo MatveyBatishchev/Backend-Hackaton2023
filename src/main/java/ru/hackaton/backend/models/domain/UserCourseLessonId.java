@@ -14,15 +14,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserCourseId implements Serializable {
+public class UserCourseLessonId implements Serializable {
 
     @Column(name = "user_id", updatable = false, insertable = false)
-//    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "course_id", updatable = false, insertable = false)
-//    @Column(name = "course_id")
     private Long courseId;
 
+
+    @Column(name = "lesson_id")
+    private Long lessonId;
 
 }

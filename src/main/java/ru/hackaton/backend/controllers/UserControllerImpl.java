@@ -3,10 +3,8 @@ package ru.hackaton.backend.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hackaton.backend.dtos.AchievementDto;
-import ru.hackaton.backend.dtos.CourseDto;
-import ru.hackaton.backend.dtos.UserDto;
-import ru.hackaton.backend.dtos.UserTestDto;
+import ru.hackaton.backend.dtos.*;
+import ru.hackaton.backend.models.domain.UserCourse;
 import ru.hackaton.backend.models.domain.UserRole;
 import ru.hackaton.backend.models.domain.UserTest;
 import ru.hackaton.backend.services.AchievementService;
@@ -107,8 +105,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public CourseDto getUserCourse(long userId, long courseId) {
-        return null;
+    public UserCourseDto getUserCourse(long userId, long courseId) {
+        return userService.getUserCourse(userId, courseId);
     }
 
     @Override
@@ -119,6 +117,16 @@ public class UserControllerImpl implements UserController {
     @Override
     public void deleteUserCourse(long userId, long courseId) {
         userService.deleteUserCourse(userId, courseId);
+    }
+
+    @Override
+    public void completeUserLesson(long userId, long courseId, long lessonId) {
+        userService.completeUserLesson(userId, courseId, lessonId);
+    }
+
+    @Override
+    public LessonDto getCourseLesson(long userId, long courseId, long lessonId) {
+        return userService.getCourseLesson(userId, courseId, lessonId);
     }
 
 }

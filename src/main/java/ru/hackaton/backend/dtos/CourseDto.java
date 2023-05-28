@@ -37,10 +37,6 @@ public class CourseDto {
 
     private ArtDto art;
 
-    //На сколько процентов пользователь прошёл данный курс
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Integer completion = null;
-
     private Set<LessonDto> lessons;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
