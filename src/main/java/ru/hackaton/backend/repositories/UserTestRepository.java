@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserTestRepository extends ReadOnlyRepository<UserTest, Long> {
 
     @Query(value = """
-            SELECT new ru.hackaton.backend.dtos.UserTestDto(ut.userId, ut.testId, ut.score, ut.passedAt)
+            SELECT new ru.hackaton.backend.dtos.UserTestDto(ut.userId, ut.id, ut.score, ut.passedAt)
             FROM UserTest ut
             WHERE ut.userId = :user_id
             ORDER BY ut.passedAt DESC""")

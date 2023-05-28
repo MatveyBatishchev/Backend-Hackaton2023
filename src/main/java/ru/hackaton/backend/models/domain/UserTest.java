@@ -1,6 +1,7 @@
 package ru.hackaton.backend.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
 public class UserTest {
 
     @Id
-    private Long testId;
+    @Column(name = "test_id")
+    private Long id;
 
     private String title;
     private String description;
