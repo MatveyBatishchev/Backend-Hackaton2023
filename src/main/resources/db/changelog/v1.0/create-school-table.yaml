@@ -25,6 +25,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: image
+                  type: varchar(255)
+                  remarks: "Картинка учебного заведения"
+              - column:
                   name: email
                   type: varchar(100)
                   remarks: "Электронная почта школы"
